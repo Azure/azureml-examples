@@ -158,7 +158,7 @@ reward_registry = {
 
 def get_rewards_funcs(reward_names: List[str]):
     """Helper function to get the reward functions given the names
-    
+
     Args:
         reward_names (list): List of reward function names.
     Returns:

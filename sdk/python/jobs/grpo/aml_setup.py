@@ -7,6 +7,7 @@ Install necessary libraries and packages required for running AML training jobs.
 from azure.ai.ml import MLClient, command, Input, Output
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import Model
+
 # Import necessary classes for environment management
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
@@ -30,7 +31,7 @@ except Exception:
 # Input your Azure subscription ID, resource group name, and workspace name.
 # You can find these values in the Azure portal.
 AML_SUBSCRIPTION = "<SUBSCRIPTION_ID>"
-AML_RESOURCE_GROUP="<RESOURCE_GROUP_NAME>"
+AML_RESOURCE_GROUP = "<RESOURCE_GROUP_NAME>"
 AML_WORKSPACE_NAME = "<WORKSPACE_NAME>"
 
 # Initialize the MLClient to connect to your Azure ML workspace
@@ -41,13 +42,14 @@ ml_client = MLClient(
     workspace_name=AML_WORKSPACE_NAME,
 )
 
+
 def setup_dataset():
     """
     Register the medical MCQA dataset in the Azure ML workspace.
     The datasets will be referred from the ./datasets folder.
     """
     med_mcqa_dataset = "dataset-med-mcqa"
-    med_mcqa_data_path = './datasets/med_mcqa'
+    med_mcqa_data_path = "./datasets/med_mcqa"
     med_mcqa_data = ml_client.data.create_or_update(
         Data(
             path=med_mcqa_data_path,
@@ -59,13 +61,14 @@ def setup_dataset():
     print(f"✅ Dataset {med_mcqa_dataset} created in AML workspace.")
     return med_mcqa_data
 
+
 def setup_model():
     """
     Download and Register the model in the Azure ML workspace.
     """
     # Model details
-    model_id = "Qwen/Qwen2.5-7B-Instruct"         # Hugging Face model ID
-    download_path = "./models"                    # Local download path
+    model_id = "Qwen/Qwen2.5-7B-Instruct"  # Hugging Face model ID
+    download_path = "./models"  # Local download path
     model_name = "Qwen2_5-7B-Instruct_base"  # Name for Azure ML registration
 
     # Download model from Hugging Face and register in Azure ML workspace
@@ -75,20 +78,18 @@ def setup_model():
     except ResourceNotFoundError:
         print(f"❌ Model {model_name} not found, downloading and registering...")
         from huggingface_hub import snapshot_download
+
         snapshot_download(
             repo_id=model_id,
             local_dir=download_path,
             # token=os.environ["HF_TOKEN"]  # Uncomment if authentication is needed
         )
         model = ml_client.models.create_or_update(
-            Model(
-                name=model_name,
-                path=download_path,
-                type=AssetTypes.CUSTOM_MODEL
-            )
+            Model(name=model_name, path=download_path, type=AssetTypes.CUSTOM_MODEL)
         )
         print(f"✅ Model registered in AML workspace: {model.id}")
     return model
+
 
 def setup_compute():
     """
@@ -97,7 +98,7 @@ def setup_compute():
     # Compute Cluster Setup: Select or Create GPU Compute for Training
 
     # Specify the desired Azure VM size (default: 8 x H100 GPUs). This job requires falsh attention and needs A100 or H100 GPUs.
-    compute_cluster_size = "STANDARD_ND96ISRF_H100_V5"
+    compute_cluster_size = "STANDARD_ND96ISR_H100_V5"
 
     # Name of the compute cluster to use (change if you have a different cluster)
     compute_cluster = "grpo-h100-2"
@@ -107,7 +108,9 @@ def setup_compute():
         compute = ml_client.compute.get(compute_cluster)
         print(f"✅ Compute cluster {compute_cluster} created in AML workspace.")
     except Exception:
-        print(f"❌ Compute cluster '{compute_cluster}' not found. Creating a new one ({compute_cluster_size})...")
+        print(
+            f"❌ Compute cluster '{compute_cluster}' not found. Creating a new one ({compute_cluster_size})..."
+        )
         try:
             print("🔄 Creating dedicated GPU compute cluster...")
             compute = AmlCompute(
@@ -115,7 +118,7 @@ def setup_compute():
                 size=compute_cluster_size,
                 tier="Dedicated",
                 max_instances=2,  # Increase for multi-node training
-                min_instances=2
+                min_instances=2,
             )
             ml_client.compute.begin_create_or_update(compute).wait()
             print("✅ Compute cluster created successfully.")
@@ -133,6 +136,7 @@ def setup_compute():
             f"Please try creating a different compute cluster."
         )
     return compute
+
 
 def setup_environment():
     """
@@ -157,6 +161,7 @@ def setup_environment():
         )
         print(f"✅ Environment registered in AML workspace: {environment.id}")
     return environment
+
 
 def setup():
     """

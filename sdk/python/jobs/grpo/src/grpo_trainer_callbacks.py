@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 def copy_tokenizer_files_to_model_folder(mlflow_model_folder: str):
-    """Copy tokenizer files to model folder. 
+    """Copy tokenizer files to model folder.
     The mlflow model format expects tokenizer and model files in model folder i.e. "data/model".
 
     Args:
@@ -57,7 +57,7 @@ class SaveMLflowModelCallback(TrainerCallback):
         base_model_name: str,
         **kwargs,
     ) -> None:
-        
+
         self.mlflow_model_save_path = mlflow_model_save_path
         self.mlflow_task_type = mlflow_task_type
         self.metadata = {
@@ -79,14 +79,14 @@ class SaveMLflowModelCallback(TrainerCallback):
     ):
         """
         Callback function to save the model in mlflow model format at the end of the training.
-        
+
         Args:
             args (TrainingArguments): The training arguments.
             state (TrainerState): The trainer state.
             control (TrainerControl): The trainer control.
             **kwargs: Additional keyword arguments. The kwargs contain the model and tokenizer to be saved.
                 - model: The model to be saved.
-                - processing_class: The tokenizer to be used for saving the model. 
+                - processing_class: The tokenizer to be used for saving the model.
         Returns:
             None
         """
@@ -99,7 +99,12 @@ class SaveMLflowModelCallback(TrainerCallback):
             # This is to unify hfv2/OSS metadata dump
             mlflow_model = Model(metadata=self.metadata)
             mlflow.hftransformers.save_model(
-                model, full_path, tokenizer, model.config, mlflow_model=mlflow_model, hf_conf=hf_conf
+                model,
+                full_path,
+                tokenizer,
+                model.config,
+                mlflow_model=mlflow_model,
+                hf_conf=hf_conf,
             )
             # Copy tokenizer files to model folder
             copy_tokenizer_files_to_model_folder(full_path)
