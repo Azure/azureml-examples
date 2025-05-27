@@ -11,3 +11,4 @@ tensorflow-hub==0.15.0
 transformers==4.34.0
 keras==2.12.0
 jupyter-client==7.4.9
+azure-ai-ml
