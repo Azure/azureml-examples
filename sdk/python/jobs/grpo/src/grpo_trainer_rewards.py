@@ -146,7 +146,7 @@ def accuracy(completions, solution, **kwargs):
     rewards = []
     for content, sol in zip(contents, solution):
         # _medmcqa_match_fn is used to calculate the accuracy reward for a single completion
-        rewards.append(_medmcqa_match_fn(content, sol))
+        rewards.append(float(_medmcqa_match_fn(content, sol)))
     return rewards
 
 
