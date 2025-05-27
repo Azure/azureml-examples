@@ -40,7 +40,7 @@ jobs:
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: install azure-ai-ml
-      run: pip install azure-ai-ml
+      run: pip install --upgrade azure-ai-ml azure-identity
     - name: azure login
       uses: azure/login@v1
       with:
