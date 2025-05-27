@@ -14,4 +14,5 @@
 'transformers>=4.28.1',
 'torch>=1.9.0',
 'accelerate>=0.19.0',
-'Pillow==9.4.0'
+'Pillow==9.4.0',
+'azure-ai-ml'
