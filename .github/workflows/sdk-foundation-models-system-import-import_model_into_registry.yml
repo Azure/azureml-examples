@@ -86,6 +86,10 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "import_model_into_registry.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
+          # Ensure pip is up-to-date and install dependencies
+          echo "Installing dependencies..."
+          python -m pip install --upgrade pip
+          python -m pip install azure-ai-ml papermill jupyter
           papermill -k python import_model_into_registry.ipynb import_model_into_registry.output.ipynb
       working-directory: sdk/python/foundation-models/system/import
     - name: upload notebook's working folder as an artifact
