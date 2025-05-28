@@ -1,4 +1,4 @@
-### This directory hosts an example of running GRPO on AzureML
+### This directory hosts an example to train an Instruct model into a Reasoning model on AML using GRPO - a RFT technique
 
 #### Repo structure:
 - aml_setup.py: AzureML specific code relating to creation of dataset, model and environment. The workspace config is located here, make changes to this file before running the notebook.
