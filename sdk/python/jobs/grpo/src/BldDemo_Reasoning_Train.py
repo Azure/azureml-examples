@@ -183,7 +183,7 @@ def main(script_args, training_args, model_args):
         mlflow_model_save_path=script_args.final_model_save_path,
         mlflow_task_type=script_args.mlflow_task_type,
         base_model_name=script_args.base_model_name,
-        preprocessor=tokenizer,
+        processing_class=tokenizer,
     )
 
     # Create the GRPOTrainer (It does SAMPLING, GRADING and TRAINING)
