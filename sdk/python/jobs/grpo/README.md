@@ -1,7 +1,7 @@
 ### This directory hosts an example to train an Instruct model into a Reasoning model on AML using Group Relative Policy Optimization (GRPO) - a RFT technique
 
 #### Introduction:
-This notebook guides you through the end-to-end process of fine-tuning the **Qwen2.5-7B-Instruct** model into a **reasoning model** using medical data on **Azure ML**. Qwen2.5-7B-Instruct is an instruction-tuned large language model developed by Alibaba Cloud, based on their Qwen2.5-7B foundation model. \
+In this repo, one will fine a notebook (launch_grpo_command_job-med-mcqa-commented.ipynb) that details an end-to-end process of fine-tuning the **Qwen2.5-7B-Instruct** model into a **reasoning model** using medical data on **Azure ML**. Qwen2.5-7B-Instruct is an instruction-tuned large language model developed by Alibaba Cloud, based on their Qwen2.5-7B foundation model. \
 It is optimized for following human instructions across a wide range of tasks, such as question answering, code generation, and language understanding. \
 In this walkthrough, one will learn how to enhance the model's reasoning capabilities using **Reinforced Fine-Tuning (RFT)** techniques, with a focus on **GRPO (**G**roup **R**elative **P**olicy **O**ptimization)**.
 
