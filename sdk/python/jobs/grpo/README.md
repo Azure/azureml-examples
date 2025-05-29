@@ -17,7 +17,7 @@ In this walkthrough, one will learn how to enhance the model's reasoning capabil
       <li><strong>Trainer</strong> – Updates the model to reinforce high-quality outputs</li>
     </ul>
     <p>
-      In this example we use the <strong>GRPO Trainer</strong> for training Qwen2.5-7B-Instruct model into a reasoning model. We use the GRPO implementation from TRL library.
+      In this example, the <strong>GRPO Trainer</strong> (an implementation from TRL library) is used for training Qwen2.5-7B-Instruct model into a reasoning model.
     </p>
     <br>
     <p>
