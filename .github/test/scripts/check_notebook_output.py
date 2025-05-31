@@ -82,6 +82,9 @@ allowed_list = [
         "which generate code specific to the RPC implementation. service.py will be removed in Jan 2025"
     ),
     "from google.protobuf import service as _service",
+    "UserWarning: This class is intended as a base class and it's direct usage is deprecated",
+    "warnings.warn",
+    "UserWarning: pkg_resources is deprecated as an API.",
 ]
 
 with open(full_name, "r") as notebook_file:
