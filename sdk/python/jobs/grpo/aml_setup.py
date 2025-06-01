@@ -33,6 +33,7 @@ except Exception:
 AML_SUBSCRIPTION = "<SUBSCRIPTION_ID>"
 AML_RESOURCE_GROUP = "<RESOURCE_GROUP_NAME>"
 AML_WORKSPACE_NAME = "<WORKSPACE_NAME>"
+N_NODES = 2  # Number of nodes to use for training, options: [1, 2]
 
 # Initialize the MLClient to connect to your Azure ML workspace
 ml_client = MLClient(
@@ -97,7 +98,7 @@ def setup_compute():
     """
     # Compute Cluster Setup: Select or Create GPU Compute for Training
 
-    # Specify the desired Azure VM size (default: 8 x H100 GPUs). This job requires falsh attention and needs A100 or H100 GPUs.
+    # Specify the desired Azure VM size (default: 8 x H100 GPUs). This job requires flash attention and needs A100 or H100 GPUs.
     compute_cluster_size = "STANDARD_ND96ISR_H100_V5"
 
     # Name of the compute cluster to use (change if you have a different cluster)
@@ -117,8 +118,8 @@ def setup_compute():
                 name=compute_cluster,
                 size=compute_cluster_size,
                 tier="Dedicated",
-                max_instances=2,  # Increase for multi-node training
-                min_instances=2,
+                max_instances=N_NODES,
+                min_instances=N_NODES,
             )
             ml_client.compute.begin_create_or_update(compute).wait()
             print("✅ Compute cluster created successfully.")
