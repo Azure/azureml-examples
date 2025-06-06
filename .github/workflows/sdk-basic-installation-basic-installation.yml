@@ -92,5 +92,3 @@ jobs:
       with:
         name: basic-installation
         path: sdk/python/basic-installation
-    - name: Fail intentionally
-      run: exit 1
