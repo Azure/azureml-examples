@@ -28,6 +28,8 @@ Ensure you `az login` and `azcopy login` and have permissions to set secrets via
 
 # Setup MCP server
 
+Setting up the GitHub MCP server will expedite the implementation of the samples process from a minimum of 3-4 days to just minutes. This setup is completely optional and is shared here to help you generate your code (samples/workflows) in minutes. Please update below steps if something needs to add or modify.
+
 ## Prerequisites
 1. Install [Docker desktop](https://docs.docker.com/desktop/setup/install/windows-install/)
 2. Install [VScode](https://code.visualstudio.com/download). You can choose your own IDE like cursor.
@@ -43,7 +45,7 @@ Ensure you `az login` and `azcopy login` and have permissions to set secrets via
 	3. In Repository permissions, modify below permissions and Click on "Generate token"
 		1. Contents -> Read and write
 		2. Metadata -> Read only
-6. [Onetime] Update settings (Ctrl + Shift + P) and add github mcp servers.
+6. [Onetime] Update settings (Ctrl + Shift + P) and add [github mcp servers](https://github.com/github/github-mcp-server).
 ```
 "chat.mcp.discovery.enabled": true,
   "mcp": {
@@ -73,7 +75,7 @@ Ensure you `az login` and `azcopy login` and have permissions to set secrets via
     }
   }
 ```
-7. Click on Start link in Settings window and it will ask you for the github token to enter. New container should start in Docker desktop after you enter your PAT.
+7. Click on Start link in Settings window and it will ask you for the github token to enter. Verify that new container should start in Docker desktop after you enter your PAT.
 8. Follow below prompts for generating all the boiler plate code. These prompts are for demonstration purpose only. You can use your own prompts also.
 
 ## Sample Prompts
