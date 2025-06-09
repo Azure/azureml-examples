@@ -25,3 +25,32 @@ Required CLI tools include:
 - `azcopy`
 
 Ensure you `az login` and `azcopy login` and have permissions to set secrets via `gh`.
+
+# Setup MCP server
+
+## Prerequisites
+1. Install [Docker desktop](https://docs.docker.com/desktop/setup/install/windows-install/)
+2. Install [VScode](https://code.visualstudio.com/download). You can choose your own IDE like cursor.
+
+## Steps
+1. Start Docker desktop.
+2. Open Azureml-examples repo in VScode.
+3. Switch to the Agent mode.
+4. Preferred model is Claude Sonnet 4 but you can choose any model of your wish.
+5. Create Github personal access token. Make sure you dont push this anywhere in the code.
+	1. Visit this link: https://github.com/settings/personal-access-tokens and click generate new token.
+	2. Set token name, expiration etc.
+	3. In Repository permissions, modify below permissions and Click on "Generate token"
+		1. Contents -> Read and write
+		2. Metadata -> Read only
+6. [Onetime] Update settings (Ctrl + Shift + P) and add github mcp servers.
+7. Click on Start link in Settings window and it will ask you for the github token to enter. New container should start in Docker desktop after you enter your PAT.
+8. Follow below prompts for generating all the boiler plate code. These prompts are for demonstration purpose only. You can use your own prompts also.
+
+## Prompts
+1. Create new branch named mcp_test_3 and dont push it to github 
+2. Add new file sdksample.ipynb in sdk/python/assets/sdksample folder and update the readme file and also add readme file in sdksample folder. 
+3. Can you also add workflow for this ipynb file in .github/workflows folder exactly like how other workflows created? 
+4. Can you commit and push these changes to the current branch and raise pull request with main branch?
+
+**Note that AI generated output can be incorrect. Before raising/merging pull request, consider to verify the output and make the require changes.**
