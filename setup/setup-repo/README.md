@@ -44,10 +44,39 @@ Ensure you `az login` and `azcopy login` and have permissions to set secrets via
 		1. Contents -> Read and write
 		2. Metadata -> Read only
 6. [Onetime] Update settings (Ctrl + Shift + P) and add github mcp servers.
+```
+"chat.mcp.discovery.enabled": true,
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "github_token",
+        "description": "GitHub Personal Access Token",
+        "password": true
+      }
+    ],
+    "servers": {
+      "github": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+        }
+      }
+    }
+  }
+```
 7. Click on Start link in Settings window and it will ask you for the github token to enter. New container should start in Docker desktop after you enter your PAT.
 8. Follow below prompts for generating all the boiler plate code. These prompts are for demonstration purpose only. You can use your own prompts also.
 
-## Prompts
+## Sample Prompts
 1. Create new branch named mcp_test_3 and dont push it to github 
 2. Add new file sdksample.ipynb in sdk/python/assets/sdksample folder and update the readme file and also add readme file in sdksample folder. 
 3. Can you also add workflow for this ipynb file in .github/workflows folder exactly like how other workflows created? 
