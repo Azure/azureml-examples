@@ -43,9 +43,9 @@ Setting up the GitHub MCP server will expedite the implementation of the samples
 	1. Visit this link: https://github.com/settings/personal-access-tokens and click generate new token.
 	2. Set token name, expiration etc.
 	3. In Repository permissions, modify below permissions and Click on "Generate token"
-		1. Contents -> Read and write
-    2. Pull request -> Read and write
-		3. Metadata -> Read only
+	    1. Contents -> Read and write
+      2. Pull request -> Read and write
+		  3. Metadata -> Read only
 6. [Onetime] Update settings (Press Ctrl + Shift + P, type Setting and Click on `Open User Setting (JSON)`) and add [github mcp servers](https://github.com/github/github-mcp-server).
 ```
 "chat.mcp.discovery.enabled": true,
