@@ -48,7 +48,7 @@ Setting up the GitHub MCP server will expedite the implementation of the samples
 		  * Metadata -> Read only
 6. [Onetime] Update settings (Press Ctrl + Shift + P, type Setting and Click on `Open User Setting (JSON)`) and add [github mcp servers](https://github.com/github/github-mcp-server).
 ```
-"chat.mcp.discovery.enabled": true,
+  "chat.mcp.discovery.enabled": true,
   "mcp": {
     "inputs": [
       {
