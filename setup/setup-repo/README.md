@@ -87,4 +87,6 @@ Setting up the GitHub MCP server will expedite the implementation of the samples
 3. Can you also add workflow for this ipynb file in .github/workflows folder exactly like how other workflows created? 
 4. Can you commit and push these changes to the current branch and raise pull request with main branch?
 
+Here is the sample pull request: https://github.com/Azure/azureml-examples/pull/3615
+
 **Note that AI generated output can be incorrect. Before raising/merging pull request, consider to verify the output and make the require changes.**
