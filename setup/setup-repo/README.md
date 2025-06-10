@@ -81,9 +81,9 @@ Setting up the GitHub MCP server will expedite the implementation of the samples
 
 ## Sample Prompts
 1. Create new branch named <use_your_branch_name> and dont push it to github. 
-    Example: Create new branch named mcp_test_3 and dont push it to github
+    - Example: Create new branch named mcp_test_3 and dont push it to github
 2. Add new file <use_your_sample_notebook_ipynb_file_name> in <provide_your_path> folder and update the readme file and also add readme file in <provide_folder_name> folder. 
-    Example: Add new file sdkmcpsample.ipynb in sdk/python/assets/sdkmcpsample folder and update the readme file and also add readme file in sdkmcpsample folder. 
+    - Example: Add new file sdkmcpsample.ipynb in sdk/python/assets/sdkmcpsample folder and update the readme file and also add readme file in sdkmcpsample folder. 
 3. Can you also add workflow for this ipynb file in .github/workflows folder exactly like how other workflows created? 
 4. Can you commit and push these changes to the current branch and raise pull request with main branch?
 
