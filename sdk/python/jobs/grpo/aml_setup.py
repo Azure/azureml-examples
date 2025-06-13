@@ -75,7 +75,7 @@ def setup_model():
     # Download model from Hugging Face and register in Azure ML workspace
     try:
         model = ml_client.models.get(name=model_name, label="latest")
-        print(f"✅ Model {model_name} created in AML workspace.")
+        print(f"✅ Selected model {model_name} from AML workspace.")
     except ResourceNotFoundError:
         print(f"❌ Model {model_name} not found, downloading and registering...")
         from huggingface_hub import snapshot_download
@@ -107,7 +107,7 @@ def setup_compute():
     try:
         # Try to get the existing compute cluster
         compute = ml_client.compute.get(compute_cluster)
-        print(f"✅ Compute cluster {compute_cluster} created in AML workspace.")
+        print(f"✅ Selected compute cluster {compute_cluster} from AML workspace.")
     except Exception:
         print(
             f"❌ Compute cluster '{compute_cluster}' not found. Creating a new one ({compute_cluster_size})..."
@@ -149,7 +149,7 @@ def setup_environment():
     try:
         # Try to get the existing environment from Azure ML workspace
         environment = ml_client.environments.get(name=env_name, label="latest")
-        print(f"✅ Environment {env_name} created in AML workspace.")
+        print(f"✅ Selected environment {env_name} from AML workspace.")
     except ResourceNotFoundError as e:
         # If not found, create a new environment using the specified build context
         print(f"❌ Environment {env_name} not found, creating a new one.")
