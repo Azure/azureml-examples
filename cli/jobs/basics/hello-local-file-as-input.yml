@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+command: |
+  cat ${{inputs.my_input}}
+inputs:
+  my_input:
+    type: uri_file
+    path: ./data/somedata.txt
+environment: azureml:AzureML-sklearn-1.0-ubuntu20.04-py38-cpu@latest
+compute: azureml:cpu-cluster
