@@ -51,7 +51,7 @@ class GRPOScriptArguments(ScriptArguments):
         default="final_model", metadata={"help": "Path to save the final model."}
     )
     reward_funcs: list[str] = field(
-        default_factory=lambda: ["format","accuracy"],
+        default_factory=lambda: ["format", "accuracy"],
         metadata={
             "help": "List of reward functions. Possible values: 'format', 'accuracy'."
         },
