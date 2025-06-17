@@ -39,7 +39,9 @@ Currently, we support datasets having numerical and categorical features. The fo
 
 | RAI component | Binary classification | Multi-class classification | Multilabel classification | Regression | Timeseries forecasting | Categorical features | Text features | Image Features | Recommender Systems | Reinforcement Learning |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -- |
+| Explainability | Yes | Yes | No | Yes | No | Yes | Yes | Yes | No | No |
 | Error Analysis | Yes | Yes | No | Yes | No | Yes | Yes | Yes | No | No |
+| Causal Analysis | Yes | No | No | Yes | No | Yes (max 5 features due to computational cost) | No | No | No | No |
 | Counterfactual | Yes | Yes | No | Yes | No | Yes | No | No | No | No |
 
 Read more about how to use the Responsible AI dashboards [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-dashboard). 
