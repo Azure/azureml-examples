@@ -26,17 +26,11 @@ If not compatible, you can wrap your model's prediction function into a wrapper 
 | Binary Text Classification | [blbooksgenre dataset](https://huggingface.co/datasets/blbooksgenre) | Text | Explanation, Error Analysis | [responsibleaidashboard-text-classification-blbooksgenre.ipynb](./responsibleaidashboard-text-classification-blbooksgenre.ipynb) | [Text Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-text-dashboard?view=azureml-api-2) |
 | Text Classification | [News Article Classification](./text/responsibleaidashboard-text-classification-financial-news/Text_classification_dataset.xlsx) | Text | Explanation, Error Analysis | [Financial_News_Text_classifier.ipynb](./text/responsibleaidashboard-text-classification-financial-news/responsibleaidashboard-text-classification-financial-news.ipynb) | [Documentation](./text/responsibleaidashboard-text-classification-financial-news/readme.md) |
 | Text Question Answering | [Stanford Question Answering Dataset (SQuAD)](https://huggingface.co/datasets/squad) | Text | Explanation, Error Analysis | [responsibleaidashboard-text-question-answering-squad.ipynb](./text/responsibleaidashboard-text-question-answering-squad.ipynb) | [Text Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-text-dashboard?view=azureml-api-2) |
-| AutoML Image Classification | [Fridge Images](https://github.com/microsoft/computervision-recipes/tree/master/scenarios/classification) | Image | Explanation, Error Analysis | [responsibleaidashboard-automl-image-classification-fridge.ipynb](./vision/responsibleaidashboard-automl-image-classification-fridge.ipynb) | [Vision Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-image-dashboard?view=azureml-api-2) |
-| Object Detection | [MIT Computer Vision datasets](https://github.com/microsoft/computervision-recipes) | Image | Explanation, Error Analysis | [responsibleaidashboard-automl-object-detection-fridge-private-data.ipynb](./vision/responsibleaidashboard-automl-object-detection-fridge-private-data.ipynb) | [Vision Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-image-dashboard?view=azureml-api-2) |
-| Image Classification | [Fridge Images](https://github.com/microsoft/computervision-recipes/tree/master/scenarios/classification) | Image | Explanation, Error Analysis | [responsibleaidashboard-image-classification-fridge.ipynb](./vision/responsibleaidashboard-image-classification-fridge.ipynb) | [Vision Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-image-dashboard?view=azureml-api-2) |
-| Multilabel Image Classification | [Fridge Images](https://github.com/microsoft/computervision-recipes/tree/master/scenarios/classification) | Image | Explanation, Error Analysis | [responsibleaidashboard-image-multilabel-classification-fridge.ipynb](./vision/responsibleaidashboard-image-multilabel-classification-fridge.ipynb) | [Vision Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-image-dashboard?view=azureml-api-2) |
-| Image Object Detection | [Object Detection Fridge Images](https://github.com/microsoft/computervision-recipes/tree/master/scenarios/detection) | Image | Explanation, Error Analysis | [responsibleaidashboard-object-detection-MSCOCO.ipynb](./vision/responsibleaidashboard-object-detection-MSCOCO.ipynb) | [Vision Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-image-dashboard?view=azureml-api-2) |
 
 
 To learn more about the different types of Dashboard visit the below tutorials:
 1) [Tabular Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-dashboard?view=azureml-api-2)
 2) [Text Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-text-dashboard?view=azureml-api-2)
-3) [Vision Dashboard Generation](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-image-dashboard?view=azureml-api-2)
 
 
 ## Supportability 🧰
@@ -45,9 +39,7 @@ Currently, we support datasets having numerical and categorical features. The fo
 
 | RAI component | Binary classification | Multi-class classification | Multilabel classification | Regression | Timeseries forecasting | Categorical features | Text features | Image Features | Recommender Systems | Reinforcement Learning |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -- |
-| Explainability | Yes | Yes | No | Yes | No | Yes | Yes | Yes | No | No |
 | Error Analysis | Yes | Yes | No | Yes | No | Yes | Yes | Yes | No | No |
-| Causal Analysis | Yes | No | No | Yes | No | Yes (max 5 features due to computational cost) | No | No | No | No |
 | Counterfactual | Yes | Yes | No | Yes | No | Yes | No | No | No | No |
 
 Read more about how to use the Responsible AI dashboards [here](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-dashboard). 
