@@ -2,7 +2,7 @@ name: huggingface-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.8.5
+  - python=3.12
   - pip
   - pip:
     - torch==2.0

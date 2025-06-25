@@ -2,7 +2,7 @@ name: model-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.7
+  - python=3.12
   - numpy=1.21.2
   - pip=21.2.4
   - scikit-learn=0.24.2
