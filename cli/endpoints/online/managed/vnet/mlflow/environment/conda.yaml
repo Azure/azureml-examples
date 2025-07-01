@@ -6,5 +6,5 @@ dependencies:
 - pip
 - pip:
   - mlflow
-  - cloudpickle==2.2.1
-  - scikit-learn==1.2.2
+  - cloudpickle==3.1.1
+  - scikit-learn==1.7.0
