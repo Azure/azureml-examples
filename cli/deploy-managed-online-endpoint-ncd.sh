@@ -34,7 +34,7 @@ model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || t
 
 
 # <create_sklearn_deployment>
-az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/ncd/sklearn-deployment.yaml --all-traffic
+az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/ncd/sklearn-deployment-with-image.yaml --all-traffic
 # </create_sklearn_deployment>
 
 deploy_status=`az ml online-deployment show --name sklearn-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
