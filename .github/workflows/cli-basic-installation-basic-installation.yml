@@ -25,6 +25,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Check Azure CLI version
+      run: az --version
     - name: check out repo
       uses: actions/checkout@v2
     - name: azure login
