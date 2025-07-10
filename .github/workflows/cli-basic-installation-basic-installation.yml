@@ -25,10 +25,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Check Azure CLI version
-      run: az --version
     - name: check out repo
       uses: actions/checkout@v2
+    - name: Set up latest Azure CLI
+      uses: azure/setup-cli@v1
+      with:
+        version: latest  # This ensures the latest version is always used
+    - name: Check Azure CLI version
+      run: az --version
     - name: azure login
       uses: azure/login@v1
       with:
