@@ -85,6 +85,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-image-object-detection-task-fridge-items.ipynb";
+          sed -i 's/max_trials=2/max_trials=3/g' automl-image-object-detection-task-fridge-items.ipynb
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-image-object-detection-task-fridge-items.ipynb automl-image-object-detection-task-fridge-items.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items
