@@ -5,7 +5,7 @@
 # </az_ml_sdk_install>
 
 # <mldesigner_install>
-pip install mldesigner
+pip install mldesigner-0.0.182152129-py3-none-any.whl
 # </mldesigner_install>
 
 # <mltable_install>
