@@ -33,6 +33,7 @@ except Exception:
 AML_SUBSCRIPTION = "<SUBSCRIPTION_ID>"
 AML_RESOURCE_GROUP = "<RESOURCE_GROUP_NAME>"
 AML_WORKSPACE_NAME = "<WORKSPACE_NAME>"
+N_NODES = 2  # Number of nodes to use for training, options: [1, 2]
 
 # Initialize the MLClient to connect to your Azure ML workspace
 ml_client = MLClient(
@@ -74,7 +75,7 @@ def setup_model():
     # Download model from Hugging Face and register in Azure ML workspace
     try:
         model = ml_client.models.get(name=model_name, label="latest")
-        print(f"✅ Model {model_name} created in AML workspace.")
+        print(f"✅ Selected model {model_name} from AML workspace.")
     except ResourceNotFoundError:
         print(f"❌ Model {model_name} not found, downloading and registering...")
         from huggingface_hub import snapshot_download
@@ -97,7 +98,7 @@ def setup_compute():
     """
     # Compute Cluster Setup: Select or Create GPU Compute for Training
 
-    # Specify the desired Azure VM size (default: 8 x H100 GPUs). This job requires falsh attention and needs A100 or H100 GPUs.
+    # Specify the desired Azure VM size (default: 8 x H100 GPUs). This job requires flash attention and needs A100 or H100 GPUs.
     compute_cluster_size = "STANDARD_ND96ISR_H100_V5"
 
     # Name of the compute cluster to use (change if you have a different cluster)
@@ -106,7 +107,7 @@ def setup_compute():
     try:
         # Try to get the existing compute cluster
         compute = ml_client.compute.get(compute_cluster)
-        print(f"✅ Compute cluster {compute_cluster} created in AML workspace.")
+        print(f"✅ Selected compute cluster {compute_cluster} from AML workspace.")
     except Exception:
         print(
             f"❌ Compute cluster '{compute_cluster}' not found. Creating a new one ({compute_cluster_size})..."
@@ -117,8 +118,8 @@ def setup_compute():
                 name=compute_cluster,
                 size=compute_cluster_size,
                 tier="Dedicated",
-                max_instances=2,  # Increase for multi-node training
-                min_instances=2,
+                max_instances=N_NODES,
+                min_instances=N_NODES,
             )
             ml_client.compute.begin_create_or_update(compute).wait()
             print("✅ Compute cluster created successfully.")
@@ -148,7 +149,7 @@ def setup_environment():
     try:
         # Try to get the existing environment from Azure ML workspace
         environment = ml_client.environments.get(name=env_name, label="latest")
-        print(f"✅ Environment {env_name} created in AML workspace.")
+        print(f"✅ Selected environment {env_name} from AML workspace.")
     except ResourceNotFoundError as e:
         # If not found, create a new environment using the specified build context
         print(f"❌ Environment {env_name} not found, creating a new one.")
