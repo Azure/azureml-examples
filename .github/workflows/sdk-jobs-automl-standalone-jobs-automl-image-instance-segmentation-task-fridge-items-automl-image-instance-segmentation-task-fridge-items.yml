@@ -85,6 +85,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "automl-image-instance-segmentation-task-fridge-items.ipynb";
+          sed -i 's/timeout_minutes=60/timeout_minutes=120/g' automl-image-instance-segmentation-task-fridge-items.ipynb
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python -p compute_name automl-gpu-cluster automl-image-instance-segmentation-task-fridge-items.ipynb automl-image-instance-segmentation-task-fridge-items.output.ipynb
       working-directory: sdk/python/jobs/automl-standalone-jobs/automl-image-instance-segmentation-task-fridge-items
