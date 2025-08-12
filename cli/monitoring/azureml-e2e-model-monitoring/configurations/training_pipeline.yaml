@@ -14,7 +14,7 @@ jobs:
     compute: azureml:cpu-cluster
     code: ../code
     environment:
-      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
       conda_file: ../environments/train.yaml
     inputs:
       training_data: 

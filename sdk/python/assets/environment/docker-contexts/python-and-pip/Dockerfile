@@ -1,4 +1,4 @@
-#FROM mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+#FROM mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
 FROM python:3.8
 
 # python installs

@@ -20,7 +20,7 @@
   },
   "Results": [
     {
-      "Target": "0624-222158-6jfnf5ao-10-139-64-5 (ubuntu 20.04)",
+      "Target": "0624-222158-6jfnf5ao-10-139-64-5 (ubuntu 22.04)",
       "Class": "os-pkgs",
       "Type": "ubuntu"
     },
