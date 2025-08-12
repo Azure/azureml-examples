@@ -44,7 +44,7 @@ jobs:
     compute: azureml:cpu-cluster-fs
     code: ../batch_inference/src
     environment:
-      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
       conda_file: ../../env/conda.yml
     inputs:
       model_input:

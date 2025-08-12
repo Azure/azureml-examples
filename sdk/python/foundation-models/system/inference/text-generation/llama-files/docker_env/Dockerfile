@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:20230620.v1
+FROM mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:20230620.v1
 
 ENV CONDA_ENVIRONMENT_PATH /azureml-envs/llama
 

@@ -6,7 +6,7 @@ type: model
 model: azureml:text-embedding-ada-002@latest
 environment:
   name: batch-openai-mlflow
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
   conda_file: environment/conda.yaml
 code_configuration:
   code: code
