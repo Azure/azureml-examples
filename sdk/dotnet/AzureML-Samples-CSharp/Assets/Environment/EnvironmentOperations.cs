@@ -67,7 +67,7 @@ internal class EnvironmentOperations
             Tags = { { "key1", "value1" }, { "key2", "value2" } },
             OSType = MachineLearningOperatingSystemType.Linux,
             IsAnonymous = false,
-            Image = "mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04",
+            Image = "mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04",
         };
 
         MachineLearningEnvironmentVersionData data = new MachineLearningEnvironmentVersionData(properties);

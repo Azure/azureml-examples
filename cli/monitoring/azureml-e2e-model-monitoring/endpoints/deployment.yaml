@@ -6,7 +6,7 @@ code_configuration:
 endpoint_name: credit-default
 environment: 
   conda_file: ../environments/score.yaml
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
 model: azureml:credit-default-model@latest
 instance_type: Standard_F2s_v2
 instance_count: 1
