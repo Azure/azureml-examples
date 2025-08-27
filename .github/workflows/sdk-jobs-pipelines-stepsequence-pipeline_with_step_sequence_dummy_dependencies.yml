@@ -1,0 +1,37 @@
+name: sdk-jobs-pipelines-stepsequence-pipeline_with_step_sequence_dummy_dependencies
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */8 * * *"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb
+      - .github/workflows/sdk-jobs-pipelines-stepsequence-pipeline_with_step_sequence_dummy_dependencies.yml
+      - "!sdk/python/jobs/pipelines/stepsequence/**/*.md"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out repo
+      uses: actions/checkout@v3
+    - name: setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.8"
+    - name: pip install notebook requirements
+      run: pip install -r sdk/python/jobs/pipelines/stepsequence/requirements.txt
+    - name: azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: install ml extension
+      run: az extension add -n ml -y
+    - name: run pipeline_with_step_sequence_dummy_dependencies.ipynb
+      run: papermill sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb - -k python
