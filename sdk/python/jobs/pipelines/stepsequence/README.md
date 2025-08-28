@@ -1,14 +1,10 @@
-## Contributing
-
-We welcome contributions! Please see our [contribution guide](../../../CONTRIBUTING.md) for details.
-
 ---
 page_type: sample
 languages:
 - python
 products:
 - azure-machine-learning
-description: This sample shows how to create a pipeline with step sequences and dummy dependencies using Azure ML Python SDK v2..
+description: This sample shows how to run build pipeline with command_component decorator.
 ---
 
 # Running a Pipeline job with step sequences and dummy dependencies
