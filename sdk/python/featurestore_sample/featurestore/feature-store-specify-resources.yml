@@ -1,0 +1,20 @@
+$schema: http://azureml/sdk-2-0/FeatureStore.json
+description: feature store description
+tags: {"k1":"v1", "k2":"v2"}
+
+offline_store:
+  target: /subscriptions/<your-subscription>/resourceGroups/<your-resoruce-group-name>/providers/Microsoft.Storage/storageAccounts/<your-offline-store-storage-account-name>/blobServices/default/containers/<your-offline-store-container-name>
+  type: azure_data_lake_gen2
+
+materialization_identity:
+  client_id: <your-uai-client-id>
+  resource_id: /subscriptions/<your-subscription>/resourceGroups/<your-resoruce-group-name>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<your-uai-name>
+
+storage_account: /subscriptions/<your-subscription>/resourceGroups/<your-resoruce-group-name>/providers/Microsoft.Storage/storageAccounts/<your-storage-account>
+
+online_store:
+  target: /subscriptions/<your-subscription>/resourceGroups/<your-resoruce-group-name>/providers/Microsoft.Cache/Redis/<your-redis-account-name>
+  type: redis
+
+compute_runtime:
+  spark_runtime_version: '3.2'
