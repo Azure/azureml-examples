@@ -50,7 +50,7 @@ jobs:
       code: ./script
       entry_script: digit_identification.py
       environment:
-        image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+        image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
         conda_file: ./script/environment_parallel.yml
       program_arguments: >-
         --model ${{inputs.score_model}}

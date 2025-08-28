@@ -121,7 +121,7 @@ def write_notebook_workflow(
     runs_on = "ubuntu-latest"
     workflow_sched = "0 */8 * * *"
     if "explore-data" in name:
-        runs_on = "ubuntu-20.04"
+        runs_on = "ubuntu-22.04"
     if "deploy-model" in name:
         workflow_sched = "0 */12 * * *"
 
