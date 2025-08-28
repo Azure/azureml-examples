@@ -50,11 +50,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install papermill notebook ipykernel jupyter
-        python -m ipykernel install --user --name python --display-name "Python"
+        python -m ipykernel install --user --name python310-sdkv2 --display-name "Python 3.10 - SDK v2"
     - name: install ml extension
       run: az extension add -n ml -y
     - name: run pipeline_with_step_sequence_dummy_dependencies.ipynb
-      run: papermill sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb - -k python
+      run: papermill sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb - -k python310-sdkv2
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -82,4 +82,4 @@ jobs:
     - name: install ml extension
       run: az extension add -n ml -y
     - name: run pipeline_with_step_sequence_dummy_dependencies.ipynb
-      run: papermill sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb - -k python
+      run: papermill sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb - -k python310-sdkv2
