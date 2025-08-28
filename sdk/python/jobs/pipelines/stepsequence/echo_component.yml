@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: echo_component
+display_name: Echo Hello
+version: 1
+type: command
+description: A component that just echoes hello
+
+outputs:
+  output_data:
+    type: uri_folder
+
+command: echo "hello" > ${{outputs.output_data}}/message.txt
+
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
