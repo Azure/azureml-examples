@@ -46,6 +46,10 @@ jobs:
           bash setup.sh
       working-directory: sdk/python
       continue-on-error: true
+    - name: install required packages
+      run: |
+        python -m pip install --upgrade pip
+        pip install papermill
     - name: install ml extension
       run: az extension add -n ml -y
     - name: run pipeline_with_step_sequence_dummy_dependencies.ipynb
