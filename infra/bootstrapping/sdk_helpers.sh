@@ -770,6 +770,15 @@ function validate_tool() {
 function replace_template_values() {
     local FILENAME="$1"
     echo "Replacing template values in the file: ${FILENAME}"
+
+    # Default max_trials replacement value
+    local MAX_TRIALS_REPLACEMENT="2"
+
+    # If the filename contains 'automl-image-object-detection-task-fridge-items', change to 3
+    if [[ "$FILENAME" == *automl-image-object-detection-task-fridge-items* ]]; then
+        MAX_TRIALS_REPLACEMENT="3"
+    fi
+
     sed -i -e "s/<SUBSCRIPTION_ID>/$(echo "$SUBSCRIPTION_ID")/g" \
         -e "s/<RESOURCE_GROUP>/$(echo "$RESOURCE_GROUP_NAME")/g" \
         -e "s/<AML_WORKSPACE_NAME>/$(echo "$WORKSPACE_NAME")/g" \
@@ -784,8 +793,8 @@ function replace_template_values() {
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ml_client.workspaces.begin_create(ws_private_link)/g" \
         -e "s/ml_client.workspaces.begin_create(ws_private_link)/# ws_from_config = MLClient.from_config()/g" \
         -e "s/version=mltable_version/version=1/g" \
-        -e "s/max_trials=10/max_trials=2/g" \
-        -e "s/max_trials: 10/max_trials: 2/g" \
+        -e "s/max_trials=10/max_trials=${MAX_TRIALS_REPLACEMENT}/g" \
+        -e "s/max_trials: 10/max_trials: ${MAX_TRIALS_REPLACEMENT}/g" \
         "${FILENAME}"
     echo "$(<"${FILENAME}")"
 }
