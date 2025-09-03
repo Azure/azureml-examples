@@ -11,4 +11,4 @@ jobs:
     inputs:
       iris: 
         type: uri_file
-        path: https://azuremlexamples.blob.core.windows.net/datasets/iris.csv
+        path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
