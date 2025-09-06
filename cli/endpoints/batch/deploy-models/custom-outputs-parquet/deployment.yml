@@ -6,7 +6,7 @@ type: model
 model: azureml:heart-classifier-sklpipe@latest
 environment:
   name: batch-mlflow-xgboost
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
   conda_file: environment/conda.yaml
 code_configuration:
   code: code

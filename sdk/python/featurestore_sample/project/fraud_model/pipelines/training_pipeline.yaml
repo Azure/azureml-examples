@@ -44,7 +44,7 @@ jobs:
     compute: azureml:cpu-cluster-fs
     code: ../train/src
     environment:
-      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
       conda_file: ../../env/conda.yml
     inputs:
       training_data: 
@@ -66,7 +66,7 @@ jobs:
     compute: azureml:cpu-cluster-fs
     code: ../evaluate/src
     environment:
-      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
       conda_file: ../../env/conda.yml
     inputs:
       model_input: ${{parent.jobs.training_step.outputs.model_output}}
@@ -83,7 +83,7 @@ jobs:
     compute: azureml:cpu-cluster-fs
     code: ../register_model/src
     environment:
-      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+      image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
       conda_file: ../../env/conda.yml
     inputs:
       model_input: ${{parent.jobs.training_step.outputs.model_output}}
