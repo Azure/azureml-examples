@@ -1,0 +1,33 @@
+{
+    "input_data": {
+        "input_string": [
+            {
+                "role": "user",
+                "content": "What is the tallest building in the world?"
+            },
+            {
+                "role": "assistant",
+                "content": "As of 2021, the Burj Khalifa in Dubai, United Arab Emirates is the tallest building in the world, standing at a height of 828 meters (2,722 feet). It was completed in 2010 and has 163 floors. The Burj Khalifa is not only the tallest building in the world but also holds several other records, such as the highest occupied floor, highest outdoor observation deck, elevator with the longest travel distance, and the tallest freestanding structure in the world."
+            },
+            {
+                "role": "user",
+                "content": "and in Africa?"
+            },
+            {
+                "role": "assistant",
+                "content": "In Africa, the tallest building is the Carlton Centre, located in Johannesburg, South Africa. It stands at a height of 50 floors and 223 meters (730 feet). The CarltonDefault Centre was completed in 1973 and was the tallest building in Africa for many years until the construction of the Leonardo, a 55-story skyscraper in Sandton, Johannesburg, which was completed in 2019 and stands at a height of 230 meters (755 feet). Other notable tall buildings in Africa include the Ponte City Apartments in Johannesburg, the John Hancock Center in Lagos, Nigeria, and the Alpha II Building in Abidjan, Ivory Coast"
+            },
+            {
+                "role": "user",
+                "content": "and in Europe?"
+            }
+        ],
+        "parameters": {
+            "max_length": 100,
+            "temperature": 0.8,
+            "top_p": 0.7,
+            "do_sample": true,
+            "max_new_tokens": 100
+        }
+    }
+}
