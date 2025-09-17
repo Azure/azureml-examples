@@ -3,7 +3,7 @@ type: command
 display_name: r-iris-example
 description: Train an R model on the Iris dataset.
 name: r-iris-example
-version: 01
+version: 02
 
 command: >
   Rscript train.R 
