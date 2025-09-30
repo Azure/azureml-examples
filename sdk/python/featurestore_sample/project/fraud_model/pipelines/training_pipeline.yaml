@@ -17,7 +17,7 @@ inputs:
 
 jobs:
   feature_retrieval_step:
-    component: azureml://registries/azureml/components/feature_retrieval/versions/1.0.0
+    component: azureml://registries/azureml/components/feature_retrieval/versions/1.1.1
     inputs:
       feature_retrieval_spec:
         path: ${{parent.inputs.feature_retrieval_spec}}
@@ -28,7 +28,7 @@ jobs:
       observation_data_format: parquet
     resources:
       instance_type: standard_e4s_v3
-      runtime_version: "3.3"
+      runtime_version: "3.4"
     outputs:
       output_data:
     conf:

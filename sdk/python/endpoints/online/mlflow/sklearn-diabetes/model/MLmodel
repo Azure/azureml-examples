@@ -7,7 +7,7 @@ flavors:
     loader_module: mlflow.sklearn
     model_path: model.pkl
     predict_fn: predict
-    python_version: 3.10.11
+    python_version: 3.12.3
   sklearn:
     code: null
     pickled_model: model.pkl

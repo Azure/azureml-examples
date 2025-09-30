@@ -84,7 +84,7 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "online-endpoints-triton.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python online-endpoints-triton.ipynb online-endpoints-triton.output.ipynb
+          papermill -k python online-endpoints-triton.ipynb online-endpoints-triton.output.ipynb --log-output
       working-directory: sdk/python/endpoints/online/triton/single-model
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}

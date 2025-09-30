@@ -225,3 +225,5 @@
 /home/runner/work/azureml-examples/azureml-examples/tutorials/e2e-distributed-pytorch-image
 /home/runner/work/azureml-examples/azureml-examples/tutorials/e2e-ds-experience
 /home/runner/work/azureml-examples/azureml-examples/tutorials/get-started-notebooks
+/home/runner/work/azureml-examples/azureml-examples/cli/basic-installation
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/basic-installation
