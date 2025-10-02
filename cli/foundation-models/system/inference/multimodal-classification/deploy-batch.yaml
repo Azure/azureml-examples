@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/batchDeployment.schema.json
+name: demo
+description: "Batch endpoint for multimodal-classification task"
+type: model
+resources:
+    instance_count: 1
+settings:
+    mini_batch_size: 1
