@@ -12,12 +12,3 @@ This section provides some of the inference optimization tools to maximize perfo
 
 ## DeepSpeed MII
 Deepspeed MII is the library for optimizing the inference execution for certain models. More details about using DeepSpeed MII for inference optimization is [here](./DeepSpeed-MII/README.md)
-
-## ONNX conversion for inference speedups
-
-
-
-## Distillation in the future
-
-## Deploy model to MIR or hardware
-### Monitoring
