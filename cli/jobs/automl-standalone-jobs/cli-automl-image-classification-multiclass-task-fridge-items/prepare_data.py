@@ -103,15 +103,10 @@ def unzip(dataset_parent_dir: str) -> str:
     """Unzip image dataset from local path."""
     repo_root = Path(__file__).resolve().parents[4]
     local_data_path = repo_root / "sample-data" / "image-classification" / "fridgeObjects.zip"
-    print(f"Using local data from {local_data_path}")
 
     # Extract current dataset name from dataset path
     dataset_name = os.path.basename(local_data_path).split(".")[0]
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
-    print("dataset dir")
-    print(dataset_dir)
-    print("parent dir")
-    print(dataset_parent_dir)
 
     # Extract files
     with ZipFile(local_data_path, "r") as zip:
