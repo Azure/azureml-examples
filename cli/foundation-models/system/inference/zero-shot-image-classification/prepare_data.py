@@ -5,7 +5,8 @@ import os
 import shutil
 import urllib.request
 import pandas as pd
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 
 # Change this to match the inference dataset
 LABELS = "water_bottle, milk_bottle, carton, can"

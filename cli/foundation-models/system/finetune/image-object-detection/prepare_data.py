@@ -5,7 +5,8 @@ import os
 import urllib
 import xml.etree.ElementTree as ET
 
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
@@ -162,6 +163,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Local data
     repo_root = Path(__file__).resolve().parents[5]
     local_data_path = repo_root / "sample-data" / "image-classification" / "fridgeObjects.zip"
+    print(f"Using local data from {local_data_path}")
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(local_data_path).split(".")[0]

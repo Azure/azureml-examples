@@ -2,7 +2,8 @@ import argparse
 import json
 import os
 import urllib
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 
 from azure.identity import InteractiveBrowserCredential
 from azure.ai.ml import MLClient

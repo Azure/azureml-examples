@@ -4,7 +4,8 @@ import os
 import urllib
 import xml.etree.ElementTree as ET
 
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 
 from azure.identity import InteractiveBrowserCredential
 from azure.ai.ml import MLClient
