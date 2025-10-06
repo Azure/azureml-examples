@@ -100,7 +100,7 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 
 def unzip(dataset_parent_dir: str) -> str:
     """Unzip image dataset from local path."""
-    local_data_path = "~/data-samples/image-classification/fridgeObjects.zip"
+    local_data_path = "~/sample-data/image-classification/fridgeObjects.zip"
     print(f"Using local data from {local_data_path}")
 
     # Extract current dataset name from dataset path
