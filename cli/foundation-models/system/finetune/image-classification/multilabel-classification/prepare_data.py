@@ -3,7 +3,7 @@ import base64
 import json
 import os
 import urllib
-from zipfile import ZipFile
+from zipfile import Path, ZipFile
 
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
@@ -106,22 +106,16 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # Use local data path
-    print("Using local data.")
-    local_data_path = "sample-data/image-classification/multilabelFridgeObjects.zip"
-    print("Local data path:")
-    print(local_data_path)
+    # Local data
+    repo_root = Path(__file__).resolve().parents[6]
+    local_data_path = repo_root / "sample-data" / "image-classification" / "multilabelFridgeObjects.zip"
 
-    # Extract current dataset name from dataset file
+    # Extract current dataset name from dataset url
     dataset_name = os.path.basename(local_data_path).split(".")[0]
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
-    print("dataset dir")
-    print(dataset_dir)
-    print("parent dir")
-    print(dataset_parent_dir)
 
-    # Extract files directly from the local path
+    # Extract files
     with ZipFile(local_data_path, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)

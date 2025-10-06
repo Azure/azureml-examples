@@ -5,7 +5,7 @@ import os
 import urllib
 import xml.etree.ElementTree as ET
 
-from zipfile import ZipFile
+from zipfile import Path, ZipFile
 
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
@@ -159,27 +159,21 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # create data folder if it doesnt exist.
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-object-detection/odFridgeObjects.zip"
+    # Local data
+    repo_root = Path(__file__).resolve().parents[5]
+    local_data_path = repo_root / "sample-data" / "image-classification" / "fridgeObjects.zip"
 
     # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
+    dataset_name = os.path.basename(local_data_path).split(".")[0]
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
 
-    # Get the data zip file path
-    data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
-
-    # Download the dataset
-    urllib.request.urlretrieve(download_url, filename=data_file)
-
     # extract files
-    with ZipFile(data_file, "r") as zip:
+    with ZipFile(local_data_path, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
-    os.remove(data_file)
+
 
     # Upload data and create a data asset URI folder
     print("Uploading data to blob storage")
