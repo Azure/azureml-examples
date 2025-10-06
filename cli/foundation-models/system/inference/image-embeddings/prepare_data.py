@@ -5,7 +5,8 @@ import os
 import shutil
 import urllib.request
 import pandas as pd
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 import random
 import string
 

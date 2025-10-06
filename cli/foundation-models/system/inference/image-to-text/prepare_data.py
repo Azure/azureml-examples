@@ -5,7 +5,8 @@ import os
 import shutil
 import urllib.request
 import pandas as pd
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 
 
 def download_and_unzip(dataset_parent_dir: str) -> None:

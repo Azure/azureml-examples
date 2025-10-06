@@ -3,7 +3,8 @@ import base64
 import json
 import os
 import urllib
-from zipfile import Path, ZipFile
+from zipfile import ZipFile
+from pathlib import Path
 
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient
