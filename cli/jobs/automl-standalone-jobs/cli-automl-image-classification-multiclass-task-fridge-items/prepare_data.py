@@ -3,6 +3,7 @@ import json
 import os
 import urllib
 from zipfile import ZipFile
+from pathlib import Path
 
 from azure.identity import InteractiveBrowserCredential
 from azure.ai.ml import MLClient
@@ -100,7 +101,8 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 
 def unzip(dataset_parent_dir: str) -> str:
     """Unzip image dataset from local path."""
-    local_data_path = "~/sample-data/image-classification/fridgeObjects.zip"
+    repo_root = Path(__file__).resolve().parents[4]
+    local_data_path = repo_root / "sample-data" / "image-classification" / "fridgeObjects.zip"
     print(f"Using local data from {local_data_path}")
 
     # Extract current dataset name from dataset path
