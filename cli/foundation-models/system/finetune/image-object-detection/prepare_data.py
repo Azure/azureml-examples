@@ -162,7 +162,9 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # Local data
     repo_root = Path(__file__).resolve().parents[5]
-    local_data_path = repo_root / "sample-data" / "image-classification" / "fridgeObjects.zip"
+    local_data_path = (
+        repo_root / "sample-data" / "image-classification" / "fridgeObjects.zip"
+    )
     print(f"Using local data from {local_data_path}")
 
     # Extract current dataset name from dataset url
@@ -175,7 +177,6 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-
 
     # Upload data and create a data asset URI folder
     print("Uploading data to blob storage")

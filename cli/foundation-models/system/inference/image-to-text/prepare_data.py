@@ -20,7 +20,9 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
 
     # Local data
     repo_root = Path(__file__).resolve().parents[5]
-    local_data_path = repo_root / "sample-data" / "image-object-detection" / "odFridgeObjects.zip"
+    local_data_path = (
+        repo_root / "sample-data" / "image-object-detection" / "odFridgeObjects.zip"
+    )
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(local_data_path).split(".")[0]
