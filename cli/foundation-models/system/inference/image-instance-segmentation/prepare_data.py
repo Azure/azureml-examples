@@ -2,6 +2,7 @@ import argparse
 import base64
 import json
 import os
+from pathlib import Path
 import shutil
 import urllib.request
 import pandas as pd
@@ -17,32 +18,20 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
-
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-instance-segmentation/odFridgeObjectsMask.zip"
-    print(f"Downloading data from {download_url}")
+    # Local data
+    repo_root = Path(__file__).resolve().parents[5]
+    local_data_path = repo_root / "sample-data" / "image-instance-segmentation" / "odFridgeObjectsMask.zip"
 
     # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
+    dataset_name = os.path.basename(local_data_path).split(".")[0]
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
 
-    if os.path.exists(dataset_dir):
-        shutil.rmtree(dataset_dir)
-
-    # Get the name of zip file
-    data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
-
-    # Download data from public url
-    urllib.request.urlretrieve(download_url, filename=data_file)
-
-    # extract files
-    with ZipFile(data_file, "r") as zip:
+    # Extract files
+    with ZipFile(local_data_path, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
-    os.remove(data_file)
     return dataset_dir
 
 
