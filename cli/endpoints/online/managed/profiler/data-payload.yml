@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+name: payload
+description: Payload for AzureML Profiler
+type: uri_file
+datastore: workspaceblobstore
+path: profiling/payload.txt

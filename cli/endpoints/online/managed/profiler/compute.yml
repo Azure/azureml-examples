@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json
+name: <PROFILER_COMPUTE_NAME>
+type: computeinstance
+size: Standard_DS4_v2
+identity:
+  type: system_assigned
