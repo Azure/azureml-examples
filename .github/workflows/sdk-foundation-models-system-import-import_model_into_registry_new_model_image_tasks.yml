@@ -10,7 +10,6 @@ on:
       - main
     paths:
       - sdk/python/foundation-models/system/import/**
-      - .github/workflows/sdk-foundation-models-system-import-import_model_into_registry_new_model_image_tasks.yml
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
