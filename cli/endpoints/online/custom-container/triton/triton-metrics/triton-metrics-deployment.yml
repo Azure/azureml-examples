@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: triton-metrics-deployment
+endpoint_name: "{{ENDPOINT_NAME}}"
+app_insights_enabled: true
+model: 
+  path: ./models/model_1
+model_mount_path: /models 
+environment:
+  image: {{acr_name}}.azurecr.io/azureml-examples/triton-metrics:latest
+  inference_config:
+      liveness_route:
+          path: /v2/health/live
+          port: 8000
+      readiness_route:
+          path: /v2/health/ready
+          port: 8000
+      scoring_route:
+          path: /
+          port: 8000
+instance_type: Standard_F8s_v2
+instance_count: 1
