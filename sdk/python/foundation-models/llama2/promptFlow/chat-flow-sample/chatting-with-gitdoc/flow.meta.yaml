@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/flow.schema.json
+name: template_chat_flow
+display_name: chatting-with-gitdoc
+type: chat
+path: ./flow.dag.yaml
+description: Input URL related questions, Model will reply answer
+properties:
+  promptflow.stage: prod
+  promptflow.section: template
