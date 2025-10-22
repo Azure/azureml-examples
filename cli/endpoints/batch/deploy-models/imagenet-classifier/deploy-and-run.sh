@@ -26,7 +26,7 @@ az ml model create --name $MODEL_NAME --path "model"
 
 echo "Creating compute with GPU"
 # <create_compute>
-az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC6s_v3 --min-instances 0 --max-instances 2
+az ml compute create -n gpu-cluster --type amlcompute --size STANDARD_NC4AS_T4_V3 --min-instances 0 --max-instances 2
 # </create_compute>
 
 echo "Creating batch endpoint $ENDPOINT_NAME"
