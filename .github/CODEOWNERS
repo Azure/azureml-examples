@@ -256,7 +256,6 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/automl-image-object-detection-task-fridge-items.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/configuration.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/1a_pipeline_with_components_from_yaml/pipeline_with_components_from_yaml_serverless.ipynb @Azure/AI-Platform-Docs
-/sdk/python/jobs/pipelines/1b_pipeline_with_python_function_components/pipeline_with_python_function_components.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/1c_pipeline_with_hyperparameter_sweep/pipeline_with_hyperparameter_sweep.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/1g_pipeline_with_parallel_nodes/pipeline_with_parallel_nodes.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component/pipeline_with_train_eval_pipeline_component.ipynb @Azure/AI-Platform-Docs
@@ -284,3 +283,4 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /tutorials/get-started-notebooks/cloud-workstation.ipynb @Azure/AI-Platform-Docs
 /tutorials/get-started-notebooks/workstation_env.yml @Azure/AI-Platform-Docs
 # End of docs files ########################################################################################################
+
