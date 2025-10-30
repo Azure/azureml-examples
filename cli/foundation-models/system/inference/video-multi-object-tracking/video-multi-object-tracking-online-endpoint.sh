@@ -15,7 +15,7 @@ version=$(date +%s)
 endpoint_name="video-mot-$version"
 
 # todo: fetch deployment_sku from the min_inference_sku tag of the model
-deployment_sku="Standard_NC6s_V3"
+deployment_sku="STANDARD_NC4AS_T4_V3"
 
 # Prepare data for deployment
 python ./prepare_data.py
