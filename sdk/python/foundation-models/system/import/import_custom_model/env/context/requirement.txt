@@ -1,0 +1,6 @@
+azureml-inference-server-http
+protobuf<4.0.0
+psutil>=5.8,<5.9
+pandas>=1.1,<1.2
+transformers==4.28.1
+sentencepiece==0.1.97
