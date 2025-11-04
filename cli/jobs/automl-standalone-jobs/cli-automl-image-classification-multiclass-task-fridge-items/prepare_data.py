@@ -105,7 +105,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # download data
     print("Downloading data.")
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/fridgeObjects.zip"
+    download_url = "/data-samples/image-classification/fridgeObjects.zip"
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
@@ -115,11 +115,8 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Get the name of zip file
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
 
-    # Download data from public url
-    urllib.request.urlretrieve(download_url, filename=data_file)
-
     # extract files
-    with ZipFile(data_file, "r") as zip:
+    with ZipFile(download_url, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
