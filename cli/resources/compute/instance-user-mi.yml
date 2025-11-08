@@ -1,0 +1,8 @@
+$schema: https://azuremlschemas.azureedge.net/latest/computeInstance.schema.json 
+name: user-mi-example
+type: computeinstance
+size: STANDARD_DS3_v2
+identity:
+  type: user_assigned
+  user_assigned_identities: 
+    - resource_id: "identity_resource_id"
