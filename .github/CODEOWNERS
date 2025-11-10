@@ -23,6 +23,8 @@ sdk/python/foundation-models/cohere/command_faiss_langchain.ipynb @stewart-co @k
 sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @kseniia-cohere
 /sdk/python/foundation-models/nixtla/ @AzulGarza
 /sdk/python/foundation-models/healthcare-ai/ @jmerkow @ivantarapov
+/sdk/python/foundation-models/cohere/cohere-aisearch-langchain-rag.ipynb
+/sdk/python/foundation-models/rf3-modelforge/ @pabhatia-ms 
 /sdk/python/assets/data/versioning.ipynb @ShakutaiGit
 /sdk/python/jobs/finetuning @amltres @sasum @marici
 /sdk/python/jobs/grpo @sharvin2187 @rtanase @gpenumetsa-msft @yeshsurya @babu-namburi
