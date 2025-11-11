@@ -5,22 +5,22 @@
 ###  * Uncomment the following block surrounded by {}
 ###  * Comment the ml extension install within <az_ml_install>
 
-# {
-#      wheel_url='https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.9.0-py3-none-any.whl'
-#
-#      az extension remove -n ml
-#      if ! az extension add --yes --upgrade --source "$wheel_url"; then
-#
-#          echo "Error: Failed to install release candidate"
-#          exit 1
-#      fi
-#      az version
-#      unset wheel_url
-#  }
+{
+     wheel_url='https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.24.0-py3-none-any.whl'
+
+     az extension remove -n ml
+     if ! az extension add --yes --upgrade --source "$wheel_url"; then
+
+         echo "Error: Failed to install release candidate"
+         exit 1
+     fi
+     az version
+     unset wheel_url
+ }
 
 
 # <az_ml_install>
-az extension add -n ml -y
+# az extension add -n ml -y
 # </az_ml_install>
 
 ## For backward compatibility - running on old subscription
