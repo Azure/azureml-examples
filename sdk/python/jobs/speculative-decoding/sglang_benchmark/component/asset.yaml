@@ -1,0 +1,6 @@
+type: component
+spec: spec.yaml
+categories: ["Benchmark", "Speculative Decoding"]
+test:
+  pytest:
+    enabled: false

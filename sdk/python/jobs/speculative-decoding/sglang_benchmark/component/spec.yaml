@@ -1,0 +1,66 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: sglang_benchmark
+display_name: SGLang Benchmark
+description: Runs benchmark on AzureML online endpoint using SGLang.
+version: 0.0.1
+is_deterministic: true
+
+inputs:
+  scoring_url:
+    type: string
+    optional: false
+    description: The URL of the endpoint.
+  connection_name:
+    type: string
+    optional: false
+    description: The name of the connection to fetch the API_KEY for the endpoint authentication.
+  backend:
+    type: string
+    optional: true
+    description: Depending on the LLM Inference Engine.
+    enum:
+    - sglang
+    - vllm
+    default: sglang
+  dataset_name:
+    type: string
+    optional: true
+    description: Depending on the LLM Inference Engine.
+    enum:
+    - sharegpt
+    default: sharegpt
+  request_rate:
+    type: integer
+    optional: true
+    description: The request rate per second for sending requests to the endpoint.
+    default: 20
+  num_prompts:
+    type: integer
+    optional: true
+    description: The total number of prompts to send to the endpoint.
+    default: 50
+  disable_shuffle:
+    type: boolean
+    optional: true
+    description: Disable shuffling the dataset before sending requests.
+    default: true
+
+outputs:
+  metrics:
+    type: uri_file
+    description: The output metrics file in JSON format.
+
+code: ../src
+environment: azureml://locations/centralus/workspaces/80c12802-13d8-4852-86a1-16f00903e0f1/environments/verl_trainer_rl/versions/6
+command: >-
+  python main.py
+  --output-file ${{outputs.metrics}}
+  --base_url ${{inputs.scoring_url}}
+  --connection_name ${{inputs.connection_name}}
+  $[[--backend ${{inputs.backend}}]]
+  $[[--dataset_name ${{inputs.dataset_name}}]]
+  $[[--request_rate ${{inputs.request_rate}}]]
+  $[[--num_prompts ${{inputs.num_prompts}}]]
+  $[[--disable_shuffle ${{inputs.disable_shuffle}}]]
