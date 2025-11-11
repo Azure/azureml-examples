@@ -1,0 +1,26 @@
+name: ct_segm_train_conda_env
+channels:
+  - defaults
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.8
+  - pip=22.3.1
+  - pytorch=1.13.1
+  - torchvision=0.14.1
+  - torchaudio=0.13.1
+  - pytorch-cuda=11.6
+  - scipy=1.10.0
+  - pip:
+    - azureml-mlflow==1.48.0
+    - azure-identity==1.12.0
+    - azure-keyvault==4.2.0
+    - azureml-core==1.47.0
+    - tqdm==4.64.1
+    - monai==1.1.0
+    - nibabel==3.1.1
+    - einops==0.4.1
+    - tensorboardX==2.1
+    - protobuf~=3.20
+    - matplotlib==3.7.0
+    - deepspeed==0.8.1

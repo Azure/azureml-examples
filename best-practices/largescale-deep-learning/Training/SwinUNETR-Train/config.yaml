@@ -1,0 +1,10 @@
+# CONFIG FILE FOR UPLOADING DATASETS TO CORRESPONDING REGIONS
+
+# References to Azure ML workspace (use cli args to override)
+aml:
+  # subscription_id: "<SUBSCRIPTION_ID>"
+  # resource_group_name: "<RESOURCE_GROUP>"
+  # workspace_name: "<AML_WORKSPACE_NAME>"
+
+compute: A10080G
+datastore: workspaceblobstore
