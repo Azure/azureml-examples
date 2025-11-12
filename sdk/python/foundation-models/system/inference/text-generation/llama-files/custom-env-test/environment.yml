@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+image: cb38808487b945429f0d1edaaae8a9a3.azurecr.io/text-gen-inference:5
+inference_config:
+  liveness_route:
+    path: /
+    port: 5001
+  readiness_route:
+    path: /
+    port: 5001
+  scoring_route:
+    path: /score
+    port: 5001
+name: text-generation-custom-5001

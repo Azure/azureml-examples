@@ -1,0 +1,65 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+
+# code_configuration:
+#   code: score/hf-tgi/
+#   scoring_script: score.py
+
+# environment: azureml:text-generation-custom-5001:5
+environment: azureml:text-generation-custom-80:9
+
+# environment:
+#   image: b38808487b945429f0d1edaaae8a9a3.azurecr.io/text-gen-inference:1
+#   inference_config:
+#     liveness_route:
+#       path: /
+#       port: 5001
+#     readiness_route:
+#       path: /
+#       port: 5001
+#     scoring_route:
+#       path: /score
+#       port: 5001
+
+instance_count: 1
+instance_type: Standard_NC12s_v3
+
+# model: azureml://registries/msft-meta-preview/models/Llama-2-7b/versions/14
+model: azureml:Llama-2-7b:1
+# model:
+#   path: ./model
+#   # path: /home/azureuser/mii/bert-base-uncased-deployment01_aml/model
+#   # path: azureml://locations/australiaeast/workspaces/ec225654-3548-4816-8ff4-2eb07fecb32d/models/bert-base-uncased-mii/versions/2
+#   # path: azureml:bert-base-uncased-mii:2
+model_mount_path: /var/azureml-model
+
+environment_variables:
+  # AML_APP_ROOT: /var/azureml-model/code
+  # AZUREML_MODEL_DIR: /var/azureml-model
+  # /var/azureml-app/azureml-models/
+  AZUREML_LOG_LEVEL: DEBUG
+  LOG_IO: 1
+  WORKER_TIMEOUT: 3600
+
+  # aacs
+  # <udpate aacs env as needed>
+
+  # hftgi params
+  MAX_INPUT_LENGTH: "2048"
+  MAX_TOTAL_TOKENS: "4096"
+  NUM_SHARD: 1
+
+endpoint_name: llama-2-7b-test-ep
+name: custom
+
+liveness_probe:
+  failure_threshold: 30
+  success_threshold: 1
+  period: 100
+  initial_delay: 500
+readiness_probe:
+  failure_threshold: 30
+  success_threshold: 1
+  period: 100
+  initial_delay: 500
+request_settings:
+  request_timeout_ms: 90000
