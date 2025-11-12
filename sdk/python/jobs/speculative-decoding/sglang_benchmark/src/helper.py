@@ -131,3 +131,4 @@ def log_metrics(metrics: dict):
         for key, value in metrics.items():
             if key in LOGGABLE_METRIC_NAMES:
                 azureml_run.log(key, value)
+        azureml_run.flush()
