@@ -1,9 +1,10 @@
 import argparse
 import os
 import sys
+import json
 
 from bench_serving import run_benchmark
-from helper import get_api_key_from_connection
+from helper import get_api_key_from_connection, log_metrics
 
 
 def parse_args():
@@ -14,6 +15,18 @@ def parse_args():
     #     required=True,
     #     help="Output JSON file to store the benchmarking metrics.",
     # )
+    parser.add_argument(
+        "--connection-name",
+        type=str,
+        required=True,
+        help="The name of the workspace connection used to fetch API key.",
+    )
+    parser.add_argument(
+        "--trials",
+        type=int,
+        default=10,
+        help="Number of trials to run the benchmark, result will be averaged over all trials.",
+    )
     parser.add_argument(
         "--backend",
         type=str,
@@ -149,12 +162,11 @@ def parse_args():
         "This option is effective on the following datasets: "
         "loogle, nextqa",
     )
-
     parser.add_argument(
         "--disable-shuffle",
-        action="store_true",
-        help="Disable shuffling datasets. This is useful to generate stable output "
-        "in benchmarking",
+        type=lambda x: x.lower() in ("true", "1", "yes"),
+        default=False,
+        help="Disable shuffling datasets. Accepts true/false.",
     )
     parser.add_argument(
         "--disable-tqdm",
@@ -245,13 +257,47 @@ def parse_args():
     return args
 
 
+def _generate_avg_metrics(metrics_file: str):
+    metrics_list = []
+    with open(metrics_file, "r") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                metrics_list.append(json.loads(line))
+
+    # Compute average metrics
+    avg_metrics = {}
+    count = len(metrics_list)
+
+    for key in metrics_list[0].keys():
+        if isinstance(metrics_list[0][key], (int, float)):
+            avg_metrics[key] = sum(result[key] for result in metrics_list) / count
+        else:
+            avg_metrics[key] = metrics_list[0][key]
+
+    with open(os.path.join(os.path.dirname(metrics_file), "metrics_avg.json"), "w") as f:
+        json.dump(avg_metrics, f, indent=4)
+
+    log_metrics(avg_metrics)
+
+
 def main():
     args = parse_args()
 
     api_key, _ = get_api_key_from_connection(args.connection_name)
+    del args.connection_name
     os.environ["OPENAI_API_KEY"] = api_key
 
-    run_benchmark(args)
+    args.output_file = os.path.join(args.output_file, "metrics_each_trial.jsonl")
+
+    trials = args.trials
+    del args.trials
+    
+    for trial in range(trials):
+        print(f"Starting trial {trial + 1} of {trials}...")
+        run_benchmark(args)
+    
+    _generate_avg_metrics(args.output_file)
 
 
 if __name__ == "__main__":

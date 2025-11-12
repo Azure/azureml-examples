@@ -4,7 +4,7 @@ type: command
 name: sglang_benchmark
 display_name: SGLang Benchmark
 description: Runs benchmark on AzureML online endpoint using SGLang.
-version: 0.0.1
+version: 0.0.11
 is_deterministic: true
 
 inputs:
@@ -16,6 +16,11 @@ inputs:
     type: string
     optional: false
     description: The name of the connection to fetch the API_KEY for the endpoint authentication.
+  model:
+    type: string
+    optional: false
+    description: HuggingFace repo ID of the model.
+    default: nvidia/Llama-3.1-8B-Instruct-FP8
   backend:
     type: string
     optional: true
@@ -35,32 +40,39 @@ inputs:
     type: integer
     optional: true
     description: The request rate per second for sending requests to the endpoint.
-    default: 20
+    default: 10
   num_prompts:
     type: integer
     optional: true
     description: The total number of prompts to send to the endpoint.
-    default: 50
+    default: 2500
   disable_shuffle:
     type: boolean
     optional: true
     description: Disable shuffling the dataset before sending requests.
     default: true
+  trials:
+    type: integer
+    optional: true
+    description: Number of trials to run the benchmark, result will be averaged over all trials.
+    default: 5
 
 outputs:
   metrics:
-    type: uri_file
-    description: The output metrics file in JSON format.
+    type: uri_folder
+    description: The output folder containing the benchmarking metrics.
 
 code: ../src
-environment: azureml://locations/centralus/workspaces/80c12802-13d8-4852-86a1-16f00903e0f1/environments/verl_trainer_rl/versions/6
+environment: azureml://registries/test_centralus/environments/verl_trainer_rl/versions/7
 command: >-
   python main.py
   --output-file ${{outputs.metrics}}
-  --base_url ${{inputs.scoring_url}}
-  --connection_name ${{inputs.connection_name}}
+  --base-url ${{inputs.scoring_url}}
+  --connection-name ${{inputs.connection_name}}
+  --model ${{inputs.model}}
+  $[[--trials ${{inputs.trials}}]]
   $[[--backend ${{inputs.backend}}]]
-  $[[--dataset_name ${{inputs.dataset_name}}]]
-  $[[--request_rate ${{inputs.request_rate}}]]
-  $[[--num_prompts ${{inputs.num_prompts}}]]
-  $[[--disable_shuffle ${{inputs.disable_shuffle}}]]
+  $[[--dataset-name ${{inputs.dataset_name}}]]
+  $[[--request-rate ${{inputs.request_rate}}]]
+  $[[--num-prompts ${{inputs.num_prompts}}]]
+  $[[--disable-shuffle ${{inputs.disable_shuffle}}]]

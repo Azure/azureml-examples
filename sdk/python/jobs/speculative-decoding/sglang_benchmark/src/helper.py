@@ -9,6 +9,7 @@ from azureml.core.run import _OfflineRun
 
 
 RETRIABLE_STATUS_CODES = {413, 429, 500, 502, 503, 504, None}
+LOGGABLE_METRIC_NAMES = {"request_throughput", "mean_e2e_latency_ms", "mean_ttft_ms", "mean_itl_ms"}
 
 
 def _get_retry_policy(num_retry: int = 3) -> Retry:
@@ -110,3 +111,23 @@ def get_api_key_from_connection(connections_name: str) -> Tuple[str, Optional[st
         if "secretAccessKey" not in credentials and "keys" in credentials:
             credentials = credentials["keys"]
         return credentials["secretAccessKey"], None
+
+
+def _get_azureml_run():
+    """Get AzureML Run context if available."""
+    try:
+        azureml_run = Run.get_context()
+        if azureml_run and "OfflineRun" not in azureml_run.id:
+            return azureml_run
+    except Exception as e:
+        print(f"Warning: Failed to get AzureML run context: {e}")
+    return None
+
+
+def log_metrics(metrics: dict):
+    """Log metrics to AzureML Run if available."""
+    azureml_run = _get_azureml_run()
+    if azureml_run:
+        for key, value in metrics.items():
+            if key in LOGGABLE_METRIC_NAMES:
+                azureml_run.log(key, value)
