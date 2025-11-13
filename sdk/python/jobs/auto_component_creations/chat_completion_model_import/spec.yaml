@@ -1,0 +1,65 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: chat_completion_model_import
+version: 0.0.0
+type: command
+
+is_deterministic: true
+
+display_name: Chat Completion Model Import
+description: Component to import PyTorch / MLFlow model. See [docs](https://aka.ms/azureml/components/chat_completion_model_import) to learn more.
+
+environment: azureml://registries/test_centralus/environments/acft-hf-nlp-gpu/versions/105
+
+code: ./src/
+
+inputs:
+  # huggingface id
+  # NOTE The pytorch_model_path or mlflow_model_path takes precedence over huggingface_id
+  huggingface_id:
+    type: string
+    description: The string can be any valid Hugging Face id from the [Hugging Face models webpage](https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads). Models from Hugging Face are subject to third party license terms available on the Hugging Face model details page. It is your responsibility to comply with the model's license terms.
+    optional: true
+
+  # PyTorch model as input
+  # This is nothing but huggingface model folder. Here's the link to the example model folder - [bert-base-uncased](https://huggingface.co/bert-base-uncased/tree/main). Additionally, the model folder **MUST** contain the file `finetune_args.json` with *model_name_or_path* as one of the keys of the dictionary
+  pytorch_model_path:
+    type: custom_model
+    optional: true
+    description: Pytorch model asset path
+    mode: rw_mount
+
+  # MLflow model as an input
+  # This is also a huggingface model folder expect that the folder structure is slightly different. You could invoke a model import pipeline to convert the standard huggingface model into MLflow format. Please refer to this [notebook](https://aka.ms/azureml-import-model) for steps to do the same
+  # NOTE The pytorch_model_path take priority over mlflow_model_path, in case both inputs are passed
+  mlflow_model_path:
+    type: mlflow_model
+    optional: true
+    description: MLflow model asset path
+    mode: rw_mount
+
+  # Output of validation component
+  validation_output:
+    type: uri_file
+    optional: true
+    description: Validation status.
+    mode: rw_mount
+
+  # PyPI packages override
+  pypi_packages_override:
+    type: string
+    optional: true
+    description: Comma-separated list of PyPI packages to override before starting the run (e.g., transformers==4.30.0,torch==2.3.1). These will be installed using pip before the component starts.
+
+outputs:
+  output_dir:
+    type: uri_folder
+    description: Path to output directory which contains the component metadata and the model artifacts folder
+    mode: rw_mount
+
+command: >-
+  python model_selector.py --task_name ChatCompletion $[[--huggingface_id '${{inputs.huggingface_id}}']] $[[--pytorch_model_path '${{inputs.pytorch_model_path}}']] $[[--mlflow_model_path '${{inputs.mlflow_model_path}}']] $[[--pypi_packages_override '${{inputs.pypi_packages_override}}']] --output_dir '${{outputs.output_dir}}'
+
+
+
+
+

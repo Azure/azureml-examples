@@ -1,0 +1,263 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: component_draft_model_trainer
+version: 0.0.0
+type: command
+
+is_deterministic: true
+
+display_name: Draft Model Trainer
+description: Pipeline to train draft model for Speculative Decoding.
+
+environment: azureml://registries/test_centralus/environments/acft-eagle3-training/versions/2
+
+code: ./src/
+
+distribution:
+  type: pytorch
+
+inputs:
+
+  dataset_train_split:
+    type: uri_file
+    optional: true
+    description: Path to the training dataset in JSONL format
+    mode: rw_mount
+
+  dataset_validation_split:
+    type: uri_file
+    optional: true
+    description: Path to the validation dataset in JSONL format
+    mode: rw_mount
+
+  target_model_path:
+    type: uri_folder
+    optional: false
+    description: Path to the target model for speculative decoding
+    mode: rw_mount
+
+  draft_model_config:
+    type: uri_file
+    optional: true
+    description: Path to draft model configuration JSON file. If not provided, will be auto-generated from target model.
+    mode: ro_mount
+
+  num_epochs:
+    type: integer
+    default: 2
+    optional: true
+    description: Number of training epochs
+
+  batch_size:
+    type: integer
+    min: 1
+    default: 2
+    optional: true
+    description: Batch size for training
+
+  learning_rate:
+    type: number
+    default: 0.0001
+    optional: true
+    description: Learning rate for training
+
+  max_length:
+    type: integer
+    default: 2048
+    optional: true
+    description: Maximum sequence length for training
+
+  warmup_ratio:
+    type: number
+    default: 0.015
+    optional: true
+    description: Warmup ratio for learning rate scheduler
+
+  max_grad_norm:
+    type: number
+    default: 0.5
+    optional: true
+    description: Maximum gradient norm for gradient clipping
+
+  ttt_length:
+    type: integer
+    default: 7
+    optional: true
+    description: The length for Test-Time Training (TTT)
+
+  chat_template:
+    type: string
+    default: llama3
+    optional: true
+    description: Chat template to use for formatting conversations
+
+  attention_backend:
+    type: string
+    enum:
+    - "flex_attention"
+    - "sdpa"
+    default: "flex_attention"
+    optional: true
+    description: Attention implementation backend to use
+
+  tp_size:
+    type: integer
+    default: 1
+    optional: true
+    description: Tensor parallelism size
+
+  dp_size:
+    type: integer
+    default: 1
+    optional: true
+    description: Data parallelism size
+
+  draft_global_batch_size:
+    type: integer
+    default: 8
+    optional: true
+    description: Global batch size for draft model training
+
+  draft_micro_batch_size:
+    type: integer
+    default: 1
+    optional: true
+    description: Micro batch size for draft model
+
+  draft_accumulation_steps:
+    type: integer
+    default: 1
+    optional: true
+    description: Gradient accumulation steps for draft model
+
+  log_steps:
+    type: integer
+    default: 50
+    optional: true
+    description: Log training metrics every N steps
+
+  eval_interval:
+    type: integer
+    default: 1
+    optional: true
+    description: Evaluation interval in epochs
+
+  save_interval:
+    type: integer
+    default: 1
+    optional: true
+    description: Checkpoint save interval in epochs
+
+  seed:
+    type: integer
+    default: 0
+    optional: true
+    description: Random seed for reproducibility
+
+  total_steps:
+    type: integer
+    optional: true
+    description: Total training steps. If not provided, will be calculated as num_epochs * steps_per_epoch
+
+  embedding_key:
+    type: string
+    default: "model.embed_tokens.weight"
+    optional: true
+    description: The key of the embedding weight to load from the target model
+
+  dist_timeout:
+    type: integer
+    default: 20
+    optional: true
+    description: Timeout for collective communication in minutes
+
+  resume:
+    type: boolean
+    default: false
+    optional: true
+    description: Whether to resume training from the last checkpoint
+
+  resume_from_checkpoint:
+    type: uri_folder
+    optional: true
+    description: Path to a checkpoint directory to resume training from. Used when resume is true and no checkpoints exist in output folder, or when resume is false to initialize from a pretrained draft model checkpoint.
+    mode: ro_mount
+
+  build_dataset_num_proc:
+    type: integer
+    default: 8
+    optional: true
+    description: Number of processes to use for building the dataset
+
+  verbose:
+    type: boolean
+    default: false
+    optional: true
+    description: Enable verbose logging
+
+  profile:
+    type: boolean
+    default: false
+    optional: true
+    description: Enable profiling
+
+  profile_start_step:
+    type: integer
+    default: 30
+    optional: true
+    description: Step to start profiling
+
+  profile_num_steps:
+    type: integer
+    default: 4
+    optional: true
+    description: Number of steps to profile
+
+  profile_record_shapes:
+    type: boolean
+    default: false
+    optional: true
+    description: Record tensor shapes during profiling
+
+outputs:
+  output_model_path:
+    type: uri_folder
+    description: Output folder containing trained Eagle3 draft model checkpoints
+    mode: rw_mount
+
+command: >-
+  python train_eagle3.py
+  $[[--dataset_train_split '${{inputs.dataset_train_split}}']]
+  $[[--dataset_validation_split '${{inputs.dataset_validation_split}}']]
+  --target_model_path '${{inputs.target_model_path}}'
+  $[[--draft_model_config '${{inputs.draft_model_config}}']]
+  --output_dir '${{outputs.output_model_path}}'
+  $[[--num_epochs '${{inputs.num_epochs}}']]
+  $[[--batch_size '${{inputs.batch_size}}']]
+  $[[--learning_rate '${{inputs.learning_rate}}']]
+  $[[--max_length '${{inputs.max_length}}']]
+  $[[--warmup_ratio '${{inputs.warmup_ratio}}']]
+  $[[--max_grad_norm '${{inputs.max_grad_norm}}']]
+  $[[--ttt_length '${{inputs.ttt_length}}']]
+  $[[--chat_template '${{inputs.chat_template}}']]
+  $[[--attention_backend '${{inputs.attention_backend}}']]
+  $[[--tp_size '${{inputs.tp_size}}']]
+  $[[--dp_size '${{inputs.dp_size}}']]
+  $[[--draft_global_batch_size '${{inputs.draft_global_batch_size}}']]
+  $[[--draft_micro_batch_size '${{inputs.draft_micro_batch_size}}']]
+  $[[--draft_accumulation_steps '${{inputs.draft_accumulation_steps}}']]
+  $[[--log_steps '${{inputs.log_steps}}']]
+  $[[--eval_interval '${{inputs.eval_interval}}']]
+  $[[--save_interval '${{inputs.save_interval}}']]
+  $[[--seed '${{inputs.seed}}']]
+  $[[--total_steps '${{inputs.total_steps}}']]
+  $[[--embedding_key '${{inputs.embedding_key}}']]
+  $[[--dist_timeout '${{inputs.dist_timeout}}']]
+  $[[--resume '${{inputs.resume}}']]
+  $[[--resume_from_checkpoint '${{inputs.resume_from_checkpoint}}']]
+  --report_to 'azure_ml'
+  $[[--build_dataset_num_proc '${{inputs.build_dataset_num_proc}}']]
+  $[[--verbose '${{inputs.verbose}}']]
+  $[[--profile '${{inputs.profile}}']]
+  $[[--profile_start_step '${{inputs.profile_start_step}}']]
+  $[[--profile_num_steps '${{inputs.profile_num_steps}}']]
+  $[[--profile_record_shapes '${{inputs.profile_record_shapes}}']]

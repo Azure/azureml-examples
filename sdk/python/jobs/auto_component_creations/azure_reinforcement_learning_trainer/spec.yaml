@@ -1,0 +1,439 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: component_rl_trainer
+version: 0.0.0
+type: command
+is_deterministic: true
+display_name: OSS RL Trainer
+description: Component for Multi-Strategy Reinforcemnt Learning Training of Large Language Models.
+environment: azureml://registries/test_centralus/environments/verl_trainer_rl/versions/1
+code: ./src/
+
+distribution:
+  type: mpi
+
+inputs:
+  ENGINE:
+    type: string
+    default: "vllm"
+    optional: true
+    description: "Engine type (default: vllm)"
+  data_train_files:
+    type: uri_file
+    optional: false
+    description: "Path to the training parquet file"
+  data_val_files:
+    type: uri_file
+    optional: false
+    description: "Path to the validation parquet file"
+  data_train_batch_size:
+    type: integer
+    default: 512
+    optional: true
+    description: "Training batch size"
+  data_max_prompt_length:
+    type: integer
+    default: 1024
+    optional: true
+    description: "Maximum prompt length"
+  data_max_response_length:
+    type: integer
+    default: 2048
+    optional: true
+    description: "Maximum response length"
+  data_filter_overlong_prompts:
+    type: boolean
+    default: true
+    optional: true
+    description: "Filter overlong prompts"
+  data_truncation:
+    type: string
+    default: "error"
+    optional: true
+    description: "Truncation strategy"
+  data_image_key:
+    type: string
+    default: "images"
+    optional: true
+    description: "Image key column"
+  actor_model_path:
+    type: uri_folder
+    optional: false
+    description: "Output folder of model import component containing model artifacts and a metadata file."
+    mode: rw_mount
+  actor_optim_lr:
+    type: number
+    default: 3e-6
+    optional: true
+    description: "Actor optimizer learning rate"
+  actor_model_use_remove_padding:
+    type: boolean
+    default: true
+    optional: true
+    description: "Use remove padding in model"
+  actor_strategy:
+    type: string
+    enum:
+    - "fsdp"
+    - "fsdp2"
+    - "megatron"
+    default: "fsdp2"
+    optional: true
+    description: "Actor training strategy. Valid values: fsdp (Fully Sharded Data Parallel v1), fsdp2 (Fully Sharded Data Parallel v2), megatron (Megatron-LM backend for large-scale distributed training)"
+  actor_fsdp_config_offload_policy:
+    type: boolean
+    default: true
+    optional: true
+    description: "FSDP config offload policy to reduce memory usage"
+  actor_ppo_mini_batch_size:
+    type: integer
+    default: 128
+    optional: true
+    description: "PPO mini batch size"
+  actor_ppo_micro_batch_size_per_gpu:
+    type: integer
+    default: 10
+    optional: true
+    description: "PPO micro batch size per GPU"
+  actor_model_lora_rank:
+    type: integer
+    default: 64
+    optional: true
+    description: "LoRA rank"
+  actor_model_lora_alpha:
+    type: integer
+    default: 32
+    optional: true
+    description: "LoRA alpha"
+  actor_model_target_modules:
+    type: string
+    default: "all-linear"
+    optional: true
+    description: "Target modules for LoRA"
+  actor_model_exclude_modules:
+    type: string
+    default: ".*visual.*"
+    optional: true
+    description: "Exclude modules regex"
+  actor_use_kl_loss:
+    type: boolean
+    default: true
+    optional: true
+    description: "Use KL loss"
+  actor_kl_loss_coef:
+    type: number
+    default: 0.01
+    optional: true
+    description: "KL loss coefficient"
+  actor_kl_loss_type:
+    type: string
+    default: "low_var_kl"
+    optional: true
+    description: "KL loss type"
+  actor_entropy_coeff:
+    type: integer
+    default: 0
+    optional: true
+    description: "Entropy coefficient"
+  actor_model_enable_gradient_checkpointing:
+    type: boolean
+    default: true
+    optional: true
+    description: "Enable gradient checkpointing"
+  actor_fsdp_param_offload:
+    type: boolean
+    default: false
+    optional: true
+    description: "FSDP param offload"
+  actor_fsdp_optimizer_offload:
+    type: boolean
+    default: false
+    optional: true
+    description: "FSDP optimizer offload"
+  actor_fsdp_config_model_dtype:
+    type: string
+    enum:
+    - "fp16"
+    - "fp32"
+    - "bf16"
+    - "16"
+    - "32"
+    - "float16"
+    - "float32"
+    - "bfloat16"
+    default: "fp32"
+    optional: true
+    description: "FSDP model dtype. Valid values: fp16, fp32, bf16, 16, 32, float16, float32, bfloat16"
+  actor_fsdp_config_mixed_precision_param_dtype:
+    type: string
+    enum:
+    - "fp16"
+    - "fp32"
+    - "bf16"
+    - "16"
+    - "32"
+    - "float16"
+    - "float32"
+    - "bfloat16"
+    default: "bf16"
+    optional: true
+    description: "FSDP mixed precision parameter dtype. Valid values: fp16, fp32, bf16, 16, 32, float16, float32, bfloat16"
+  actor_fsdp_config_mixed_precision_reduce_dtype:
+    type: string
+    enum:
+    - "fp16"
+    - "fp32"
+    - "bf16"
+    - "16"
+    - "32"
+    - "float16"
+    - "float32"
+    - "bfloat16"
+    default: "fp32"
+    optional: true
+    description: "FSDP mixed precision reduce dtype. Valid values: fp16, fp32, bf16, 16, 32, float16, float32, bfloat16"
+  actor_fsdp_config_mixed_precision_buffer_dtype:
+    type: string
+    enum:
+    - "fp16"
+    - "fp32"
+    - "bf16"
+    - "16"
+    - "32"
+    - "float16"
+    - "float32"
+    - "bfloat16"
+    default: "fp32"
+    optional: true
+    description: "FSDP mixed precision buffer dtype. Valid values: fp16, fp32, bf16, 16, 32, float16, float32, bfloat16"
+  rollout_log_prob_micro_batch_size_per_gpu:
+    type: integer
+    default: 20
+    optional: true
+    description: "Rollout log prob micro batch size per GPU"
+  rollout_tensor_model_parallel_size:
+    type: integer
+    default: 2
+    optional: true
+    description: "Rollout tensor model parallel size"
+  rollout_name:
+    type: string
+    default: "vllm"
+    optional: true
+    description: "Rollout name (engine)"
+  rollout_dtype:
+    type: string
+    enum:
+    - "float16"
+    - "bfloat16"
+    - "float32"
+    - "auto"
+    default: "bfloat16"
+    optional: true
+    description: "Rollout data type for model inference. Valid values: float16 (half precision), bfloat16 (brain floating point), float32 (full precision), auto (automatic selection)"
+  rollout_disable_mm_preprocessor_cache:
+    type: boolean
+    default: true
+    optional: true
+    description: "Disable MM preprocessor cache"
+  rollout_gpu_memory_utilization:
+    type: number
+    default: 0.6
+    optional: true
+    description: "Rollout GPU memory utilization"
+  rollout_enable_chunked_prefill:
+    type: boolean
+    default: false
+    optional: true
+    description: "Enable chunked prefill"
+  rollout_enforce_eager:
+    type: boolean
+    default: false
+    optional: true
+    description: "Enforce eager execution"
+  rollout_free_cache_engine:
+    type: boolean
+    default: false
+    optional: true
+    description: "Free cache engine"
+  rollout_n:
+    type: integer
+    default: 5
+    optional: true
+    description: "Rollout n"
+  ref_log_prob_micro_batch_size_per_gpu:
+    type: integer
+    default: 20
+    optional: true
+    description: "Ref log prob micro batch size per GPU"
+  ref_fsdp_param_offload:
+    type: boolean
+    default: true
+    optional: true
+    description: "Ref FSDP param offload"
+  algorithm_adv_estimator:
+    type: string
+    enum:
+    - "gae"
+    - "grpo"
+    - "reinforce_plus_plus"
+    - "reinforce_plus_plus_baseline"
+    - "remax"
+    - "rloo"
+    - "opo"
+    - "grpo_passk"
+    - "gpg"
+    default: "grpo"
+    optional: true
+    description: "Advantage estimator algorithm. Valid values: gae (Generalized Advantage Estimation - reduces variance in policy gradients), grpo (Group Relative Policy Optimization - critic-free GRPO for mathematical reasoning), reinforce_plus_plus (REINFORCE++ - efficient RLHF with global advantage normalization), reinforce_plus_plus_baseline (REINFORCE++ with baseline variant), remax (ReMax - simple and efficient RLHF method), rloo (REINFORCE Leave-One-Out - variance reduction via leave-one-out baseline), opo (On-Policy RL with Optimal Reward Baseline), grpo_passk (GRPO for Pass@k evaluation metrics), gpg (Group Policy Gradient - minimalist RL for reasoning tasks)"
+  algorithm_use_kl_in_reward:
+    type: boolean
+    default: false
+    optional: true
+    description: "Use KL in reward"
+  critic_optim_lr:
+    type: number
+    default: 1e-5
+    optional: true
+    description: "Critic optimizer learning rate"
+  critic_model_use_remove_padding:
+    type: boolean
+    default: true
+    optional: true
+    description: "Use remove padding in critic model"
+  critic_model_path:
+    type: uri_folder
+    optional: true
+    description: "Critic model path (if different from actor model)"
+    mode: rw_mount
+  critic_model_enable_gradient_checkpointing:
+    type: boolean
+    default: true
+    optional: true
+    description: "Enable gradient checkpointing for critic model"
+  critic_ppo_micro_batch_size_per_gpu:
+    type: integer
+    default: 32
+    optional: true
+    description: "Critic PPO micro batch size per GPU"
+  critic_fsdp_param_offload:
+    type: boolean
+    default: false
+    optional: true
+    description: "Critic FSDP param offload"
+  critic_fsdp_optimizer_offload:
+    type: boolean
+    default: false
+    optional: true
+    description: "Critic FSDP optimizer offload"
+  trainer_critic_warmup:
+    type: integer
+    default: 0
+    optional: true
+    description: "Critic warmup"
+  trainer_n_gpus_per_node:
+    type: integer
+    default: 8
+    optional: true
+    description: "Number of GPUs per node"
+  trainer_nnodes:
+    type: integer
+    default: 1
+    optional: true
+    description: "Number of nodes"
+  trainer_save_freq:
+    type: integer
+    default: 20
+    optional: true
+    description: "Save frequency"
+  trainer_test_freq:
+    type: integer
+    default: 5
+    optional: true
+    description: "Test frequency"
+  trainer_total_epochs:
+    type: integer
+    default: 15
+    optional: true
+    description: "Total epochs"
+  total_training_steps:
+    type: integer
+    optional: true
+    description: "Total number of training steps"
+  pypi_packages_override:
+    type: string
+    optional: true
+    description: "Comma-separated list of PyPI packages to override before starting the run (e.g., transformers==4.30.0,torch==2.3.1). These will be installed using pip before the component starts."
+
+outputs:
+  model_output:
+    type: uri_folder
+    description: "Directory containing the trained model artifacts"
+
+command: >-
+  python reasoning_train_arl.py
+  $[[--pypi_packages_override '${{inputs.pypi_packages_override}}']]
+  $[[--ENGINE '${{inputs.ENGINE}}']]
+  --data_train_files '${{inputs.data_train_files}}'
+  --data_val_files '${{inputs.data_val_files}}'
+  $[[--data_train_batch_size '${{inputs.data_train_batch_size}}']]
+  $[[--data_max_prompt_length '${{inputs.data_max_prompt_length}}']]
+  $[[--data_max_response_length '${{inputs.data_max_response_length}}']]
+  $[[--data_filter_overlong_prompts '${{inputs.data_filter_overlong_prompts}}']]
+  $[[--data_truncation '${{inputs.data_truncation}}']]
+  $[[--data_image_key '${{inputs.data_image_key}}']]
+  --actor_model_path '${{inputs.actor_model_path}}'
+  $[[--actor_optim_lr '${{inputs.actor_optim_lr}}']]
+  $[[--actor_model_use_remove_padding '${{inputs.actor_model_use_remove_padding}}']]
+  $[[--actor_strategy '${{inputs.actor_strategy}}']]
+  $[[--actor_fsdp_config_offload_policy '${{inputs.actor_fsdp_config_offload_policy}}']]
+  $[[--actor_ppo_mini_batch_size '${{inputs.actor_ppo_mini_batch_size}}']]
+  $[[--actor_ppo_micro_batch_size_per_gpu '${{inputs.actor_ppo_micro_batch_size_per_gpu}}']]
+  $[[--actor_model_lora_rank '${{inputs.actor_model_lora_rank}}']]
+  $[[--actor_model_lora_alpha '${{inputs.actor_model_lora_alpha}}']]
+  $[[--actor_model_target_modules '${{inputs.actor_model_target_modules}}']]
+  $[[--actor_model_exclude_modules '${{inputs.actor_model_exclude_modules}}']]
+  $[[--actor_use_kl_loss '${{inputs.actor_use_kl_loss}}']]
+  $[[--actor_kl_loss_coef '${{inputs.actor_kl_loss_coef}}']]
+  $[[--actor_kl_loss_type '${{inputs.actor_kl_loss_type}}']]
+  $[[--actor_entropy_coeff '${{inputs.actor_entropy_coeff}}']]
+  $[[--actor_model_enable_gradient_checkpointing '${{inputs.actor_model_enable_gradient_checkpointing}}']]
+  $[[--actor_fsdp_param_offload '${{inputs.actor_fsdp_param_offload}}']]
+  $[[--actor_fsdp_optimizer_offload '${{inputs.actor_fsdp_optimizer_offload}}']]
+  $[[--actor_fsdp_config_model_dtype '${{inputs.actor_fsdp_config_model_dtype}}']]
+  $[[--actor_fsdp_config_mixed_precision_param_dtype '${{inputs.actor_fsdp_config_mixed_precision_param_dtype}}']]
+  $[[--actor_fsdp_config_mixed_precision_reduce_dtype '${{inputs.actor_fsdp_config_mixed_precision_reduce_dtype}}']]
+  $[[--actor_fsdp_config_mixed_precision_buffer_dtype '${{inputs.actor_fsdp_config_mixed_precision_buffer_dtype}}']]
+  $[[--rollout_log_prob_micro_batch_size_per_gpu '${{inputs.rollout_log_prob_micro_batch_size_per_gpu}}']]
+  $[[--rollout_tensor_model_parallel_size '${{inputs.rollout_tensor_model_parallel_size}}']]
+  $[[--rollout_name '${{inputs.rollout_name}}']]
+  $[[--rollout_dtype '${{inputs.rollout_dtype}}']]
+  $[[--rollout_disable_mm_preprocessor_cache '${{inputs.rollout_disable_mm_preprocessor_cache}}']]
+  $[[--rollout_gpu_memory_utilization '${{inputs.rollout_gpu_memory_utilization}}']]
+  $[[--rollout_enable_chunked_prefill '${{inputs.rollout_enable_chunked_prefill}}']]
+  $[[--rollout_enforce_eager '${{inputs.rollout_enforce_eager}}']]
+  $[[--rollout_free_cache_engine '${{inputs.rollout_free_cache_engine}}']]
+  $[[--rollout_n '${{inputs.rollout_n}}']]
+  $[[--ref_log_prob_micro_batch_size_per_gpu '${{inputs.ref_log_prob_micro_batch_size_per_gpu}}']]
+  $[[--ref_fsdp_param_offload '${{inputs.ref_fsdp_param_offload}}']]
+  $[[--algorithm_adv_estimator '${{inputs.algorithm_adv_estimator}}']]
+  $[[--algorithm_use_kl_in_reward '${{inputs.algorithm_use_kl_in_reward}}']]
+  $[[--critic_optim_lr '${{inputs.critic_optim_lr}}']]
+  $[[--critic_model_use_remove_padding '${{inputs.critic_model_use_remove_padding}}']]
+  $[[--critic_model_path '${{inputs.critic_model_path}}']]
+  $[[--critic_model_enable_gradient_checkpointing '${{inputs.critic_model_enable_gradient_checkpointing}}']]
+  $[[--critic_ppo_micro_batch_size_per_gpu '${{inputs.critic_ppo_micro_batch_size_per_gpu}}']]
+  $[[--critic_fsdp_param_offload '${{inputs.critic_fsdp_param_offload}}']]
+  $[[--critic_fsdp_optimizer_offload '${{inputs.critic_fsdp_optimizer_offload}}']]
+  $[[--trainer_critic_warmup '${{inputs.trainer_critic_warmup}}']]
+  --trainer_logger '["console","azureml"]'
+  --trainer_project_name 'arl_grpo_finetuning'
+  --trainer_experiment_name 'arl_training'
+  $[[--trainer_n_gpus_per_node '${{inputs.trainer_n_gpus_per_node}}']]
+  $[[--trainer_nnodes '${{inputs.trainer_nnodes}}']]
+  $[[--trainer_save_freq '${{inputs.trainer_save_freq}}']]
+  $[[--trainer_test_freq '${{inputs.trainer_test_freq}}']]
+  $[[--trainer_total_epochs '${{inputs.trainer_total_epochs}}']]
+  $[[--total_training_steps '${{inputs.total_training_steps}}']]
+  --output_dir '${{outputs.model_output}}'
+

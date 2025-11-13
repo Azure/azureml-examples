@@ -1,0 +1,54 @@
+{
+  "registry_name": "reinforcement_learning_ignite",
+  "components": [
+    {
+      "name": "chat_completion_model_import",
+      "type": "component",
+      "path": "chat_completion_model_import\\spec.yaml",
+      "description": "Chat completion model import component"
+    },
+    {
+      "name": "eagle3_training",
+      "type": "trainer",
+      "path": "eagle3_chat_completion_finetune\\spec.yaml",
+      "description": "Eagle3 training component",
+      "pipeline": "eagle3_chat_completion_pipeline"
+    },
+    {
+      "name": "eagle3_chat_completion_pipeline",
+      "type": "pipeline",
+      "path": "eagle3_chat_completion_pipeline\\spec.yaml",
+      "description": "Eagle3 chat completion pipeline",
+      "trainers": ["eagle3_training"],
+      "dependencies": ["chat_completion_model_import"]
+    },
+    {
+      "name": "arl_trainer_component",
+      "type": "trainer",
+      "path": "azure_reinforcement_learning_trainer\\spec.yaml",
+      "description": "Azure reinforcement learning trainer component",
+      "pipeline": "arl_finetune_pipeline"
+    },
+    {
+      "name": "arl_finetune_pipeline",
+      "type": "pipeline",
+      "path": "azure_reinforcement_learning_pipeline\\spec.yaml",
+      "description": "Azure reinforcement learning pipeline",
+      "trainers": ["arl_trainer_component"],
+      "dependencies": ["chat_completion_model_import"]
+    },
+    {
+      "name": "sweep_checkpoint_evals",
+      "type": "component",
+      "path": "sweep_checkpoint_evaluations\\sweep_checkpoint_evals_spec.yaml",
+      "description": "Sweep checkpoint evaluations component"
+    },
+    {
+      "name": "sweep_checkpoint_evals_pipeline",
+      "type": "pipeline",
+      "path": "sweep_checkpoint_evaluations\\sweep_checkpoint_evals_pipeline.yaml",
+      "description": "Sweep checkpoint evaluations pipeline",
+      "dependencies": ["sweep_checkpoint_evals"]
+    }
+  ]
+}

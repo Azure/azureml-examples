@@ -1,0 +1,167 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: component_sweep_model_evaluator
+version: 0.0.0
+type: command
+display_name: OSS Model Evaluation
+description: Compoent for model response evaluation across multiple models.
+
+environment: azureml://registries/test_centralus/environments/verl_trainer_rl/versions/1
+
+code: ./src/
+
+distribution:
+  type: pytorch
+
+inputs:
+  checkpoint_base_path:
+    type: uri_folder
+    description: "Base path containing all checkpoints or LoRA adapters (optional if using only hf_model_id)"
+    mode: rw_mount
+    optional: true
+
+  checkpoint_base_path_2:
+    type: uri_folder
+    description: "Second base path containing checkpoints or LoRA adapters (optional, for comparing models from different training runs)"
+    mode: rw_mount
+    optional: true
+
+  explore_pattern:
+    type: string
+    description: "Pattern to explore for checkpoint paths (e.g., global_step_{checkpoint}/actor/huggingface/). Only used with checkpoint_base_path"
+    default: "global_step_{checkpoint}/actor/huggingface/"
+    optional: true
+
+  explore_pattern_2:
+    type: string
+    description: "Pattern to explore for checkpoint paths in checkpoint_base_path_2 (e.g., global_step_{checkpoint}/actor/huggingface/). Only used with checkpoint_base_path_2"
+    default: "global_step_{checkpoint}/actor/huggingface/"
+    optional: true
+
+  checkpoint_values:
+    type: string
+    description: "Comma-separated list of checkpoint values to evaluate (e.g., '100,129,20'). Optional if using only hf_model_id"
+    optional: true
+
+  checkpoint_values_2:
+    type: string
+    description: "Comma-separated list of checkpoint values to evaluate from checkpoint_base_path_2 (e.g., '100,129,20'). Only used with checkpoint_base_path_2"
+    optional: true
+
+  use_lora_adapters:
+    type: boolean
+    description: "If true, checkpoints are LoRA adapters to be loaded with base model"
+    default: false
+    optional: true
+
+  base_model_path:
+    type: uri_folder
+    description: "Local base model path (used when use_lora_adapters is true). Mutually exclusive with hf_model_id"
+    optional: true
+    mode: ro_mount
+
+  hf_model_id:
+    type: string
+    description: "Hugging Face model ID (e.g., 'meta-llama/Llama-2-7b-hf'). Can be used alone for direct evaluation or with use_lora_adapters for base model. Mutually exclusive with base_model_path when use_lora_adapters is true"
+    optional: true
+
+  validation_file:
+    type: uri_file
+    description: "Path to validation JSONL file for evaluation"
+
+  max_prompt_length:
+    type: integer
+    default: 2048
+    optional: true
+
+  max_response_length:
+    type: integer
+    default: 1024
+    optional: true
+
+  batch_size:
+    type: integer
+    default: 16
+    optional: true
+
+  temperature:
+    type: number
+    default: 0.7
+    optional: true
+
+  top_p:
+    type: number
+    default: 0.9
+    optional: true
+
+  tensor_parallel_size:
+    type: integer
+    default: 1
+    optional: true
+
+  gpu_memory_utilization:
+    type: number
+    default: 0.8
+    optional: true
+
+  dtype:
+    type: string
+    enum:
+    - "float16"
+    - "bfloat16"
+    - "float32"
+    default: "bfloat16"
+    optional: true
+
+  extraction_method:
+    type: string
+    enum:
+    - "strict"
+    - "flexible"
+    default: "strict"
+    optional: true
+
+  n_gpus_per_node:
+    type: integer
+    default: 1
+    optional: true
+
+  number_of_trials:
+    type: integer
+    default: 1
+    optional: true
+    description: "Number of evaluation trials per checkpoint"
+
+outputs:
+  evaluation_results:
+    type: uri_folder
+    description: "Directory containing all checkpoint evaluation results"
+
+  intermediate_folder:
+    type: uri_folder
+    description: "Directory containing preprocessed checkpoints (with corrections applied)"
+
+command: >-
+  python sweep_checkpoint_eval.py
+  $[[--checkpoint_base_path '${{inputs.checkpoint_base_path}}']]
+  $[[--checkpoint_base_path_2 '${{inputs.checkpoint_base_path_2}}']]
+  $[[--explore_pattern '${{inputs.explore_pattern}}']]
+  $[[--explore_pattern_2 '${{inputs.explore_pattern_2}}']]
+  $[[--checkpoint_values '${{inputs.checkpoint_values}}']]
+  $[[--checkpoint_values_2 '${{inputs.checkpoint_values_2}}']]
+  --validation_file '${{inputs.validation_file}}'
+  $[[--use_lora_adapters '${{inputs.use_lora_adapters}}']]
+  $[[--base_model_path '${{inputs.base_model_path}}']]
+  $[[--hf_model_id '${{inputs.hf_model_id}}']]
+  $[[--max_prompt_length '${{inputs.max_prompt_length}}']]
+  $[[--max_response_length '${{inputs.max_response_length}}']]
+  $[[--batch_size '${{inputs.batch_size}}']]
+  $[[--temperature '${{inputs.temperature}}']]
+  $[[--top_p '${{inputs.top_p}}']]
+  $[[--tensor_parallel_size '${{inputs.tensor_parallel_size}}']]
+  $[[--gpu_memory_utilization '${{inputs.gpu_memory_utilization}}']]
+  $[[--dtype '${{inputs.dtype}}']]
+  $[[--extraction_method '${{inputs.extraction_method}}']]
+  $[[--n_gpus_per_node '${{inputs.n_gpus_per_node}}']]
+  $[[--number_of_trials '${{inputs.number_of_trials}}']]
+  --output_dir '${{outputs.evaluation_results}}'
+  --intermediate_dir '${{outputs.intermediate_folder}}'
