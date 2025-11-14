@@ -6,16 +6,26 @@ This module abstracts common operations for the notebook.
 import os
 import time
 import uuid
+import json
+import shutil
+from pathlib import Path
+from huggingface_hub import snapshot_download
 from azure.ai.ml import MLClient, Input, Output, dsl
 from azure.ai.ml.constants import AssetTypes
+from azure.ai.ml.dsl import pipeline
 from azure.ai.ml.entities import (
     Data,
     Model,
-    ManagedOnlineEndpoint,
-    ManagedOnlineDeployment,
+    KubernetesOnlineEndpoint,
+    KubernetesOnlineDeployment,
     ProbeSettings,
     OnlineRequestSettings,
 )
+
+
+# Dataset paths
+TRAIN_DATASET_PATH = os.path.join(os.getcwd(), "datasets", "train_finqa.jsonl")
+VALIDATION_DATASET_PATH = os.path.join(os.getcwd(), "datasets", "validation_finqa.jsonl")
 
 
 class RLSpecDecPipeline:
@@ -72,7 +82,8 @@ class RLSpecDecPipeline:
         # Default configuration
         default_config = {
             "experiment_name": "reinforcement-learning-grpo",
-            "instance_type_finetune": "Standard_ND96isr_H100_v5",
+            "instance_type_finetune": "octagpu",
+            "instance_type_model_import": "octacpu",
             "num_nodes_finetune": 1,
             "number_of_gpu_to_use_finetuning": 8,
             "algorithm_adv_estimator": "grpo",
@@ -111,6 +122,7 @@ class RLSpecDecPipeline:
                 compute_finetune=compute_cluster,
                 data_train_files=Input(type=AssetTypes.URI_FILE, path=train_data_asset.id),
                 data_val_files=Input(type=AssetTypes.URI_FILE, path=val_data_asset.id),
+                instance_type_model_import=default_config["instance_type_model_import"],
                 instance_type_finetune=default_config["instance_type_finetune"],
                 num_nodes_finetune=default_config["num_nodes_finetune"],
                 number_of_gpu_to_use_finetuning=default_config["number_of_gpu_to_use_finetuning"],
@@ -189,46 +201,58 @@ class RLSpecDecPipeline:
     def create_spec_dec_endpoint(
         self,
         base_model,
-        draft_model_name,
-        instance_type="Standard_NC24ads_A100_v4",
+        instance_type="monogpu",
+        compute_name="shj-a100",
     ):
-        """Create speculative decoding endpoint."""
+        """Create speculative decoding endpoint using Kubernetes."""
+        model_mount_path="/var/model-mount"
         print("🌐 Creating speculative decoding endpoint...")
 
         endpoint_name = f"spec-dec-{self.guid}"
         deployment_name = "spec-dec-deploy"
 
-        # Create endpoint
-        endpoint = ManagedOnlineEndpoint(
+        # Create Kubernetes endpoint
+        endpoint = KubernetesOnlineEndpoint(
             name=endpoint_name,
             description="Speculative Decoding with GRPO model",
             auth_mode="key",
+            compute=compute_name,
             tags={"model_type": "speculative_decoding", "algorithm": "grpo"},
         )
 
         print(f"  ✓ Creating endpoint: {endpoint_name}")
         self.ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
 
-        # Create deployment
-        deployment = ManagedOnlineDeployment(
+        # Configure probes
+        probe_settings = ProbeSettings(
+            initial_delay=1400,
+            period=30,
+            timeout=2,
+            success_threshold=1,
+            failure_threshold=30,
+        )
+
+        # Environment variables
+        environment_variables = {
+            "SPECULATIVE_DECODING_MODE": "true",
+            "BASE_MODEL": f"{model_mount_path}/models/base",
+            "DRAFT_MODEL": f"{model_mount_path}/models/draft",
+            "NUM_SPECULATIVE_TOKENS": "5",
+            "SERVING_ENGINE": "sglang",
+        }
+
+        # Create Kubernetes deployment
+        deployment = KubernetesOnlineDeployment(
             name=deployment_name,
             endpoint_name=endpoint_name,
             model=base_model.id,
+            model_mount_path=model_mount_path,
             instance_type=instance_type,
             instance_count=1,
-            environment_variables={
-                "SPECULATIVE_DECODING_MODE": "true",
-                "DRAFT_MODEL_PATH": f"/var/azureml-app/azureml-models/{draft_model_name}/1",
-                "NUM_SPECULATIVE_TOKENS": "5",
-                "SERVING_ENGINE": "sglang",
-            },
-            liveness_probe=ProbeSettings(
-                initial_delay=600,
-                period=60,
-                timeout=30,
-                success_threshold=1,
-                failure_threshold=3,
-            ),
+            environment=self.ml_client.environments.get("speculative-decoding-env", label="latest"), 
+            environment_variables=environment_variables,
+            liveness_probe=probe_settings,
+            readiness_probe=probe_settings,
             request_settings=OnlineRequestSettings(
                 request_timeout_ms=90000,
                 max_concurrent_requests_per_instance=4,
@@ -302,18 +326,12 @@ Let's think step by step and put final answer after ####."""
             return None
 
 
-def get_paths():
-    """Get dataset paths relative to notebook."""
-    notebook_dir = os.getcwd()
-    return {
-        "train": os.path.join(notebook_dir, "datasets", "train_finqa.jsonl"),
-        "validation": os.path.join(notebook_dir, "datasets", "validation_finqa.jsonl"),
-    }
-
-
 def verify_datasets():
-    """Verify dataset files exist."""
-    paths = get_paths()
+    """Verify dataset files exist and return their paths."""
+    paths = {
+        "train": TRAIN_DATASET_PATH,
+        "validation": VALIDATION_DATASET_PATH,
+    }
 
     print("🔍 Verifying datasets...")
     for name, path in paths.items():
@@ -439,10 +457,7 @@ def run_draft_model_pipeline(
     monitor=False,
 ):
     """Run complete draft model training pipeline."""
-    import json
-    from azure.ai.ml.dsl import pipeline
-    from azure.ai.ml import Input
-    from azure.ai.ml.constants import AssetTypes
+
 
     print("\n" + "="*60)
     print("🎯 STARTING DRAFT MODEL PIPELINE")
@@ -480,6 +495,8 @@ def run_draft_model_pipeline(
             draft_model_config=Input(type=AssetTypes.URI_FILE, path=draft_config_path),
             compute_model_import=compute_cluster,
             compute_eagle3_training=compute_cluster,
+            instance_type_model_import="octacpu",
+            instance_type_eagle3_training="octagpu",
             num_epochs=num_epochs,
         )
         return {"output_model": node.outputs.output_model_path}
@@ -497,7 +514,7 @@ def run_draft_model_pipeline(
     # Monitor if requested
     if monitor:
         pipeline = RLSpecDecPipeline(ml_client)
-        completed_job, status = pipeline.monitor_job(draft_job.name, poll_interval=60)
+        _, status = pipeline.monitor_job(draft_job.name, poll_interval=60)
         return draft_job, status
 
     return draft_job, None
@@ -511,9 +528,6 @@ def prepare_combined_model_for_deployment(
     force=False,
 ):
     """Download, combine and register base+draft models for deployment."""
-    from huggingface_hub import snapshot_download
-    from pathlib import Path
-    import shutil
     print("\n" + "="*60)
     print("📦 PREPARING COMBINED MODEL FOR DEPLOYMENT")
     print("="*60 + "\n")
@@ -524,40 +538,7 @@ def prepare_combined_model_for_deployment(
     draft_model_dir = "./models/draft"
     base_model_dir = "./models/base"
 
-    # Download draft model
-    # if force or not os.path.exists(draft_model_dir):
-    #     print("📥 Downloading draft model...")
     temp_download_dir = "./models/draft_temp"
-    #     draft_pipeline.download_draft_model(
-    #         job_name=draft_job_name,
-    #         output_dir=temp_download_dir
-    #     )
-
-    #     # Move files from nested structure to final draft directory
-    #     print("📁 Moving files to draft directory...")
-    #     os.makedirs(draft_model_dir, exist_ok=True)
-
-    #     # Use rglob to find required files recursively
-    #     from pathlib import Path
-    #     temp_path = Path(temp_download_dir)
-    #     required_files = ["config.json", "model.safetensors", "training_state.pt"]
-
-    #     for file_pattern in required_files:
-    #         files_found = list(temp_path.rglob(file_pattern))
-    #         if files_found:
-    #             src_path = files_found[0]  # Take the first match
-    #             dst_path = Path(draft_model_dir) / file_pattern
-    #             shutil.move(str(src_path), str(dst_path))
-    #             print(f"  ✓ Moved {file_pattern}")
-    #         else:
-    #             print(f"  ⚠️  File not found: {file_pattern}")
-
-    #     # Clean up temporary directory
-    #     if os.path.exists(temp_download_dir):
-    #         shutil.rmtree(temp_download_dir)
-    #         print(f"  ✓ Cleaned up temporary directory")
-    # else:
-    #     print(f"  ✓ Draft model already exists: {draft_model_dir}")
     temp_path = Path(temp_download_dir)
     required_files = ["config.json", "model.safetensors", "training_state.pt"]
 
@@ -569,7 +550,7 @@ def prepare_combined_model_for_deployment(
             shutil.move(str(src_path), str(dst_path))
             print(f"  ✓ Moved {file_pattern}")
         else:
-            print(f"  ⚠️  File not found: {file_pattern}")
+            print(f"  ⚠️ File not found: {file_pattern}")
 
     # Clean up temporary directory
     if os.path.exists(temp_download_dir):
@@ -600,9 +581,10 @@ def prepare_combined_model_for_deployment(
 def deploy_speculative_decoding_endpoint(
     ml_client,
     combined_model,
-    instance_type="Standard_NC24ads_A100_v4",
+    instance_type="monogpu",
+    compute_name="shj-a100",
 ):
-    """Deploy speculative decoding endpoint with combined model."""
+    """Deploy speculative decoding endpoint with combined model using Kubernetes."""
     print("\n" + "="*60)
     print("🌐 DEPLOYING SPECULATIVE DECODING ENDPOINT")
     print("="*60 + "\n")
@@ -610,28 +592,51 @@ def deploy_speculative_decoding_endpoint(
     pipeline = RLSpecDecPipeline(ml_client)
     endpoint_name = f"spec-dec-grpo-{pipeline.guid}"
     deployment_name = "speculative-deployment"
+    model_mount_path = "/var/model-mount"
 
-    # Create endpoint
+    # Create Kubernetes endpoint
     print(f"  ✓ Creating endpoint: {endpoint_name}")
-    endpoint = ManagedOnlineEndpoint(
+    endpoint = KubernetesOnlineEndpoint(
         name=endpoint_name,
         description="Speculative decoding endpoint with GRPO fine-tuned base model",
         auth_mode="key",
+        compute=compute_name,
+        tags={"model_type": "speculative_decoding", "algorithm": "grpo"},
     )
     ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
 
-    # Create deployment
-    deployment = ManagedOnlineDeployment(
+    # Configure probes
+    probe_settings = ProbeSettings(
+        initial_delay=1400,
+        period=30,
+        timeout=2,
+        success_threshold=1,
+        failure_threshold=30,
+    )
+
+    # Environment variables
+    environment_variables = {
+        "SPECULATIVE_DECODING_MODE": "true",
+        "BASE_MODEL": f"{model_mount_path}/models/base",
+        "DRAFT_MODEL": f"{model_mount_path}/models/draft",
+    }
+
+    # Create Kubernetes deployment
+    deployment = KubernetesOnlineDeployment(
         name=deployment_name,
         endpoint_name=endpoint_name,
         model=combined_model.id,
+        model_mount_path=model_mount_path,
         instance_type=instance_type,
         instance_count=1,
-        environment_variables={
-            "MODEL_BASE_PATH": f"/var/azureml-app/azureml-models/{combined_model.name}/{combined_model.version}/base",
-            "MODEL_DRAFT_PATH": f"/var/azureml-app/azureml-models/{combined_model.name}/{combined_model.version}/draft",
-            "SPECULATIVE_DECODING": "true",
-        },
+        environment=ml_client.environments.get("speculative-decoding-env", label="latest"), 
+        environment_variables=environment_variables,
+        liveness_probe=probe_settings,
+        readiness_probe=probe_settings,
+        request_settings=OnlineRequestSettings(
+            request_timeout_ms=90000,
+            max_concurrent_requests_per_instance=4,
+        ),
     )
 
     print(f"  ✓ Creating deployment (this takes 15-20 min)...")
