@@ -1,0 +1,6 @@
+azure-ai-ml==1.30.0
+azure-identity==1.25.1
+huggingface-hub==1.1.2
+requests==2.32.5
+ipython==8.37.0
+ipywidgets==8.1.8

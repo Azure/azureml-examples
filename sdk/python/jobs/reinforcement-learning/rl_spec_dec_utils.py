@@ -8,13 +8,14 @@ import time
 import uuid
 import json
 import shutil
+import requests
 from pathlib import Path
 from huggingface_hub import snapshot_download
-from azure.ai.ml import MLClient, Input, Output, dsl
+from azure.ai.ml import MLClient, Input, dsl
 from azure.ai.ml.constants import AssetTypes
+from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.dsl import pipeline
 from azure.ai.ml.entities import (
-    Data,
     Model,
     KubernetesOnlineEndpoint,
     KubernetesOnlineDeployment,
@@ -22,96 +23,50 @@ from azure.ai.ml.entities import (
     OnlineRequestSettings,
 )
 
-
-# Dataset paths
-TRAIN_DATASET_PATH = os.path.join(os.getcwd(), "datasets", "train_finqa.jsonl")
-VALIDATION_DATASET_PATH = os.path.join(os.getcwd(), "datasets", "validation_finqa.jsonl")
-
+ml_client = None
+registry_ml_client = None
 
 class RLSpecDecPipeline:
     """Main class for managing RL training and Speculative Decoding workflow."""
 
-    def __init__(self, workspace_ml_client):
-        """Initialize with Azure ML workspace client."""
-        self.ml_client = workspace_ml_client
+    def __init__(self):
         self.guid = str(uuid.uuid4())[:8]
-
-    def register_datasets(self, train_path, val_path):
-        """Register training and validation datasets."""
-        print("📁 Registering datasets...")
-
-        # Register training dataset
-        train_dataset_name = f"finqa_train_{self.guid}"
-        train_data = Data(
-            path=train_path,
-            type=AssetTypes.URI_FILE,
-            description="FinQA training dataset for RL",
-            name=train_dataset_name,
-            version="1",
-        )
-        train_asset = self.ml_client.data.create_or_update(train_data)
-        print(f"  ✓ Training dataset: {train_asset.name}")
-
-        # Register validation dataset
-        val_dataset_name = f"finqa_validation_{self.guid}"
-        val_data = Data(
-            path=val_path,
-            type=AssetTypes.URI_FILE,
-            description="FinQA validation dataset for RL",
-            name=val_dataset_name,
-            version="1",
-        )
-        val_asset = self.ml_client.data.create_or_update(val_data)
-        print(f"  ✓ Validation dataset: {val_asset.name}")
-
-        return train_asset, val_asset
 
     def create_rl_pipeline(
         self,
-        registry_ml_client,
         huggingface_id,
         train_data_asset,
         val_data_asset,
         compute_cluster,
-        config=None,
-        pipeline_component_name="arl_finetune_pipeline",
+        config={},
     ):
         """Create and submit RL pipeline job using registry component."""
-        print("🚀 Creating RL pipeline...")
+        print("Creating RL pipeline...")
 
         # Default configuration
         default_config = {
             "experiment_name": "reinforcement-learning-grpo",
             "instance_type_finetune": "octagpu",
             "instance_type_model_import": "octacpu",
-            "num_nodes_finetune": 1,
+            "num_nodes_finetune": 2,
             "number_of_gpu_to_use_finetuning": 8,
             "algorithm_adv_estimator": "grpo",
-            "trainer_total_epochs": 15,
-            "actor_optim_lr": 3e-6,
-            "data_train_batch_size": 512,
-            "data_max_prompt_length": 1024,
-            "data_max_response_length": 2048,
-            "actor_model_lora_rank": 64,
-            "actor_model_lora_alpha": 32,
-            "actor_strategy": "fsdp2",
+            "data_max_prompt_length": 8192,
+            "actor_strategy": "fsdp",
+            "trainer_total_epochs": 1,
+            "actor_fsdp_config_mixed_precision_reduce_dtype": "bf16",
+            "actor_fsdp_config_mixed_precision_buffer_dtype": "bf16",
         }
+        default_config.update(config)
 
-        if config:
-            default_config.update(config)
+        if "experiment_name" in default_config:
+            experiment_name = default_config["experiment_name"]
+            del default_config["experiment_name"]
 
-        # Fetch the pipeline component from registry
-        print(f"  ✓ Loading pipeline component: {pipeline_component_name}")
-        try:
-            pipeline_component_func = registry_ml_client.components.get(
-                name=pipeline_component_name,
-                label="latest"
-            )
-            print(f"  ✓ Component loaded: {pipeline_component_func.name} v{pipeline_component_func.version}")
-        except Exception as e:
-            print(f"  ✗ Failed to load component: {e}")
-            print(f"  ℹ️  Make sure component '{pipeline_component_name}' exists in registry")
-            raise
+        pipeline_component_func = registry_ml_client.components.get(
+            name="pipeline_rl_finetune",
+            label="latest"
+        )
 
         # Define the pipeline job
         @dsl.pipeline(name=f"grpo-finqa-{self.guid}")
@@ -122,23 +77,10 @@ class RLSpecDecPipeline:
                 compute_finetune=compute_cluster,
                 data_train_files=Input(type=AssetTypes.URI_FILE, path=train_data_asset.id),
                 data_val_files=Input(type=AssetTypes.URI_FILE, path=val_data_asset.id),
-                instance_type_model_import=default_config["instance_type_model_import"],
-                instance_type_finetune=default_config["instance_type_finetune"],
-                num_nodes_finetune=default_config["num_nodes_finetune"],
-                number_of_gpu_to_use_finetuning=default_config["number_of_gpu_to_use_finetuning"],
-                algorithm_adv_estimator=default_config["algorithm_adv_estimator"],
-                trainer_total_epochs=default_config["trainer_total_epochs"],
-                actor_optim_lr=default_config["actor_optim_lr"],
-                data_train_batch_size=default_config["data_train_batch_size"],
-                data_max_prompt_length=default_config["data_max_prompt_length"],
-                data_max_response_length=default_config["data_max_response_length"],
-                actor_model_lora_rank=default_config["actor_model_lora_rank"],
-                actor_model_lora_alpha=default_config["actor_model_lora_alpha"],
-                actor_strategy=default_config["actor_strategy"],
+                **default_config,
             )
             return {"model_output": rl_pipeline.outputs.model_output}
 
-        # Create pipeline object
         pipeline_object = create_pipeline()
 
         # Don't use cached results from previous jobs
@@ -146,36 +88,31 @@ class RLSpecDecPipeline:
         pipeline_object.settings.continue_on_step_failure = False
 
         # Submit job
-        print("  ✓ Submitting pipeline...")
-        rl_run = self.ml_client.jobs.create_or_update(
+        print("Submitting pipeline...")
+        rl_run = ml_client.jobs.create_or_update(
             pipeline_object,
-            experiment_name=default_config["experiment_name"]
+            experiment_name=experiment_name,
         )
-        print(f"  ✓ Job submitted: {rl_run.name}")
-        print(f"  📊 Studio URL: {rl_run.studio_url}")
+        print(f"Studio URL: {rl_run.studio_url}")
 
         return rl_run
 
-    def monitor_job(self, job_name, poll_interval=60):
-        """Monitor job status until completion."""
-        print(f"⏳ Monitoring job: {job_name}")
-        print(f"   Checking every {poll_interval} seconds...")
+    def monitor_job(self, job_name):
+        print(f"Monitoring job: {job_name}")
+        print(f"Checking every 30 seconds...")
 
         while True:
-            job = self.ml_client.jobs.get(job_name)
+            job = ml_client.jobs.get(job_name)
             status = job.status
-
-            print(f"   [{time.strftime('%H:%M:%S')}] Status: {status}")
+            
+            print(f"[{time.strftime('%H:%M:%S')}] Status: {status}")
 
             if status in ["Completed", "Failed", "Canceled"]:
-                print(f"\n{'✓' if status == 'Completed' else '✗'} Job {status}")
                 return job, status
+            time.sleep(30)
 
-            time.sleep(poll_interval)
-
-    def register_model(self, job, model_name_prefix, base_model_id):
-        """Register fine-tuned model from job output."""
-        print("📦 Registering model...")
+    def register_model(self, job, model_name_prefix):
+        print("Registering model from job output...")
 
         model_name = f"{model_name_prefix}-{self.guid}"
         model_output = job.outputs.model_output
@@ -185,16 +122,11 @@ class RLSpecDecPipeline:
             name=model_name,
             description="GRPO fine-tuned model on FinQA",
             type=AssetTypes.CUSTOM_MODEL,
-            tags={
-                "algorithm": "grpo",
-                "dataset": "finqa",
-                "base_model": base_model_id,
-            },
         )
 
-        registered_model = self.ml_client.models.create_or_update(model)
-        print(f"  ✓ Model: {registered_model.name} v{registered_model.version}")
-        print(f"  📍 ID: {registered_model.id}")
+        registered_model = ml_client.models.create_or_update(model)
+        print(f"Model: {registered_model.name} v{registered_model.version}")
+        print(f"ID: {registered_model.id}")
 
         return registered_model
 
@@ -221,7 +153,7 @@ class RLSpecDecPipeline:
         )
 
         print(f"  ✓ Creating endpoint: {endpoint_name}")
-        self.ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+        ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
 
         # Configure probes
         probe_settings = ProbeSettings(
@@ -249,7 +181,7 @@ class RLSpecDecPipeline:
             model_mount_path=model_mount_path,
             instance_type=instance_type,
             instance_count=1,
-            environment=self.ml_client.environments.get("speculative-decoding-env", label="latest"), 
+            environment=ml_client.environments.get("speculative-decoding-env", label="latest"), 
             environment_variables=environment_variables,
             liveness_probe=probe_settings,
             readiness_probe=probe_settings,
@@ -260,33 +192,21 @@ class RLSpecDecPipeline:
         )
 
         print(f"  ✓ Creating deployment (15-20 min)...")
-        self.ml_client.online_deployments.begin_create_or_update(deployment).wait()
+        ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
         # Route traffic
         endpoint.traffic = {deployment_name: 100}
-        self.ml_client.online_endpoints.begin_create_or_update(endpoint).result()
+        ml_client.online_endpoints.begin_create_or_update(endpoint).result()
 
         print(f"  ✓ Endpoint ready: {endpoint_name}")
 
         return endpoint_name
 
-    def get_endpoint_details(self, endpoint_name):
-        """Get endpoint URI and API key."""
-        endpoint = self.ml_client.online_endpoints.get(endpoint_name)
-        api_key = self.ml_client.online_endpoints.get_keys(endpoint_name).primary_key
-
-        return {
-            "scoring_uri": endpoint.scoring_uri,
-            "api_key": api_key,
-            "endpoint_name": endpoint_name,
-        }
-
-    def test_endpoint(self, scoring_uri, api_key):
+    def test_endpoint(self, endpoint_name):
         """Test endpoint with a sample request."""
-        import requests
-        import json
-
         print("🧪 Testing endpoint...")
+        scoring_uri = ml_client.online_endpoints.get(endpoint_name).scoring_uri
+        api_key = ml_client.online_endpoints.get_keys(endpoint_name).primary_key
 
         payload = {
             "messages": [
@@ -326,25 +246,6 @@ Let's think step by step and put final answer after ####."""
             return None
 
 
-def verify_datasets():
-    """Verify dataset files exist and return their paths."""
-    paths = {
-        "train": TRAIN_DATASET_PATH,
-        "validation": VALIDATION_DATASET_PATH,
-    }
-
-    print("🔍 Verifying datasets...")
-    for name, path in paths.items():
-        exists = os.path.exists(path)
-        symbol = "✓" if exists else "✗"
-        print(f"  {symbol} {name}: {path}")
-
-        if not exists:
-            raise FileNotFoundError(f"Dataset not found: {path}")
-
-    return paths
-
-
 def create_draft_model_config(base_model_config=None):
     """Create draft model configuration for EAGLE3."""
     default_config = {
@@ -378,8 +279,7 @@ def create_draft_model_config(base_model_config=None):
 
 def setup_workspace(config_path="./config.json", registry_name="test_centralus"):
     """Setup Azure ML workspace and registry clients."""
-    from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
-
+    global ml_client, registry_ml_client
     try:
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
@@ -387,78 +287,53 @@ def setup_workspace(config_path="./config.json", registry_name="test_centralus")
         credential = InteractiveBrowserCredential()
 
     ml_client = MLClient.from_config(credential=credential, path=config_path)
-    workspace = ml_client._workspaces.get(ml_client.workspace_name)
+    _ = ml_client._workspaces.get(ml_client.workspace_name) # Load credentials to verify access
     registry_ml_client = MLClient(credential, registry_name=registry_name)
 
-    print(f"✓ Connected to registry: {registry_name}")
-    print(f"✓ Connected to workspace: {workspace.name}")
-    print(f"✓ Resource group: {ml_client.resource_group_name}")
-
+    print(f"Workspace setup complete, connected")
     return ml_client, registry_ml_client
 
 
 def run_rl_training_pipeline(
-    ml_client,
-    registry_ml_client,
     base_model_id="deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
     compute_cluster="h100-dedicated",
-    training_config=None,
-    monitor=True,
+    config={},
 ):
-    """Run complete RL training pipeline from datasets to trained model."""
-    print("\n" + "="*60)
     print(" Starting RL Training Pipeline")
-    print("="*60 + "\n")
+    pipeline = RLSpecDecPipeline()
 
-    # Initialize pipeline
-    pipeline = RLSpecDecPipeline(ml_client)
+    # We have uploaded the data assets to our registry in advance for this tutorial
+    train_asset = ml_client.data.get(name="dataset_training_finqa", label="latest")
+    val_asset = ml_client.data.get(name="dataset_validation_finqa", label="latest")
 
-    # Verify and register datasets
-    dataset_paths = verify_datasets()
-    train_asset, val_asset = pipeline.register_datasets(
-        train_path=dataset_paths["train"],
-        val_path=dataset_paths["validation"],
-    )
-
-    # Create and submit RL pipeline
     rl_job = pipeline.create_rl_pipeline(
-        registry_ml_client=registry_ml_client,
         huggingface_id=base_model_id,
         train_data_asset=train_asset,
         val_data_asset=val_asset,
         compute_cluster=compute_cluster,
-        config=training_config or {},
+        config=config,
     )
-
-    # Monitor if requested
-    if monitor:
-        completed_job, status = pipeline.monitor_job(rl_job.name, poll_interval=60)
-        if status == "Completed":
-            registered_model = pipeline.register_model(
-                job=completed_job,
-                model_name_prefix="grpo-finqa-model",
-                base_model_id=base_model_id,
-            )
-            return rl_job, status, registered_model
-        else:
-            print(f"\n Job did not complete successfully: {status}")
-            return rl_job, status, None
-
-    return rl_job, None, None
+    
+    completed_job, status = pipeline.monitor_job(rl_job.name)
+    if status == "Completed":
+        registered_model = pipeline.register_model(
+            job=completed_job,
+            model_name_prefix="grpo-finqa-model",
+            base_model_id=base_model_id,
+        )
+        return rl_job, status, registered_model
+    else:
+        print(f"\n Job did not complete successfully: {status}")
+        return rl_job, status, None
 
 
 def run_draft_model_pipeline(
-    ml_client,
-    registry_ml_client,
     compute_cluster="h100-dedicated",
     base_model_mlflow_path="azureml://registries/azureml-meta/models/Meta-Llama-3-8B-Instruct/versions/9",
     draft_train_data_path="./data_for_draft_model/train/sharegpt_train_small.jsonl",
     num_epochs=1,
     monitor=False,
 ):
-    """Run complete draft model training pipeline."""
-
-
     print("\n" + "="*60)
     print("🎯 STARTING DRAFT MODEL PIPELINE")
     print("="*60 + "\n")
@@ -513,7 +388,7 @@ def run_draft_model_pipeline(
 
     # Monitor if requested
     if monitor:
-        pipeline = RLSpecDecPipeline(ml_client)
+        pipeline = RLSpecDecPipeline()
         _, status = pipeline.monitor_job(draft_job.name, poll_interval=60)
         return draft_job, status
 
@@ -521,18 +396,16 @@ def run_draft_model_pipeline(
 
 
 def prepare_combined_model_for_deployment(
-    ml_client,
     draft_job_name,
     base_model_hf_id="nvidia/Llama-3.1-8B-Instruct-FP8",
     model_name="grpo-speculative-decoding",
     force=False,
 ):
-    """Download, combine and register base+draft models for deployment."""
     print("\n" + "="*60)
     print("📦 PREPARING COMBINED MODEL FOR DEPLOYMENT")
     print("="*60 + "\n")
 
-    draft_pipeline = DraftModelPipeline(ml_client)
+    draft_pipeline = DraftModelPipeline()
 
     # Define paths
     draft_model_dir = "./models/draft"
@@ -579,23 +452,18 @@ def prepare_combined_model_for_deployment(
 
 
 def deploy_speculative_decoding_endpoint(
-    ml_client,
     combined_model,
     instance_type="monogpu",
     compute_name="shj-a100",
 ):
-    """Deploy speculative decoding endpoint with combined model using Kubernetes."""
-    print("\n" + "="*60)
-    print("🌐 DEPLOYING SPECULATIVE DECODING ENDPOINT")
-    print("="*60 + "\n")
+    print("Deploying speculative decoding endpoint")
 
-    pipeline = RLSpecDecPipeline(ml_client)
+    pipeline = RLSpecDecPipeline()
     endpoint_name = f"spec-dec-grpo-{pipeline.guid}"
     deployment_name = "speculative-deployment"
     model_mount_path = "/var/model-mount"
 
-    # Create Kubernetes endpoint
-    print(f"  ✓ Creating endpoint: {endpoint_name}")
+    print(f"Creating endpoint: {endpoint_name}")
     endpoint = KubernetesOnlineEndpoint(
         name=endpoint_name,
         description="Speculative decoding endpoint with GRPO fine-tuned base model",
@@ -621,7 +489,6 @@ def deploy_speculative_decoding_endpoint(
         "DRAFT_MODEL": f"{model_mount_path}/models/draft",
     }
 
-    # Create Kubernetes deployment
     deployment = KubernetesOnlineDeployment(
         name=deployment_name,
         endpoint_name=endpoint_name,
@@ -650,39 +517,30 @@ def deploy_speculative_decoding_endpoint(
     return endpoint_name
 
 
-def test_deployment(ml_client, endpoint_name):
-    """Test the deployed speculative decoding endpoint."""
-    print("\n" + "="*60)
-    print("🧪 TESTING DEPLOYMENT")
-    print("="*60 + "\n")
+def test_deployment(endpoint_name):
+    print("Testing deployment")
 
-    pipeline = RLSpecDecPipeline(ml_client)
+    pipeline = RLSpecDecPipeline()
     endpoint_info = pipeline.get_endpoint_details(endpoint_name)
 
-    print(f"📍 Endpoint: {endpoint_info['endpoint_name']}")
-    print(f"🔗 URI: {endpoint_info['scoring_uri']}")
-    print(f"🔑 Key: {endpoint_info['api_key'][:10]}...\n")
+    print(f"Endpoint: {endpoint_info['endpoint_name']}")
 
     result = pipeline.test_endpoint(
         scoring_uri=endpoint_info['scoring_uri'],
         api_key=endpoint_info['api_key'],
     )
 
-    print("\n✨ Speculative decoding enables 2-3x faster token generation!")
     return result
 
 
 class DraftModelPipeline:
     """Class for managing draft model creation for speculative decoding."""
 
-    def __init__(self, workspace_ml_client):
-        """Initialize with Azure ML workspace client."""
-        self.ml_client = workspace_ml_client
+    def __init__(self):
         self.guid = str(uuid.uuid4())[:8]
 
     def create_draft_model_pipeline(
         self,
-        registry_ml_client,
         base_model_path,
         training_data_path,
         validation_data_path=None,
@@ -691,10 +549,7 @@ class DraftModelPipeline:
         num_epochs=1,
         component_name="speculative_decoding_draft_pipeline",
     ):
-        """Create and submit draft model training pipeline using registry component."""
-        import json
-
-        print("🎯 Creating draft model pipeline...")
+        print("Creating draft model pipeline...")
 
         # Use validation data same as training if not provided
         if validation_data_path is None:
@@ -712,10 +567,6 @@ class DraftModelPipeline:
         with open(config_path, "w") as f:
             json.dump(draft_model_config, f, indent=4)
 
-        print(f"  ✓ Draft config saved: {config_path}")
-
-        # Fetch the pipeline component from registry
-        print(f"  ✓ Loading pipeline component: {component_name}")
         try:
             pipeline_component_func = registry_ml_client.components.get(
                 name=component_name,
@@ -750,7 +601,7 @@ class DraftModelPipeline:
 
         # Submit job
         print("  ✓ Submitting draft model pipeline...")
-        draft_run = self.ml_client.jobs.create_or_update(
+        draft_run = ml_client.jobs.create_or_update(
             pipeline_object,
             experiment_name="speculative-decoding-draft-model"
         )
@@ -768,7 +619,7 @@ class DraftModelPipeline:
         os.makedirs(output_dir, exist_ok=True)
 
         # Download model output
-        self.ml_client.jobs.download(
+        ml_client.jobs.download(
             name=job_name,
             output_name="output_model",
             download_path=output_dir,
@@ -864,7 +715,7 @@ class DraftModelPipeline:
             }
         )
 
-        registered_model = self.ml_client.models.create_or_update(model)
+        registered_model = ml_client.models.create_or_update(model)
         print(f"  ✓ Model registered: {registered_model.name} v{registered_model.version}")
 
         return registered_model
