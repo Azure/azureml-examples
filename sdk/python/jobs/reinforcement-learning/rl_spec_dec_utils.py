@@ -43,7 +43,7 @@ class RLSpecDecPipeline:
         """Create and submit RL pipeline job using registry component."""
         print("Creating RL pipeline...")
 
-        # Default configuration
+        # Use defaults to ensure reproducibility and avoid missing params
         default_config = {
             "experiment_name": "reinforcement-learning-grpo",
             "instance_type_finetune": "octagpu",
@@ -57,18 +57,20 @@ class RLSpecDecPipeline:
             "actor_fsdp_config_mixed_precision_reduce_dtype": "bf16",
             "actor_fsdp_config_mixed_precision_buffer_dtype": "bf16",
         }
-        default_config.update(config)
+        default_config.update(config)  # Allow user override for flexibility
 
+        # Extract experiment_name from config as that is passed separately
         if "experiment_name" in default_config:
             experiment_name = default_config["experiment_name"]
             del default_config["experiment_name"]
 
+        # Use registry component for versioning and reuse
         pipeline_component_func = registry_ml_client.components.get(
             name="pipeline_rl_finetune",
             label="latest"
         )
 
-        # Define the pipeline job
+        # Define pipeline to encapsulate all steps for traceability and reuse
         @dsl.pipeline(name=f"grpo-finqa-{self.guid}")
         def create_pipeline():
             rl_pipeline = pipeline_component_func(
@@ -77,15 +79,15 @@ class RLSpecDecPipeline:
                 compute_finetune=compute_cluster,
                 data_train_files=Input(type=AssetTypes.URI_FILE, path=train_data_asset.id),
                 data_val_files=Input(type=AssetTypes.URI_FILE, path=val_data_asset.id),
-                **default_config,
+                **default_config, # Pass all config as kwargs for maintainability and future-proofing
             )
             return {"model_output": rl_pipeline.outputs.model_output}
 
         pipeline_object = create_pipeline()
 
-        # Don't use cached results from previous jobs
+        # Force rerun to ensure new job, avoid stale results
         pipeline_object.settings.force_rerun = True
-        pipeline_object.settings.continue_on_step_failure = False
+        pipeline_object.settings.continue_on_step_failure = False  # Fail fast for debugging
 
         # Submit job
         print("Submitting pipeline...")
@@ -93,7 +95,7 @@ class RLSpecDecPipeline:
             pipeline_object,
             experiment_name=experiment_name,
         )
-        print(f"Studio URL: {rl_run.studio_url}")
+        print(f"Studio URL: {rl_run.studio_url}")  # Clickable link for monitoring
 
         return rl_run
 
@@ -146,10 +148,8 @@ class RLSpecDecPipeline:
         # Create Kubernetes endpoint
         endpoint = KubernetesOnlineEndpoint(
             name=endpoint_name,
-            description="Speculative Decoding with GRPO model",
             auth_mode="key",
             compute=compute_name,
-            tags={"model_type": "speculative_decoding", "algorithm": "grpo"},
         )
 
         print(f"  ✓ Creating endpoint: {endpoint_name}")
@@ -325,6 +325,21 @@ def run_rl_training_pipeline(
     else:
         print(f"\n Job did not complete successfully: {status}")
         return rl_job, status, None
+
+
+def download_and_register_hf_model(hf_model_id, azureml_model_name): #[WIP]
+    guid = str(uuid.uuid4())[:4]
+    temp_dir = f"./models/temp-{guid}/model_artifact/model"
+    os.makedirs(temp_dir, exist_ok=True)
+    snapshot_download(repo_id=hf_model_id, local_dir=temp_dir)
+
+    model_folder = Model(
+        path=temp_dir,
+        type=AssetTypes.MLFLOW_MODEL,
+        name=azureml_model_name,
+    )
+    model = ml_client.models.create_or_update(model_folder)
+    return model
 
 
 def run_draft_model_pipeline(
@@ -638,7 +653,6 @@ class DraftModelPipeline:
 
     def _flatten_directory(self, directory):
         """Move all files from subdirectories to root."""
-        import shutil
 
         print("  ✓ Flattening directory structure...")
 
@@ -659,7 +673,6 @@ class DraftModelPipeline:
 
     def _update_draft_config(self, model_dir):
         """Update draft model config with extended context settings."""
-        import json
 
         config_path = os.path.join(model_dir, "config.json")
 
