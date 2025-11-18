@@ -431,9 +431,7 @@ def prepare_combined_model_for_deployment(
     model_name="grpo-speculative-decoding",
     force=False,
 ):
-    print("\n" + "="*60)
-    print("📦 PREPARING COMBINED MODEL FOR DEPLOYMENT")
-    print("="*60 + "\n")
+    print("Preparing combined model for deployment...")
 
     draft_pipeline = DraftModelPipeline()
 
@@ -451,24 +449,24 @@ def prepare_combined_model_for_deployment(
             src_path = files_found[0]  # Take the first match
             dst_path = Path(draft_model_dir) / file_pattern
             shutil.move(str(src_path), str(dst_path))
-            print(f"  ✓ Moved {file_pattern}")
+            print(f"  Moved {file_pattern}")
         else:
-            print(f"  ⚠️ File not found: {file_pattern}")
+            print(f"  File not found: {file_pattern}")
 
     # Clean up temporary directory
     if os.path.exists(temp_download_dir):
         shutil.rmtree(temp_download_dir)
-        print(f"  ✓ Cleaned up temporary directory")
+        print(f"  Cleaned up temporary directory")
     else:
-        print(f"  ✓ Draft model already exists: {draft_model_dir}")
+        print(f"  Draft model already exists: {draft_model_dir}")
 
     # Download base model from HuggingFace
     if force or not os.path.exists(base_model_dir):
-        print("\n📥 Downloading base model...")
+        print("\nDownloading base model...")
         snapshot_download(repo_id=base_model_hf_id, local_dir=base_model_dir)
-        print(f"  ✓ Base model downloaded to: {base_model_dir}")
+        print(f"  Base model downloaded to: {base_model_dir}")
     else:
-        print(f"  ✓ Base model already exists: {base_model_dir}")
+        print(f"  Base model already exists: {base_model_dir}")
 
     # Upload combined model
     combined_model = draft_pipeline.upload_combined_model(
@@ -477,18 +475,19 @@ def prepare_combined_model_for_deployment(
         model_name=model_name,
     )
 
-    print(f"\n✓ Combined model ready for deployment: {combined_model.name}")
+    print(f"\nCombined model ready for deployment: {combined_model.name}")
     return combined_model
 
 
 def deploy_speculative_decoding_endpoint(
     combined_model,
-    instance_type="monogpu",
+    instance_type="monogpu", # In kubernetes we can be granular upto the gpu level and leave the rest of the node unused
     compute_name="shj-a100",
 ):
     print("Deploying speculative decoding endpoint")
 
     pipeline = RLSpecDecPipeline()
+    # Use a unique endpoint name per pipeline instance to avoid collisions
     endpoint_name = f"spec-dec-grpo-{pipeline.guid}"
     deployment_name = "speculative-deployment"
     model_mount_path = "/var/model-mount"
@@ -503,7 +502,7 @@ def deploy_speculative_decoding_endpoint(
     )
     ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
 
-    # Configure probes
+    # Probes ensure deployment is only marked ready when model is loaded and healthy
     probe_settings = ProbeSettings(
         initial_delay=1400,
         period=30,
@@ -512,13 +511,14 @@ def deploy_speculative_decoding_endpoint(
         failure_threshold=30,
     )
 
-    # Environment variables
+    # Environment variables configure the serving engine and model paths for the container
     environment_variables = {
         "SPECULATIVE_DECODING_MODE": "true",
         "BASE_MODEL": f"{model_mount_path}/models/base",
         "DRAFT_MODEL": f"{model_mount_path}/models/draft",
     }
 
+    # Use deployment abstraction for versioning, scaling, and isolation
     deployment = KubernetesOnlineDeployment(
         name=deployment_name,
         endpoint_name=endpoint_name,
@@ -536,25 +536,30 @@ def deploy_speculative_decoding_endpoint(
         ),
     )
 
-    print(f"  ✓ Creating deployment (this takes 15-20 min)...")
+    print(f"  Creating deployment (this takes 15-20 min)...")
     ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
-    # Route traffic
+    # Route all endpoint traffic to this deployment for immediate use
     endpoint.traffic = {deployment_name: 100}
     ml_client.online_endpoints.begin_create_or_update(endpoint).result()
 
-    print(f"✓ Speculative decoding endpoint deployed: {endpoint_name}")
+    print(f"Speculative decoding endpoint deployed: {endpoint_name}")
     return endpoint_name
 
 
 def test_deployment(endpoint_name):
+    """
+    Run a test request against a deployed endpoint and print the result.
+    """
     print("Testing deployment")
 
     pipeline = RLSpecDecPipeline()
+    # Retrieve endpoint details (URI, key) for authentication and routing
     endpoint_info = pipeline.get_endpoint_details(endpoint_name)
 
     print(f"Endpoint: {endpoint_info['endpoint_name']}")
 
+    # Call the endpoint with a standard test payload to validate end-to-end serving
     result = pipeline.test_endpoint(
         scoring_uri=endpoint_info['scoring_uri'],
         api_key=endpoint_info['api_key'],
@@ -602,10 +607,10 @@ class DraftModelPipeline:
                 name=component_name,
                 label="latest"
             )
-            print(f"  ✓ Component loaded: {pipeline_component_func.name} v{pipeline_component_func.version}")
+            print(f"Component loaded: {pipeline_component_func.name} v{pipeline_component_func.version}")
         except Exception as e:
-            print(f"  ✗ Failed to load component: {e}")
-            print(f"  ℹ️  Make sure component '{component_name}' exists in registry")
+            print(f"Failed to load component: {e}")
+            print(f"Make sure component '{component_name}' exists in registry")
             raise
 
         # Define the pipeline job
@@ -630,20 +635,20 @@ class DraftModelPipeline:
         pipeline_object.settings.continue_on_step_failure = False
 
         # Submit job
-        print("  ✓ Submitting draft model pipeline...")
+        print("Submitting draft model pipeline...")
         draft_run = ml_client.jobs.create_or_update(
             pipeline_object,
             experiment_name="speculative-decoding-draft-model"
         )
 
-        print(f"  ✓ Job submitted: {draft_run.name}")
-        print(f"  📊 Studio URL: {draft_run.studio_url}")
+        print(f"Job submitted: {draft_run.name}")
+        print(f"Studio URL: {draft_run.studio_url}")
 
         return draft_run
 
     def download_draft_model(self, job_name, output_dir="./models/draft"):
         """Download draft model from completed pipeline job."""
-        print(f"📥 Downloading draft model from job: {job_name}")
+        print(f"Downloading draft model from job: {job_name}")
 
         # Create output directory
         os.makedirs(output_dir, exist_ok=True)
@@ -656,7 +661,7 @@ class DraftModelPipeline:
             all=True
         )
 
-        print(f"  ✓ Draft model downloaded to: {output_dir}")
+        print(f"Draft model downloaded to: {output_dir}")
 
         # Flatten directory structure
         self._flatten_directory(output_dir)
@@ -669,7 +674,7 @@ class DraftModelPipeline:
     def _flatten_directory(self, directory):
         """Move all files from subdirectories to root."""
 
-        print("  ✓ Flattening directory structure...")
+        print("Flattening directory structure...")
 
         for root, dirs, files in os.walk(directory):
             for file in files:
@@ -692,10 +697,10 @@ class DraftModelPipeline:
         config_path = os.path.join(model_dir, "config.json")
 
         if not os.path.exists(config_path):
-            print("  ⚠️  config.json not found, skipping update")
+            print("config.json not found, skipping update")
             return
 
-        print("  ✓ Updating draft model config...")
+        print("Updating draft model config...")
 
         with open(config_path, "r") as f:
             draft_config = json.load(f)
@@ -715,7 +720,7 @@ class DraftModelPipeline:
         with open(config_path, "w") as f:
             json.dump(draft_config, f, indent=4)
 
-        print("  ✓ Config updated with extended context settings")
+        print("Config updated with extended context settings")
 
     def upload_combined_model(
         self,
@@ -725,10 +730,10 @@ class DraftModelPipeline:
     ):
         """Upload base and draft models as a combined custom model."""
 
-        print("📦 Creating combined model package...")
+        print("Creating combined model package...")
         combined_dir = "./models/"
-        print(f"  ✓ Base model: {base_model_dir}")
-        print(f"  ✓ Draft model: {draft_model_dir}")
+        print(f"Base model: {base_model_dir}")
+        print(f"Draft model: {draft_model_dir}")
 
         # Register combined model
         model_name_versioned = f"{model_name}-{self.guid}"
@@ -744,6 +749,6 @@ class DraftModelPipeline:
         )
 
         registered_model = ml_client.models.create_or_update(model)
-        print(f"  ✓ Model registered: {registered_model.name} v{registered_model.version}")
+        print(f"Model registered: {registered_model.name} v{registered_model.version}")
 
         return registered_model
