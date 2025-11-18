@@ -210,11 +210,15 @@ class RLSpecDecPipeline:
         return endpoint_name
 
     def test_endpoint(self, endpoint_name):
-        """Test endpoint with a sample request."""
+        """Test endpoint with a sample request.
+        Validates that the deployed endpoint is live and returns expected results, ensuring end-to-end functionality.
+        """
         print("🧪 Testing endpoint...")
+        # Retrieve endpoint URI and API key to authenticate test request
         scoring_uri = ml_client.online_endpoints.get(endpoint_name).scoring_uri
         api_key = ml_client.online_endpoints.get_keys(endpoint_name).primary_key
 
+        # Use a realistic financial question to verify model reasoning and output format
         payload = {
             "messages": [
                 {
@@ -231,6 +235,7 @@ Let's think step by step and put final answer after ####."""
             "temperature": 0.7,
         }
 
+        # Set headers for JSON content and bearer authentication
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
@@ -240,6 +245,7 @@ Let's think step by step and put final answer after ####."""
 
         if response.status_code == 200:
             result = response.json()
+            # Extract the model response
             if "choices" in result and len(result["choices"]) > 0:
                 answer = result["choices"][0]["message"]["content"]
                 print(f"  ✓ Response received")
@@ -254,7 +260,7 @@ Let's think step by step and put final answer after ####."""
 
 
 def create_draft_model_config(base_model_config=None):
-    """Create draft model configuration for EAGLE3."""
+    """Combines user config and draft model configuration for EAGLE3."""
     default_config = {
         "architectures": ["LlamaForCausalLMEagle3"],
         "bos_token_id": 128000,
@@ -313,6 +319,7 @@ def run_rl_training_pipeline(
     train_asset = ml_client.data.get(name="dataset_training_finqa", label="latest")
     val_asset = ml_client.data.get(name="dataset_validation_finqa", label="latest")
 
+    # Submit RL pipeline job with all required config and assets
     rl_job = pipeline.create_rl_pipeline(
         huggingface_id=base_model_id,
         train_data_asset=train_asset,
@@ -323,6 +330,7 @@ def run_rl_training_pipeline(
     
     completed_job, status = pipeline.monitor_job(rl_job.name)
     if status == "Completed":
+        # Register the trained model for downstream deployment and tracking
         registered_model = pipeline.register_model(
             job=completed_job,
             model_name_prefix="grpo-finqa-model",
