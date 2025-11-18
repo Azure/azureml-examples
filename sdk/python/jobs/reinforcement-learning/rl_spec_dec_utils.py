@@ -30,6 +30,7 @@ class RLSpecDecPipeline:
     """Main class for managing RL training and Speculative Decoding workflow."""
 
     def __init__(self):
+        # We use an unique identifier for naming resources, this prevents name collisions for resources created in this lab
         self.guid = str(uuid.uuid4())[:8]
 
     def create_rl_pipeline(
@@ -103,22 +104,26 @@ class RLSpecDecPipeline:
         print(f"Monitoring job: {job_name}")
         print(f"Checking every 30 seconds...")
 
+        # Polling loop: avoids AzureML SDK timeouts and gives live status
         while True:
             job = ml_client.jobs.get(job_name)
             status = job.status
             
             print(f"[{time.strftime('%H:%M:%S')}] Status: {status}")
 
+            # Exit on terminal state to avoid infinite loop and allow downstream logic
             if status in ["Completed", "Failed", "Canceled"]:
                 return job, status
-            time.sleep(30)
+            time.sleep(30)  # Throttle polling to avoid API rate limits
 
     def register_model(self, job, model_name_prefix):
         print("Registering model from job output...")
 
+        # Use GUID to ensure model name uniqueness across runs
         model_name = f"{model_name_prefix}-{self.guid}"
         model_output = job.outputs.model_output
 
+        # Assets must be registered as models before use in endpoints 
         model = Model(
             path=model_output.path,
             name=model_name,
@@ -126,8 +131,8 @@ class RLSpecDecPipeline:
             type=AssetTypes.CUSTOM_MODEL,
         )
 
-        registered_model = ml_client.models.create_or_update(model)
-        print(f"Model: {registered_model.name} v{registered_model.version}")
+        registered_model = ml_client.models.create_or_update(model)  # Register the model
+        print(f"Model: {registered_model.name} v{registered_model.version}")  
         print(f"ID: {registered_model.id}")
 
         return registered_model
@@ -135,17 +140,19 @@ class RLSpecDecPipeline:
     def create_spec_dec_endpoint(
         self,
         base_model,
-        instance_type="monogpu",
+        instance_type="monogpu", # Kubernetes supports partial node usage granular upto the GPU level
         compute_name="shj-a100",
     ):
         """Create speculative decoding endpoint using Kubernetes."""
-        model_mount_path="/var/model-mount"
+        # Use a fixed mount path for model assets to standardize deployment layout
+        model_mount_path = "/var/model-mount"
         print("🌐 Creating speculative decoding endpoint...")
 
+        # Unique names prevent collisions and allow parallel experiments
         endpoint_name = f"spec-dec-{self.guid}"
         deployment_name = "spec-dec-deploy"
 
-        # Create Kubernetes endpoint
+        # Use AzureML endpoint abstraction for traffic management and auth
         endpoint = KubernetesOnlineEndpoint(
             name=endpoint_name,
             auth_mode="key",
@@ -155,7 +162,7 @@ class RLSpecDecPipeline:
         print(f"  ✓ Creating endpoint: {endpoint_name}")
         ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
 
-        # Configure probes
+        # Probes are APIs exposed by the deployment which informs the framework if the deployment is healthy and ready to receive traffic
         probe_settings = ProbeSettings(
             initial_delay=1400,
             period=30,
@@ -164,7 +171,7 @@ class RLSpecDecPipeline:
             failure_threshold=30,
         )
 
-        # Environment variables
+        # SGLANG environment variables
         environment_variables = {
             "SPECULATIVE_DECODING_MODE": "true",
             "BASE_MODEL": f"{model_mount_path}/models/base",
@@ -173,7 +180,7 @@ class RLSpecDecPipeline:
             "SERVING_ENGINE": "sglang",
         }
 
-        # Create Kubernetes deployment
+        # Use deployment abstraction for scaling, versioning, and isolation
         deployment = KubernetesOnlineDeployment(
             name=deployment_name,
             endpoint_name=endpoint_name,
@@ -181,7 +188,7 @@ class RLSpecDecPipeline:
             model_mount_path=model_mount_path,
             instance_type=instance_type,
             instance_count=1,
-            environment=ml_client.environments.get("speculative-decoding-env", label="latest"), 
+            environment=ml_client.environments.get("speculative-decoding-env", label="latest"),
             environment_variables=environment_variables,
             liveness_probe=probe_settings,
             readiness_probe=probe_settings,
@@ -194,7 +201,7 @@ class RLSpecDecPipeline:
         print(f"  ✓ Creating deployment (15-20 min)...")
         ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
-        # Route traffic
+        # Route all traffic to new deployment for immediate use
         endpoint.traffic = {deployment_name: 100}
         ml_client.online_endpoints.begin_create_or_update(endpoint).result()
 
