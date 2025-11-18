@@ -42,6 +42,10 @@ class RLSpecDecPipeline:
         config={},
     ):
         """Create and submit RL pipeline job using registry component."""
+
+        # Group Relative Position Optimization (GRPO) and Reinforce Plus Plus (RLPP) are novel Reinforcement techniques
+        # designed to finetune a model to comply to a given reward function.  The RL pipeline is an AzureML pipeline which 
+        # provides all the steps to finetune a base model using GRPO or RLPP on a given dataset.
         print("Creating RL pipeline...")
 
         # Use defaults to ensure reproducibility and avoid missing params
@@ -101,6 +105,7 @@ class RLSpecDecPipeline:
         return rl_run
 
     def monitor_job(self, job_name):
+        # Monitors the job and keeps tracks of the status
         print(f"Monitoring job: {job_name}")
         print(f"Checking every 30 seconds...")
 
@@ -117,13 +122,13 @@ class RLSpecDecPipeline:
             time.sleep(30)  # Throttle polling to avoid API rate limits
 
     def register_model(self, job, model_name_prefix):
+        """Assets must be registered as models before use in endpoints."""
         print("Registering model from job output...")
 
         # Use GUID to ensure model name uniqueness across runs
         model_name = f"{model_name_prefix}-{self.guid}"
         model_output = job.outputs.model_output
 
-        # Assets must be registered as models before use in endpoints 
         model = Model(
             path=model_output.path,
             name=model_name,
@@ -159,7 +164,7 @@ class RLSpecDecPipeline:
             compute=compute_name,
         )
 
-        print(f"  ✓ Creating endpoint: {endpoint_name}")
+        print(f"Creating endpoint: {endpoint_name}")
         ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
 
         # Probes are APIs exposed by the deployment which informs the framework if the deployment is healthy and ready to receive traffic
@@ -177,7 +182,7 @@ class RLSpecDecPipeline:
             "BASE_MODEL": f"{model_mount_path}/models/base",
             "DRAFT_MODEL": f"{model_mount_path}/models/draft",
             "NUM_SPECULATIVE_TOKENS": "5",
-            "SERVING_ENGINE": "sglang",
+            "SERVING_ENGINE": "sglang", # the serving engine to use
         }
 
         # Use deployment abstraction for scaling, versioning, and isolation
@@ -198,22 +203,20 @@ class RLSpecDecPipeline:
             ),
         )
 
-        print(f"  ✓ Creating deployment (15-20 min)...")
+        print(f"Creating deployment (15-20 min)...")
         ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
         # Route all traffic to new deployment for immediate use
         endpoint.traffic = {deployment_name: 100}
         ml_client.online_endpoints.begin_create_or_update(endpoint).result()
 
-        print(f"  ✓ Endpoint ready: {endpoint_name}")
+        print(f"Endpoint ready: {endpoint_name}")
 
         return endpoint_name
 
     def test_endpoint(self, endpoint_name):
-        """Test endpoint with a sample request.
-        Validates that the deployed endpoint is live and returns expected results, ensuring end-to-end functionality.
-        """
-        print("🧪 Testing endpoint...")
+        """Run a test request against a deployed endpoint and print the result."""
+        print("Testing endpoint...")
         # Retrieve endpoint URI and API key to authenticate test request
         scoring_uri = ml_client.online_endpoints.get(endpoint_name).scoring_uri
         api_key = ml_client.online_endpoints.get_keys(endpoint_name).primary_key
@@ -248,7 +251,7 @@ Let's think step by step and put final answer after ####."""
             # Extract the model response
             if "choices" in result and len(result["choices"]) > 0:
                 answer = result["choices"][0]["message"]["content"]
-                print(f"  ✓ Response received")
+                print(f"Response received")
                 print(f"\n{'='*60}")
                 print(answer)
                 print(f"{'='*60}\n")
@@ -312,7 +315,10 @@ def run_rl_training_pipeline(
     compute_cluster="h100-dedicated",
     config={},
 ):
-    print(" Starting RL Training Pipeline")
+    # Group Relative Position Optimization (GRPO) and Reinforce Plus Plus (RLPP) are novel Reinforcement techniques
+    # designed to finetune a model to comply to a given reward function.  The RL pipeline is an AzureML pipeline which 
+    # provides all the steps to finetune a base model using GRPO or RLPP on a given dataset.
+    print("Starting RL Training Pipeline")
     pipeline = RLSpecDecPipeline()
 
     # We have uploaded the data assets to our registry in advance for this tutorial
@@ -342,7 +348,8 @@ def run_rl_training_pipeline(
         return rl_job, status, None
 
 
-def download_and_register_hf_model(hf_model_id, azureml_model_name): #[WIP]
+def download_and_register_hf_model(hf_model_id, azureml_model_name):
+    """Download a HuggingFace model and register it as an AzureML model."""
     guid = str(uuid.uuid4())[:4]
     temp_dir = f"./models/temp-{guid}/model_artifact/model"
     os.makedirs(temp_dir, exist_ok=True)
@@ -364,6 +371,9 @@ def run_draft_model_pipeline(
     num_epochs=1,
     monitor=False,
 ):
+    # Fine-tuning the draft model in speculative decoding makes its predictions closer to the target model, increasing token acceptance 
+    # and reducing rollbacks. This alignment improves decoding speed and efficiency while maintaining output quality. It also enables 
+    # better performance for domain-specific tasks by adapting the draft model to relevant data. AzureML provides a prebuilt pipeline for this fine-tuning process.
     print("\n" + "="*60)
     print("🎯 STARTING DRAFT MODEL PIPELINE")
     print("="*60 + "\n")
@@ -377,18 +387,16 @@ def run_draft_model_pipeline(
 
     with open(draft_config_path, "w") as f:
         json.dump(draft_model_config, f, indent=4)
-    print(f"  ✓ Draft model config saved: {draft_config_path}")
+    print(f"Draft model config saved: {draft_config_path}")
 
     # Verify training data
     if not os.path.exists(draft_train_data_path):
         raise FileNotFoundError(f"Draft model training data not found: {draft_train_data_path}")
-    print(f"  ✓ Draft training data: {draft_train_data_path}")
+    print(f"Draft training data: {draft_train_data_path}")
 
-    # Load component
+    # Get component from registry
     draft_component_name = "eagle3_chat_completion_pipeline"
-    print(f"  ✓ Loading component: {draft_component_name}")
     eagle3_comp = registry_ml_client.components.get(name=draft_component_name, label="latest")
-    print(f"  ✓ Component loaded: {eagle3_comp.name} v{eagle3_comp.version}")
 
     # Define pipeline
     @pipeline
@@ -408,12 +416,12 @@ def run_draft_model_pipeline(
 
     # Submit pipeline
     draft_job = speculative_decoding_draft_pipeline()
-    print("  ✓ Submitting draft model training pipeline...")
+    print("Submitting draft model training pipeline...")
     draft_job = ml_client.jobs.create_or_update(
         draft_job, experiment_name="speculative-decoding-draft-model"
     )
 
-    print(f"  ✓ Job submitted: {draft_job.name}")
+    print(f"Job submitted: {draft_job.name}")
     print(f"  📊 Studio URL: {draft_job.studio_url}")
 
     # Monitor if requested
@@ -431,6 +439,9 @@ def prepare_combined_model_for_deployment(
     model_name="grpo-speculative-decoding",
     force=False,
 ):
+    # A draft model deployment requires both the draft model and the base model.
+    # The sglang engine uses the draft model to generate speculative tokens, while the base model
+    # verifies and finalizes the output. This function prepares both models for deployment.
     print("Preparing combined model for deployment...")
 
     draft_pipeline = DraftModelPipeline()
@@ -449,24 +460,24 @@ def prepare_combined_model_for_deployment(
             src_path = files_found[0]  # Take the first match
             dst_path = Path(draft_model_dir) / file_pattern
             shutil.move(str(src_path), str(dst_path))
-            print(f"  Moved {file_pattern}")
+            print(f"Moved {file_pattern}")
         else:
-            print(f"  File not found: {file_pattern}")
+            print(f"File not found: {file_pattern}")
 
     # Clean up temporary directory
     if os.path.exists(temp_download_dir):
         shutil.rmtree(temp_download_dir)
-        print(f"  Cleaned up temporary directory")
+        print(f"Cleaned up temporary directory")
     else:
-        print(f"  Draft model already exists: {draft_model_dir}")
+        print(f"Draft model already exists: {draft_model_dir}")
 
     # Download base model from HuggingFace
     if force or not os.path.exists(base_model_dir):
         print("\nDownloading base model...")
         snapshot_download(repo_id=base_model_hf_id, local_dir=base_model_dir)
-        print(f"  Base model downloaded to: {base_model_dir}")
+        print(f"Base model downloaded to: {base_model_dir}")
     else:
-        print(f"  Base model already exists: {base_model_dir}")
+        print(f"Base model already exists: {base_model_dir}")
 
     # Upload combined model
     combined_model = draft_pipeline.upload_combined_model(
@@ -536,7 +547,7 @@ def deploy_speculative_decoding_endpoint(
         ),
     )
 
-    print(f"  Creating deployment (this takes 15-20 min)...")
+    print(f"Creating deployment (this takes 15-20 min)...")
     ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
     # Route all endpoint traffic to this deployment for immediate use
@@ -548,9 +559,7 @@ def deploy_speculative_decoding_endpoint(
 
 
 def test_deployment(endpoint_name):
-    """
-    Run a test request against a deployed endpoint and print the result.
-    """
+    """Run a test request against a deployed endpoint and print the result."""
     print("Testing deployment")
 
     pipeline = RLSpecDecPipeline()
@@ -584,6 +593,10 @@ class DraftModelPipeline:
         num_epochs=1,
         component_name="speculative_decoding_draft_pipeline",
     ):
+        # Fine-tuning the draft model in speculative decoding makes its predictions closer to the target model, increasing token acceptance 
+        # and reducing rollbacks. This alignment improves decoding speed and efficiency while maintaining output quality. It also enables 
+        # better performance for domain-specific tasks by adapting the draft model to relevant data. AzureML provides a prebuilt pipeline for this fine-tuning process.
+    
         print("Creating draft model pipeline...")
 
         # Use validation data same as training if not provided
@@ -602,6 +615,7 @@ class DraftModelPipeline:
         with open(config_path, "w") as f:
             json.dump(draft_model_config, f, indent=4)
 
+        # Get the draft model pipeline
         try:
             pipeline_component_func = registry_ml_client.components.get(
                 name=component_name,
@@ -693,6 +707,7 @@ class DraftModelPipeline:
 
     def _update_draft_config(self, model_dir):
         """Update draft model config with extended context settings."""
+        # The settings for running a model come both from the model files as well as tuning we apply on top.
 
         config_path = os.path.join(model_dir, "config.json")
 
@@ -729,6 +744,9 @@ class DraftModelPipeline:
         model_name="speculative-decoding-combined",
     ):
         """Upload base and draft models as a combined custom model."""
+        # A draft model deployment requires both the draft model and the base model.
+        # The sglang engine uses the draft model to generate speculative tokens, while the base model
+        # verifies and finalizes the output. This function prepares both models for deployment.
 
         print("Creating combined model package...")
         combined_dir = "./models/"
