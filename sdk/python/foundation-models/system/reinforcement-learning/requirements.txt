@@ -1,0 +1,4 @@
+azure-ai-ml
+azure-identity
+huggingface_hub
+matplotlib
