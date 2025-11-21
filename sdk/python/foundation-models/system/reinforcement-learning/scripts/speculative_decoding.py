@@ -29,10 +29,10 @@ class DraftModelPipeline:
         num_epochs=1,
         component_name="speculative_decoding_draft_pipeline",
     ):
-        # Fine-tuning the draft model in speculative decoding makes its predictions closer to the target model, increasing token acceptance 
-        # and reducing rollbacks. This alignment improves decoding speed and efficiency while maintaining output quality. It also enables 
+        # Fine-tuning the draft model in speculative decoding makes its predictions closer to the target model, increasing token acceptance
+        # and reducing rollbacks. This alignment improves decoding speed and efficiency while maintaining output quality. It also enables
         # better performance for domain-specific tasks by adapting the draft model to relevant data. AzureML provides a prebuilt pipeline for this fine-tuning process.
-    
+
         print("Creating draft model pipeline...")
 
         # Use validation data same as training if not provided
@@ -54,10 +54,11 @@ class DraftModelPipeline:
         # Get the draft model pipeline
         try:
             pipeline_component_func = self.registry_ml_client.components.get(
-                name=component_name,
-                label="latest"
+                name=component_name, label="latest"
             )
-            print(f"Component loaded: {pipeline_component_func.name} v{pipeline_component_func.version}")
+            print(
+                f"Component loaded: {pipeline_component_func.name} v{pipeline_component_func.version}"
+            )
         except Exception as e:
             print(f"Failed to load component: {e}")
             print(f"Make sure component '{component_name}' exists in registry")
@@ -67,9 +68,15 @@ class DraftModelPipeline:
         @dsl.pipeline
         def create_pipeline():
             draft_pipeline = pipeline_component_func(
-                mlflow_model_path=Input(type=AssetTypes.MLFLOW_MODEL, path=base_model_path),
-                dataset_train_split=Input(type=AssetTypes.URI_FILE, path=training_data_path),
-                dataset_validation_split=Input(type=AssetTypes.URI_FILE, path=validation_data_path),
+                mlflow_model_path=Input(
+                    type=AssetTypes.MLFLOW_MODEL, path=base_model_path
+                ),
+                dataset_train_split=Input(
+                    type=AssetTypes.URI_FILE, path=training_data_path
+                ),
+                dataset_validation_split=Input(
+                    type=AssetTypes.URI_FILE, path=validation_data_path
+                ),
                 draft_model_config=Input(type=AssetTypes.URI_FILE, path=config_path),
                 compute_model_import=compute_name,
                 compute_eagle3_training=compute_name,
@@ -89,8 +96,7 @@ class DraftModelPipeline:
         print("Submitting draft model pipeline...")
         pipeline_object.display_name = f"draft-model-{self.guid}"
         draft_run = self.ml_client.jobs.create_or_update(
-            pipeline_object,
-            experiment_name="speculative-decoding-draft-model"
+            pipeline_object, experiment_name="speculative-decoding-draft-model"
         )
 
         print(f"Job submitted: {draft_run.name}")
@@ -110,7 +116,7 @@ class DraftModelPipeline:
             name=job_name,
             output_name="output_model",
             download_path=output_dir,
-            all=True
+            all=True,
         )
 
         print(f"Draft model downloaded to: {output_dir}")
@@ -159,16 +165,18 @@ class DraftModelPipeline:
             draft_config = json.load(f)
 
         # Update with extended context settings
-        draft_config.update({
-            "max_position_embeddings": 131072,
-            "rope_scaling": {
-                "factor": 8,
-                "high_freq_factor": 4,
-                "low_freq_factor": 1,
-                "original_max_position_embeddings": 8192,
-                "rope_type": "llama3"
+        draft_config.update(
+            {
+                "max_position_embeddings": 131072,
+                "rope_scaling": {
+                    "factor": 8,
+                    "high_freq_factor": 4,
+                    "low_freq_factor": 1,
+                    "original_max_position_embeddings": 8192,
+                    "rope_type": "llama3",
+                },
             }
-        })
+        )
 
         with open(config_path, "w") as f:
             json.dump(draft_config, f, indent=4)
@@ -201,7 +209,7 @@ class DraftModelPipeline:
             tags={
                 "type": "speculative_decoding",
                 "architecture": "eagle3",
-            }
+            },
         )
 
         registered_model = self.ml_client.models.create_or_update(model)
@@ -232,7 +240,7 @@ def create_draft_model_config(base_model_config=None):
         "transformers_version": "4.28.1",
         "use_cache": True,
         "vocab_size": 128256,
-        "draft_vocab_size": 32000
+        "draft_vocab_size": 32000,
     }
 
     if base_model_config:
@@ -250,12 +258,12 @@ def run_draft_model_pipeline(
     num_epochs=1,
     monitor=False,
 ):
-    # Fine-tuning the draft model in speculative decoding makes its predictions closer to the target model, increasing token acceptance 
-    # and reducing rollbacks. This alignment improves decoding speed and efficiency while maintaining output quality. It also enables 
+    # Fine-tuning the draft model in speculative decoding makes its predictions closer to the target model, increasing token acceptance
+    # and reducing rollbacks. This alignment improves decoding speed and efficiency while maintaining output quality. It also enables
     # better performance for domain-specific tasks by adapting the draft model to relevant data. AzureML provides a prebuilt pipeline for this fine-tuning process.
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("🎯 STARTING DRAFT MODEL PIPELINE")
-    print("="*60 + "\n")
+    print("=" * 60 + "\n")
 
     # Create draft model config
     draft_model_config = create_draft_model_config()
@@ -270,20 +278,30 @@ def run_draft_model_pipeline(
 
     # Verify training data
     if not os.path.exists(draft_train_data_path):
-        raise FileNotFoundError(f"Draft model training data not found: {draft_train_data_path}")
+        raise FileNotFoundError(
+            f"Draft model training data not found: {draft_train_data_path}"
+        )
     print(f"Draft training data: {draft_train_data_path}")
 
     # Get component from registry
     draft_component_name = "eagle3_chat_completion_pipeline"
-    eagle3_comp = registry_ml_client.components.get(name=draft_component_name, label="latest")
+    eagle3_comp = registry_ml_client.components.get(
+        name=draft_component_name, label="latest"
+    )
 
     # Define pipeline
     @dsl.pipeline
     def speculative_decoding_draft_pipeline():
         node = eagle3_comp(
-            mlflow_model_path=Input(type=AssetTypes.MLFLOW_MODEL, path=base_model_mlflow_path),
-            dataset_train_split=Input(type=AssetTypes.URI_FILE, path=draft_train_data_path),
-            dataset_validation_split=Input(type=AssetTypes.URI_FILE, path=draft_train_data_path),
+            mlflow_model_path=Input(
+                type=AssetTypes.MLFLOW_MODEL, path=base_model_mlflow_path
+            ),
+            dataset_train_split=Input(
+                type=AssetTypes.URI_FILE, path=draft_train_data_path
+            ),
+            dataset_validation_split=Input(
+                type=AssetTypes.URI_FILE, path=draft_train_data_path
+            ),
             draft_model_config=Input(type=AssetTypes.URI_FILE, path=draft_config_path),
             compute_model_import=compute_cluster,
             compute_eagle3_training=compute_cluster,
@@ -324,7 +342,9 @@ def prepare_combined_model_for_deployment(
     # verifies and finalizes the output. This function prepares both models for deployment.
     print("Preparing combined model for deployment...")
 
-    draft_pipeline = DraftModelPipeline(ml_client=ml_client, registry_ml_client=registry_ml_client)
+    draft_pipeline = DraftModelPipeline(
+        ml_client=ml_client, registry_ml_client=registry_ml_client
+    )
 
     # Define paths
     draft_model_dir = "./models/draft"
@@ -373,26 +393,28 @@ def prepare_combined_model_for_deployment(
 def deploy_speculative_decoding_endpoint(
     ml_client: MLClient,
     combined_model,
-    instance_type,            # In kubernetes we can be granular upto the gpu level and leave the rest of the node unused
-    compute_name,             # Compute argument for KubernetesOnlineEndpoint
+    instance_type,  # In kubernetes we can be granular upto the gpu level and leave the rest of the node unused
+    compute_name,  # Compute argument for KubernetesOnlineEndpoint
 ):
     print("Deploying speculative decoding endpoint")
 
     endpoint_name = f"spec-dec-grpo"
     deployment_name = "speculative-deployment"
     model_mount_path = "/var/model-mount"
-    endpoint_description = "Speculative decoding endpoint with GRPO fine-tuned base model"
+    endpoint_description = (
+        "Speculative decoding endpoint with GRPO fine-tuned base model"
+    )
     endpoint_tags = {"model_type": "speculative_decoding", "algorithm": "grpo"}
     environment = ml_client.environments.get("speculative-decoding-env", label="latest")
     if environment is None or environment.id is None:
         raise ValueError("Speculative decoding environment not found in registry")
 
-    environment_variables = {                                               # Environment variables configure the serving engine and model paths for the container                                         
-        "SPECULATIVE_DECODING_MODE": "true",                                # Used sglang framework for inference
-        "BASE_MODEL": f"{model_mount_path}/models/base",                    # Path for base model
-        "DRAFT_MODEL": f"{model_mount_path}/models/draft",                  # Path for draft model
+    environment_variables = {  # Environment variables configure the serving engine and model paths for the container
+        "SPECULATIVE_DECODING_MODE": "true",  # Used sglang framework for inference
+        "BASE_MODEL": f"{model_mount_path}/models/base",  # Path for base model
+        "DRAFT_MODEL": f"{model_mount_path}/models/draft",  # Path for draft model
         "NUM_SPECULATIVE_TOKENS": "5",
-        "SERVING_ENGINE": "sglang",                                         # the serving engine to use
+        "SERVING_ENGINE": "sglang",  # the serving engine to use
     }
 
     endpoint_name = create_kubernetes_deployment(

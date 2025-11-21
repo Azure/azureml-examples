@@ -2,7 +2,7 @@ import uuid
 from azure.ai.ml import Input, MLClient, dsl
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import Model
-from scripts.run import monitor_run
+from scripts.run import get_run_output_path, monitor_run
 
 
 class RLSpecDecPipeline:
@@ -25,7 +25,7 @@ class RLSpecDecPipeline:
         """Create and submit RL pipeline job using registry component."""
 
         # Group Relative Position Optimization (GRPO) and Reinforce Plus Plus (RLPP) are novel Reinforcement techniques
-        # designed to finetune a model to comply to a given reward function.  The RL pipeline is an AzureML pipeline which 
+        # designed to finetune a model to comply to a given reward function.  The RL pipeline is an AzureML pipeline which
         # provides all the steps to finetune a base model using GRPO or RLPP on a given dataset.
         print("Creating RL pipeline...")
 
@@ -55,8 +55,7 @@ class RLSpecDecPipeline:
 
         # Use registry component for versioning and reuse
         pipeline_component_func = self._registry_ml_client.components.get(
-            name="pipeline_rl_finetune",
-            label="latest"
+            name="pipeline_rl_finetune", label="latest"
         )
 
         # Define pipeline to encapsulate all steps for traceability and reuse
@@ -68,7 +67,7 @@ class RLSpecDecPipeline:
                 compute_finetune=compute_cluster,
                 data_train_files=Input(type=AssetTypes.URI_FILE, path=train_data_path),
                 data_val_files=Input(type=AssetTypes.URI_FILE, path=valid_data_path),
-                **default_config, # Pass all config as kwargs for maintainability and future-proofing
+                **default_config,  # Pass all config as kwargs for maintainability and future-proofing
             )
             return {"model_output": rl_pipeline.outputs.model_output}
 
@@ -77,33 +76,43 @@ class RLSpecDecPipeline:
         # Force rerun to ensure new job, avoid stale results
         if pipeline_object.settings is not None:
             pipeline_object.settings.force_rerun = True
-            pipeline_object.settings.continue_on_step_failure = False  # Fail fast for debugging
+            pipeline_object.settings.continue_on_step_failure = (
+                False  # Fail fast for debugging
+            )
 
         # Submit job
         print("Submitting pipeline...")
         pipeline_object.display_name = f"{algorithm}-{self.guid}"
-        rl_run = self._ml_client.jobs.create_or_update(pipeline_object, experiment_name=experiment_name)
+        rl_run = self._ml_client.jobs.create_or_update(
+            pipeline_object, experiment_name=experiment_name
+        )
         print(f"Studio URL: {rl_run.studio_url}")  # Clickable link for monitoring
 
         return rl_run
 
-    def register_model(self, job, model_name_prefix):
+    def register_model(self, job, model_name_prefix, description="", tags={}):
         """Assets must be registered as models before use in endpoints."""
         print("Registering model from job output...")
 
         # Use GUID to ensure model name uniqueness across runs
         model_name = f"{model_name_prefix}-{self.guid}"
-        model_output = job.outputs.model_output
-
-        model = Model(
-            path=model_output.path,
-            name=model_name,
-            description="GRPO fine-tuned model on FinQA",
-            type=AssetTypes.CUSTOM_MODEL,
+        model_output_path = get_run_output_path(
+            self._ml_client, job.name, "model_output"
         )
 
-        registered_model = self._ml_client.models.create_or_update(model)  # Register the model
-        print(f"Model: {registered_model.name} v{registered_model.version}")  
+        model = Model(
+            name=model_name,
+            path=model_output_path,
+            type=AssetTypes.CUSTOM_MODEL,
+            description=description,
+            job_name=job.name,
+            tags=tags,
+        )
+
+        registered_model = self._ml_client.models.create_or_update(
+            model
+        )  # Register the model
+        print(f"Model: {registered_model.name} v{registered_model.version}")
         print(f"ID: {registered_model.id}")
 
         return registered_model
@@ -120,7 +129,7 @@ def run_rl_training_pipeline(
     config={},
 ):
     # Group Relative Position Optimization (GRPO) and Reinforce Plus Plus (RLPP) are novel Reinforcement techniques
-    # designed to finetune a model to comply to a given reward function.  The RL pipeline is an AzureML pipeline which 
+    # designed to finetune a model to comply to a given reward function.  The RL pipeline is an AzureML pipeline which
     # provides all the steps to finetune a base model using GRPO or RLPP on a given dataset.
     print("Starting RL Training Pipeline")
     pipeline = RLSpecDecPipeline(ml_client, registry_ml_client)
@@ -138,14 +147,20 @@ def run_rl_training_pipeline(
         compute_cluster=compute_cluster,
         config=config,
     )
-    
+
     completed_job, status = monitor_run(ml_client, rl_job)
     if status == "Completed":
         # Register the trained model for downstream deployment and tracking
+        description = f"{rl_method} fine-tuned model on FinQA"
+        tags = {
+            "base_model_id": base_model_id,
+            "rl_method": rl_method,
+        }
         registered_model = pipeline.register_model(
             job=completed_job,
-            model_name_prefix="grpo-finqa-model",
-            # base_model_id=base_model_id,
+            model_name_prefix=f"{rl_method}-finqa-model",
+            description=description,
+            tags=tags,
         )
         return rl_job, status, registered_model
     else:
