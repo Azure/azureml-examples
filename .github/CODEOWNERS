@@ -1,33 +1,3 @@
-# See for instructions on this file https://help.github.com/articles/about-codeowners/
-
-/cli/ @kingernupur @jayesh-tanna @achauhan-scc @imatiach-msft
-/infra/ @kingernupur @jayesh-tanna @achauhan-scc
-
-/python-sdk/tutorials/automl-with-azureml @rtanase @cesardelatorre @anupsms @jeff-shepherd @raduk @swatig007 @MercyPrasanna @PhaniShekhar @sjinthehouse @vadthyavath @mispa-ms
-
-/cli/monitoring/azureml-e2e-model-monitoring @nemanjarajic @ahughes-msft @yunjie-hub
-/cli/monitoring/advanced-model-monitoring.yaml @nemanjarajic @ahughes-msft @yunjie-hub
-/cli/monitoring/custom-monitoring.yaml @nemanjarajic @ahughes-msft @yunjie-hub  
-/cli/monitoring/generation-safety-quality-monitoring.yaml @ahughes-msft @yunjie-hub
-/cli/monitoring/model-monitoring-with-collected-data.yaml @ahughes-msft @yunjie-hub
-/cli/monitoring/out-of-box-monitoring.yaml @ahughes-msft @yunjie-hub
-/cli/jobs/finetuning @amltres @sasum @marici
-/sdk/python/foundation-models/benchmarking/evaluating_claude_models.ipynb @arun-rajora
-/sdk/python/foundation-models/benchmarking/evaluating_oai_models.ipynb @arun-rajora
-/sdk/python/foundation-models/benchmarking/evaluation_pipelines/* @arun-rajora
-/sdk/python/resources/workspace/workspace.ipynb @joshharrin @seanyao1
-/sdk/python/foundation-models/cohere/cohere-aisearch-rag.ipynb @stewart-co @kseniia-cohere  
-/sdk/python/foundation-models/cohere/cohere_faiss_langchain_embed.ipynb @stewart-co @kseniia-cohere  
-/sdk/python/foundation-models/cohere/cohere-aisearch-langchain-rag.ipynb @stewart-co @kseniia-cohere  
-sdk/python/foundation-models/cohere/command_faiss_langchain.ipynb @stewart-co @kseniia-cohere  
-sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @kseniia-cohere
-/sdk/python/foundation-models/nixtla/ @AzulGarza
-/sdk/python/foundation-models/healthcare-ai/ @jmerkow @ivantarapov
-/sdk/python/assets/data/versioning.ipynb @ShakutaiGit
-/sdk/python/jobs/finetuning @amltres @sasum @marici
-/sdk/python/jobs/grpo @sharvin2187 @rtanase @gpenumetsa-msft @yeshsurya @babu-namburi
-
-#### files referenced in docs (DO NOT EDIT, except for Docs team!!!) #############################################################################################
 /cli/assets/component/train.yml @Azure/AI-Platform-Docs
 /cli/assets/data/cloud-file-https.yml @Azure/AI-Platform-Docs
 /cli/assets/data/cloud-file-wasbs.yml @Azure/AI-Platform-Docs
@@ -282,5 +252,3 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /setup/setup-repo/azure-github.sh @Azure/AI-Platform-Docs
 /tutorials/get-started-notebooks/cloud-workstation.ipynb @Azure/AI-Platform-Docs
 /tutorials/get-started-notebooks/workstation_env.yml @Azure/AI-Platform-Docs
-# End of docs files ########################################################################################################
-
