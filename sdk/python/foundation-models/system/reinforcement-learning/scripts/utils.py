@@ -13,7 +13,9 @@ def setup_workspace(config_path="./config.json", registry_name="test_centralus")
         credential = InteractiveBrowserCredential()
 
     ml_client = MLClient.from_config(credential=credential, path=config_path)
-    _ = ml_client._workspaces.get(ml_client.workspace_name) # Load credentials to verify access
+    _ = ml_client._workspaces.get(
+        ml_client.workspace_name
+    )  # Load credentials to verify access
     registry_ml_client = MLClient(credential, registry_name=registry_name)
 
     ws = ml_client.workspaces.get(ml_client.workspace_name)

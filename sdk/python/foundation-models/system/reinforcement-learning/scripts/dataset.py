@@ -29,12 +29,16 @@ def download_finqa_dataset(src: str, target_dir: str = "data/raw"):
     with TemporaryDirectory() as tmpdir:
         print(f"Cloning raw FinQA dataset to {tmpdir} ...")
         subprocess.run(["git", "clone", src, tmpdir], check=True)
+        os.makedirs(target_dir, exist_ok=True)
         print("Converting FinQA dataset to jsonl format ...")
         dataset_dir = os.path.join(tmpdir, "dataset")
-        for file_name in os.listdir(dataset_dir):
-            target_file_name = file_name.split(".")[0] + ".jsonl"
-            os.makedirs(target_dir, exist_ok=True)
-            convert_to_jsonl(current_path=os.path.join(dataset_dir, file_name), target_path=os.path.join(target_dir, target_file_name))
+        filenames = ["train.json", "dev.json", "test.json"]
+        for filename in filenames:
+            target_file_name = filename.split(".")[0] + ".jsonl"
+            convert_to_jsonl(
+                current_path=os.path.join(dataset_dir, filename),
+                target_path=os.path.join(target_dir, target_file_name),
+            )
 
 
 def convert_to_jsonl(current_path: str, target_path: str):
@@ -46,8 +50,10 @@ def convert_to_jsonl(current_path: str, target_path: str):
     print(f"Converted {current_path} to {target_path}.")
 
 
-def prepare_finqa_dataset(ml_client: MLClient, data_dir: str = "data", register_datasets: bool = False) -> tuple[str, str, str]:
-    """Prepare the FinQA dataset for training and evaluation."""   
+def prepare_finqa_dataset(
+    ml_client: MLClient, data_dir: str = "data", register_datasets: bool = False
+) -> tuple[str, str, str]:
+    """Prepare the FinQA dataset for training and evaluation."""
     # VERL finetuning relies on acceptable data sources for reward modeling and evaluation
     data_source = "openai/gsm8k"
 
@@ -68,30 +74,42 @@ def prepare_finqa_dataset(ml_client: MLClient, data_dir: str = "data", register_
         return "\n".join(str(item) for item in data_list)
 
     def format_table(table_list: list):
-            """Format table data as string"""
-            if not table_list:
-                return ""
-            table_str = "\nTable:\n"
-            for row in table_list:
-                if isinstance(row, list):
-                    table_str += " | ".join(str(cell) for cell in row) + "\n"
-                else:
-                    table_str += str(row) + "\n"
-            return table_str
+        """Format table data as string"""
+        if not table_list:
+            return ""
+        table_str = "\nTable:\n"
+        for row in table_list:
+            if isinstance(row, list):
+                table_str += " | ".join(str(cell) for cell in row) + "\n"
+            else:
+                table_str += str(row) + "\n"
+        return table_str
 
     def map_fn(example: pd.Series, idx: int, split: str):
         """Map function to transform each example into desired format."""
         pre_instruction = "Please answer the following financial question based on the context provided."
-        post_instruction = 'Let\'s think step by step and output the final answer after "####".'
+        post_instruction = (
+            'Let\'s think step by step and output the final answer after "####".'
+        )
         qa = example.get("qa", {})
         question = qa.get("question", "")
-        answer = qa.get('answer', qa.get('exe_ans', ''))
-        gold_evidence = "\n".join(qa.get('gold_inds', {}).values())
+        answer = qa.get("answer", qa.get("exe_ans", ""))
+        gold_evidence = "\n".join(qa.get("gold_inds", {}).values())
         pre_text = format_list_to_string(example.get("pre_text", []))
         post_text = format_list_to_string(example.get("post_text", []))
-        table = format_table(example.get('table', [])).strip()
+        table = format_table(example.get("table", [])).strip()
         # Build prompt content according to specified schema
-        prompt_content = "\n\n".join([pre_instruction, "Context: " + pre_text, gold_evidence, post_text, table, "Question: " + question, post_instruction])
+        prompt_content = "\n\n".join(
+            [
+                pre_instruction,
+                "Context: " + pre_text,
+                gold_evidence,
+                post_text,
+                table,
+                "Question: " + question,
+                post_instruction,
+            ]
+        )
         data = {
             "data_source": data_source,
             "prompt": [
@@ -117,9 +135,13 @@ def prepare_finqa_dataset(ml_client: MLClient, data_dir: str = "data", register_
     valid_dataset = pd.read_json(valid_dataset_path, lines=True)
 
     # map datasets
-    train_dataset = train_dataset.apply(lambda x: map_fn(x, x.name, split="train"), axis=1)
+    train_dataset = train_dataset.apply(
+        lambda x: map_fn(x, x.name, split="train"), axis=1
+    )
     test_dataset = test_dataset.apply(lambda x: map_fn(x, x.name, split="test"), axis=1)
-    valid_dataset = valid_dataset.apply(lambda x: map_fn(x, x.name, split="valid"), axis=1)
+    valid_dataset = valid_dataset.apply(
+        lambda x: map_fn(x, x.name, split="valid"), axis=1
+    )
 
     # save locally as jsonl
     train_dataset_path = os.path.join(data_dir, "train.jsonl")
@@ -134,7 +156,11 @@ def prepare_finqa_dataset(ml_client: MLClient, data_dir: str = "data", register_
         train_data = register_dataset(ml_client, "finqa_train", train_dataset_path)
         test_data = register_dataset(ml_client, "finqa_test", test_dataset_path)
         valid_data = register_dataset(ml_client, "finqa_valid", valid_dataset_path)
-        if (train_data and train_data.id) and (test_data and test_data.id) and (valid_data and valid_data.id):
+        if (
+            (train_data and train_data.id)
+            and (test_data and test_data.id)
+            and (valid_data and valid_data.id)
+        ):
             return train_data.id, test_data.id, valid_data.id
-    
+
     return train_dataset_path, test_dataset_path, valid_dataset_path

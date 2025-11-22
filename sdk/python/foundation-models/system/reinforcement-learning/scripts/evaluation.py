@@ -5,7 +5,8 @@ from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import Job
 from scripts.run import monitor_run
 
-class EvaluationPipeline():
+
+class EvaluationPipeline:
     """Run Evaluation"""
 
     DEFAULT_CONFIGS = {
@@ -23,8 +24,7 @@ class EvaluationPipeline():
         self.guid = str(uuid.uuid4())[:8]
         self._ml_client = ml_client
         self._eval_pipeline_component = registry_ml_client.components.get(
-            name="pipeline_model_evaluation",
-            label="latest"
+            name="pipeline_model_evaluation", label="latest"
         )
 
     def create_evaluate_pipeline(
@@ -35,7 +35,7 @@ class EvaluationPipeline():
         validation_dataset_path: Input,
         base_model_path: Optional[Input] = None,
         instance_type: Optional[str] = None,
-        config = {},
+        config={},
     ) -> Job:
         """Create and submit evaluation pipeline job using registry component."""
 
@@ -52,7 +52,7 @@ class EvaluationPipeline():
                 checkpoint_base_path_1=model_dir_1,
                 checkpoint_base_path_2=model_dir_2,
                 validation_file=validation_dataset_path,
-                **self.DEFAULT_CONFIGS
+                **self.DEFAULT_CONFIGS,
             )
             return {"evaluation_results": eval_pipeline.outputs.evaluation_results}
 
@@ -68,7 +68,9 @@ class EvaluationPipeline():
         # Submit job
         print("✓ Submitting Model Evaluation Pipeline ...")
         pipeline_object.display_name = f"evaluate-model-{self.guid}"
-        eval_run = self._ml_client.jobs.create_or_update(pipeline_object, experiment_name="evaluate-model")
+        eval_run = self._ml_client.jobs.create_or_update(
+            pipeline_object, experiment_name="evaluate-model"
+        )
 
         print(f"✓ Job submitted: {eval_run.name}")
         print(f"📊 Studio URL: {eval_run.studio_url}")
@@ -93,8 +95,14 @@ def run_evaluation_pipeline(
 
     grpo_model_input = Input(type=AssetTypes.URI_FOLDER, path=grpo_model_dir)
     rlpp_model_input = Input(type=AssetTypes.URI_FOLDER, path=rlpp_model_dir)
-    base_model_input = Input(type=AssetTypes.URI_FOLDER, path=base_model_path) if isinstance(base_model_path, str) else base_model_path
-    validation_dataset_input = Input(type=AssetTypes.URI_FILE, path=validation_dataset_path)
+    base_model_input = (
+        Input(type=AssetTypes.URI_FOLDER, path=base_model_path)
+        if isinstance(base_model_path, str)
+        else base_model_path
+    )
+    validation_dataset_input = Input(
+        type=AssetTypes.URI_FILE, path=validation_dataset_path
+    )
 
     eval_job = pipeline.create_evaluate_pipeline(
         compute=compute_cluster,

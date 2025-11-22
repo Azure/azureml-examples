@@ -15,18 +15,18 @@ from azure.ai.ml.entities import (
 
 def get_default_probe_settings() -> ProbeSettings:
     """Get default probe settings for deployments."""
-    return ProbeSettings(                                     # Probes are APIs exposed by the deployment which informs the frameworktraffic
-        initial_delay=1400,                                   # if the deployment is healthy and ready to receive 
+    return ProbeSettings(  # Probes are APIs exposed by the deployment which informs the frameworktraffic
+        initial_delay=1400,  # if the deployment is healthy and ready to receive
         period=30,
         timeout=2,
         success_threshold=1,
-        failure_threshold=30
+        failure_threshold=30,
     )
 
 
 def get_default_request_settings() -> OnlineRequestSettings:
     """Get default request settings for deployments."""
-    return OnlineRequestSettings(                            # Online request setting which controls timeout and concurrent request per instance
+    return OnlineRequestSettings(  # Online request setting which controls timeout and concurrent request per instance
         request_timeout_ms=90000,
         max_concurrent_requests_per_instance=4,
     )
@@ -37,7 +37,7 @@ def create_managed_deployment(
     model_asset_id: str,                                                    # Asset ID of the model to deploy
     instance_type: str,                                                     # Supported instance type for managed deployment
     model_mount_path: Optional[str] = None,
-    environment_asset_id: Optional[str] = None,                                              # Asset ID of the serving engine to use
+    environment_asset_id: Optional[str] = None,                             # Asset ID of the serving engine to use
     endpoint_name: Optional[str] = None,
     endpoint_description: str = "Sample endpoint",
     endpoint_tags: dict = {},
@@ -45,12 +45,12 @@ def create_managed_deployment(
     deployment_env_vars: dict = {},
 ) -> str:
     """Create a managed deployment."""
-    guid = str(uuid.uuid4())[:8]                                      # Unique suffix to avoid name collisions
+    guid = str(uuid.uuid4())[:8]  # Unique suffix to avoid name collisions
     endpoint_name = endpoint_name or f"rl-endpoint"
-    endpoint_name = f"{endpoint_name}-{guid}"                         # Unique names prevent collisions and allow parallel experiments
+    endpoint_name = f"{endpoint_name}-{guid}"  # Unique names prevent collisions and allow parallel experiments
     deployment_name = deployment_name or "default"
 
-    endpoint = ManagedOnlineEndpoint(                              # Use AzureML endpoint abstraction for traffic management and auth
+    endpoint = ManagedOnlineEndpoint(  # Use AzureML endpoint abstraction for traffic management and auth
         name=endpoint_name,
         auth_mode="key",
         description=endpoint_description,
@@ -58,9 +58,11 @@ def create_managed_deployment(
     )
 
     print(f"Creating endpoint: {endpoint_name}")
-    ml_client.online_endpoints.begin_create_or_update(endpoint).wait()  # Using there the endpoint object to trigger actual endpoint in AML workspace.
+    ml_client.online_endpoints.begin_create_or_update(
+        endpoint
+    ).wait()  # Using there the endpoint object to trigger actual endpoint in AML workspace.
 
-    deployment = ManagedOnlineDeployment(                            # Use deployment abstraction for scaling, versioning, and isolation
+    deployment = ManagedOnlineDeployment(  # Use deployment abstraction for scaling, versioning, and isolation
         name=deployment_name,
         endpoint_name=endpoint_name,
         model=model_asset_id,
@@ -74,8 +76,8 @@ def create_managed_deployment(
         request_settings=get_default_request_settings(),
     )
 
-    print(f"Creating deployment (15-20 min)...")                        #                       
-    ml_client.online_deployments.begin_create_or_update(deployment).wait()  
+    print(f"Creating deployment (15-20 min)...")  #
+    ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
     # Route all traffic to new deployment for immediate use
     endpoint.traffic = {deployment_name: 100}
@@ -88,10 +90,10 @@ def create_managed_deployment(
 
 def create_kubernetes_deployment(
     ml_client: MLClient,
-    model_asset_id: str,                                                    # Asset ID of the model to deploy
-    environment_asset_id: str,                                              # Asset ID of the serving engine to use
-    instance_type: str,                                                     # Kubernetes supports partial node usage granular upto the GPU level
-    compute_name: str,                                                      # Name of the compute which will be use for endpoint creation
+    model_asset_id: str,  # Asset ID of the model to deploy
+    environment_asset_id: str,  # Asset ID of the serving engine to use
+    instance_type: str,  # Kubernetes supports partial node usage granular upto the GPU level
+    compute_name: str,  # Name of the compute which will be use for endpoint creation
     endpoint_name: Optional[str] = None,
     endpoint_description: str = "Sample endpoint",
     endpoint_tags: dict = {},
@@ -100,15 +102,15 @@ def create_kubernetes_deployment(
     model_mount_path: str = "/var/model-mount",
 ) -> str:
     """Create endpoint using Kubernetes."""
-                                                                    
+
     print("🌐 Creating endpoint...")
 
-    guid = str(uuid.uuid4())[:8]                                      # Unique suffix to avoid name collisions
+    guid = str(uuid.uuid4())[:8]  # Unique suffix to avoid name collisions
     endpoint_name = endpoint_name or f"rl-endpoint"
-    endpoint_name = f"{endpoint_name}-{guid}"                         # Unique names prevent collisions and allow parallel experiments
+    endpoint_name = f"{endpoint_name}-{guid}"  # Unique names prevent collisions and allow parallel experiments
     deployment_name = deployment_name or "default"
 
-    endpoint = KubernetesOnlineEndpoint(                              # Use AzureML endpoint abstraction for traffic management and auth
+    endpoint = KubernetesOnlineEndpoint(  # Use AzureML endpoint abstraction for traffic management and auth
         name=endpoint_name,
         auth_mode="key",
         compute=compute_name,
@@ -117,9 +119,11 @@ def create_kubernetes_deployment(
     )
 
     print(f"Creating endpoint: {endpoint_name}")
-    ml_client.online_endpoints.begin_create_or_update(endpoint).wait()  # Using there the endpoint object to trigger actual endpoint in AML workspace.
+    ml_client.online_endpoints.begin_create_or_update(
+        endpoint
+    ).wait()  # Using there the endpoint object to trigger actual endpoint in AML workspace.
 
-    deployment = KubernetesOnlineDeployment(                            # Use deployment abstraction for scaling, versioning, and isolation
+    deployment = KubernetesOnlineDeployment(  # Use deployment abstraction for scaling, versioning, and isolation
         name=deployment_name,
         endpoint_name=endpoint_name,
         model=model_asset_id,
@@ -133,8 +137,8 @@ def create_kubernetes_deployment(
         request_settings=get_default_request_settings(),
     )
 
-    print(f"Creating deployment (15-20 min)...")                        #                       
-    ml_client.online_deployments.begin_create_or_update(deployment).wait()  
+    print(f"Creating deployment (15-20 min)...")  #
+    ml_client.online_deployments.begin_create_or_update(deployment).wait()
 
     # Route all traffic to new deployment for immediate use
     endpoint.traffic = {deployment_name: 100}
@@ -167,7 +171,7 @@ def test_deployment(ml_client, endpoint_name):
 Context: A company has revenue of $1,000,000 and expenses of $750,000.
 
 Question: What is the profit margin as a percentage?
-Let's think step by step and put final answer after ####."""
+Let's think step by step and put final answer after ####.""",
             }
         ],
         "max_tokens": 512,
