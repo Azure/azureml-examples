@@ -6,9 +6,9 @@ from pathlib import Path
 from huggingface_hub import snapshot_download
 from azure.ai.ml import dsl, Input, MLClient
 from azure.ai.ml.constants import AssetTypes
-from azure.ai.ml.entities import Model
+from azure.ai.ml.entities import Model, Environment, BuildContext
 from scripts.run import monitor_run
-from scripts.deployment import create_kubernetes_deployment
+from scripts.deployment import create_managed_deployment
 
 
 class DraftModelPipeline:
@@ -245,8 +245,8 @@ def run_draft_model_pipeline(
     ml_client: MLClient,
     registry_ml_client: MLClient,
     compute_cluster: str,
-    base_model_mlflow_path: str,
-    draft_train_data_path="./data_for_draft_model/train/sharegpt_train_small.jsonl",
+    base_model_mlflow_path="azureml://registries/azureml-meta/models/Meta-Llama-3-8B-Instruct/versions/9",
+    draft_train_data_path="./data/draft_model/sharegpt_train_small.jsonl",
     num_epochs=1,
     monitor=False,
 ):
@@ -329,33 +329,58 @@ def prepare_combined_model_for_deployment(
     # Define paths
     draft_model_dir = "./models/draft"
     base_model_dir = "./models/base"
+    base_model_sub_dir = "model_artifact/model"
 
-    temp_download_dir = "./models/draft_temp"
-    temp_path = Path(temp_download_dir)
-    required_files = ["config.json", "model.safetensors", "training_state.pt"]
+    print("\nDownloading draft model...")
+    ml_client.jobs.download(name=draft_job_name, output_name="output_model", download_path=draft_model_dir, all=True)
 
-    for file_pattern in required_files:
-        files_found = list(temp_path.rglob(file_pattern))
-        if files_found:
-            src_path = files_found[0]  # Take the first match
-            dst_path = Path(draft_model_dir) / file_pattern
-            shutil.move(str(src_path), str(dst_path))
-            print(f"Moved {file_pattern}")
-        else:
-            print(f"File not found: {file_pattern}")
+    # Move all files from subdirectories to the root directory
+    for root, dirs, files in os.walk(draft_model_dir):
+        for file in files:
+            if root != draft_model_dir:  # Skip files already in root
+                source = os.path.join(root, file)
+                destination = os.path.join(draft_model_dir, file)            
+                shutil.move(source, destination)
 
-    # Clean up temporary directory
-    if os.path.exists(temp_download_dir):
-        shutil.rmtree(temp_download_dir)
-        print(f"Cleaned up temporary directory")
-    else:
-        print(f"Draft model already exists: {draft_model_dir}")
+    # Remove empty subdirectories
+    for root, dirs, files in os.walk(draft_model_dir, topdown=False):
+        for dir_name in dirs:
+            dir_path = os.path.join(root, dir_name)
+            if not os.listdir(dir_path):  # Only remove if empty
+                os.rmdir(dir_path)
+
+    # Update draft model config with extended context settings
+    draft_config = json.load(open(f"{draft_model_dir}/config.json"))
+    draft_config = {
+        **draft_config,
+        "max_position_embeddings": 131072,
+        "rope_scaling": {
+            "factor": 8,
+            "high_freq_factor": 4,
+            "low_freq_factor": 1,
+            "original_max_position_embeddings": 8192,
+            "rope_type": "llama3"
+        }
+    }
+    with open(f"{draft_model_dir}/config.json", "w") as f:
+        json.dump(draft_config, f, indent=4)
 
     # Download base model from HuggingFace
     if force or not os.path.exists(base_model_dir):
         print("\nDownloading base model...")
         snapshot_download(repo_id=base_model_hf_id, local_dir=base_model_dir)
         print(f"Base model downloaded to: {base_model_dir}")
+
+        # Create the target subdirectory structure
+        target_dir = os.path.join(base_model_dir, base_model_sub_dir)
+        os.makedirs(target_dir, exist_ok=True)
+        
+        # Move all files and directories from base_model_dir to target_dir
+        for item in os.listdir(base_model_dir):
+            if item != "model_artifact":  # Skip the subdirectory we just created
+                source_path = os.path.join(base_model_dir, item)
+                target_path = os.path.join(target_dir, item)
+                shutil.move(source_path, target_path)
     else:
         print(f"Base model already exists: {base_model_dir}")
 
@@ -372,9 +397,8 @@ def prepare_combined_model_for_deployment(
 
 def deploy_speculative_decoding_endpoint(
     ml_client: MLClient,
-    combined_model,
-    instance_type,            # In kubernetes we can be granular upto the gpu level and leave the rest of the node unused
-    compute_name,             # Compute argument for KubernetesOnlineEndpoint
+    combined_model: Model,
+    instance_type: str,
 ):
     print("Deploying speculative decoding endpoint")
 
@@ -383,24 +407,44 @@ def deploy_speculative_decoding_endpoint(
     model_mount_path = "/var/model-mount"
     endpoint_description = "Speculative decoding endpoint with GRPO fine-tuned base model"
     endpoint_tags = {"model_type": "speculative_decoding", "algorithm": "grpo"}
-    environment = ml_client.environments.get("speculative-decoding-env", label="latest")
-    if environment is None or environment.id is None:
-        raise ValueError("Speculative decoding environment not found in registry")
+    environment = Environment(
+        build=BuildContext(path="./environment/speculative-decoding-env"),
+        name="speculative-decoding-env",
+        description="Environment for speculative decoding inference using sglang.",
+        inference_config={
+            "liveness_route": {
+                "port": 30000,
+                "path": "/health"
+            },
+            "readiness_route": {
+                "port": 30000,
+                "path": "/health_generate"
+            },
+            "scoring_route": {
+                "port": 30000,
+                "path": "/"
+            }
+        }
+    )
 
-    environment_variables = {                                               # Environment variables configure the serving engine and model paths for the container                                         
-        "SPECULATIVE_DECODING_MODE": "true",                                # Used sglang framework for inference
-        "BASE_MODEL": f"{model_mount_path}/models/base",                    # Path for base model
-        "DRAFT_MODEL": f"{model_mount_path}/models/draft",                  # Path for draft model
+    environment_variables = {                                                   # Environment variables configure the serving engine and model paths for the container                                         
+        "SPECULATIVE_DECODING_MODE": "true",                                    # Used sglang framework for inference
+        "BASE_MODEL": f"{model_mount_path}/models/base/model_artifact/model",   # Path for base model
+        "DRAFT_MODEL": f"{model_mount_path}/models/draft",                      # Path for draft model
         "NUM_SPECULATIVE_TOKENS": "5",
-        "SERVING_ENGINE": "sglang",                                         # the serving engine to use
+        "SERVING_ENGINE": "sglang",                                             # the serving engine to use
+        "SGLANG_ARGS": "--tp-size 1 --max-running-requests 32 --mem-fraction-static 0.7 --speculative-algorithm EAGLE3 --speculative-num-steps 3 --speculative-eagle-topk 2 --speculative-num-draft-tokens 4 --dtype float16 --decode-attention-backend fa3 --prefill-attention-backend fa3 --host 0.0.0.0 --port 30000 --enable-torch-compile --cuda-graph-max-bs 16",
+        "SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN": "1",
+        "SGL_HOST": "0.0.0.0",
+        "SGL_PORT": "30000",
     }
 
-    endpoint_name = create_kubernetes_deployment(
+    endpoint_name = create_managed_deployment(
         ml_client=ml_client,
         model_asset_id=combined_model.id,
-        environment_asset_id=environment.id,
         instance_type=instance_type,
-        compute_name=compute_name,
+        model_mount_path=model_mount_path,
+        environment_asset_id=environment,
         endpoint_name=endpoint_name,
         endpoint_description=endpoint_description,
         endpoint_tags=endpoint_tags,
@@ -410,3 +454,136 @@ def deploy_speculative_decoding_endpoint(
 
     print(f"Speculative decoding endpoint deployed: {endpoint_name}")
     return endpoint_name
+
+
+def deploy_base_model_endpoint(
+    ml_client: MLClient,
+    instance_type: str,
+    base_model="./models/base/model_artifact",
+):
+    """Deploy base model endpoint."""
+    print("Deploying base model endpoint")
+
+    endpoint_name = f"base-model"
+    deployment_name = "base-deployment"
+    endpoint_description = "Base model endpoint"
+    endpoint_tags = {"model_type": "base"}
+
+    model = Model(
+        path=base_model,
+        name=f"base-model",
+    )
+
+    environment_variables = {                                      
+        "TASK_TYPE": "chat-completion", 
+    }
+
+    endpoint_name = create_managed_deployment(
+        ml_client=ml_client,
+        model_asset_id=model,
+        instance_type=instance_type,
+        environment_asset_id=Environment(
+            image="mcr.microsoft.com/azureml/curated/foundation-model-inference:85",
+            inference_config={
+                "liveness_route": {
+                    "port": 8000,
+                    "path": "/ping"
+                },
+                "readiness_route": {
+                    "port": 8000,
+                    "path": "/health"
+                },
+                "scoring_route": {
+                    "port": 8000,
+                    "path": "/"
+                }
+            }
+        ),
+        endpoint_name=endpoint_name,
+        endpoint_description=endpoint_description,
+        endpoint_tags=endpoint_tags,
+        deployment_name=deployment_name,
+        deployment_env_vars=environment_variables,
+    )
+
+    print(f"Base model endpoint deployed: {endpoint_name}")
+    return endpoint_name
+
+
+def _prepare_evaluation_inputs(ml_client, base_endpoint_name, speculative_endpoint_name):
+    """Prepare necessary inputs for evaluation."""
+
+    print(f"Preparing evaluation inputs...")
+    from azure.ai.ml.entities import WorkspaceConnection, ApiKeyConfiguration
+
+    def _get_endpoint_details(endpoint_name):
+        """Get endpoint details including scoring URI and API key."""
+        api_key = ml_client.online_endpoints.get_keys(name=endpoint_name).primary_key
+        base_url = ml_client.online_endpoints.get(name=endpoint_name).scoring_uri.replace("/score", "/")
+        connections_name = f"conn-{str(uuid.uuid4())[:8]}"
+
+        ws_connection = WorkspaceConnection(
+            name=connections_name,
+            type="azure_sql_db",
+            target=base_url,
+            credentials=ApiKeyConfiguration(key=api_key)
+        )
+        ml_client.connections.create_or_update(workspace_connection=ws_connection)
+
+        return connections_name, base_url
+
+    base_connection_name, base_scoring_uri = _get_endpoint_details(base_endpoint_name)
+    speculative_connection_name, speculative_scoring_uri = _get_endpoint_details(speculative_endpoint_name)
+    return base_connection_name, base_scoring_uri, speculative_connection_name, speculative_scoring_uri
+
+
+def run_evaluation_speculative_decoding(
+    ml_client: MLClient,
+    registry_ml_client: MLClient,
+    base_endpoint_name: str,
+    speculative_endpoint_name: str,
+    base_model_hf_id: str,
+    speculative_model_hf_id: str,
+    compute_cluster="h100-dedicated",
+    monitor=False,
+):
+    """Run evaluation pipeline to compare speculative decoding and base model endpoints."""
+    base_conn_name, base_score_uri, speculative_conn_name, speculative_score_uri = _prepare_evaluation_inputs(ml_client, base_endpoint_name, speculative_endpoint_name)
+
+    # Load component
+    evaluation_component_name = "component_endpoint_benchmarking"
+    print(f"  ✓ Loading component: {evaluation_component_name}")
+    evaluation_component = registry_ml_client.components.get(name=evaluation_component_name, label="latest")
+    print(f"  ✓ Component loaded: {evaluation_component.name} v{evaluation_component.version}")
+
+    # Define pipeline
+    @dsl.pipeline(compute=compute_cluster)
+    def evaluation_pipeline():
+        node = evaluation_component(
+            base_scoring_url=base_score_uri,
+            base_connection_name=base_conn_name,
+            target_scoring_url=speculative_score_uri,
+            target_connection_name=speculative_conn_name,
+            base_model=base_model_hf_id,
+            target_model=speculative_model_hf_id,
+            base_backend="vllm",
+            target_backend="sglang",
+        )
+        return {"metrics": node.outputs.metrics}
+
+    # Submit pipeline
+    evaluation_job = evaluation_pipeline()
+    print("  ✓ Submitting evaluation pipeline...")
+    evaluation_job = ml_client.jobs.create_or_update(
+        evaluation_job, experiment_name="speculative-decoding-evaluation"
+    )
+
+    print(f"Job submitted: {evaluation_job.name}")
+    print(f"Studio URL: {evaluation_job.studio_url}")
+
+    # Monitor if requested
+    if monitor:
+        _, status = monitor_run(ml_client, evaluation_job, poll_interval=60)
+        return evaluation_job, status
+
+    return evaluation_job, None
