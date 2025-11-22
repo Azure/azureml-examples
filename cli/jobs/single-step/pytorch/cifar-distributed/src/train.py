@@ -8,6 +8,7 @@
 import os
 import mlflow
 import argparse
+import time
 
 import torch
 import torchvision
@@ -15,6 +16,19 @@ import torchvision.transforms as transforms
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from azure.monitor.opentelemetry import configure_azure_monitor
+configure_azure_monitor(
+    connection_string="InstrumentationKey=f5f6034c-07db-4eb2-8807-c309cfc5cbe1;IngestionEndpoint=https://eastus-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=db740992-fe57-44cb-a7b4-e14ec334181e",
+)
+from opentelemetry import metrics
+import os
+from azureml.core import Run
+meter = metrics.get_meter_provider().get_meter("custom_training_metrics")
+histogram = meter.create_histogram("loss")
+run = Run.get_context()
+workspace = run.experiment.workspace
+
+# TODO - add mlflow logging
 
 # define network architecture
 class Net(nn.Module):
@@ -40,9 +54,24 @@ class Net(nn.Module):
         return x
 
 
+def top1_accuracy(outputs: torch.Tensor, targets: torch.Tensor) -> float:
+    """Compute top-1 accuracy for a batch."""
+    with torch.no_grad():
+        preds = outputs.argmax(dim=1)
+        correct = (preds == targets).sum().item()
+        return correct / targets.size(0)
+
+def get_lr(optimizer) -> float:
+    """Get current LR from the first param group."""
+    return optimizer.param_groups[0].get("lr", None)
+
 # define functions
-def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, rank):
+def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, rank, distributed):
     running_loss = 0.0
+    epoch_start = time.time()
+    epoch_loss_sum = 0.0
+    epoch_examples = 0
+    epoch_acc_sum = 0.0
     for i, data in enumerate(train_loader, 0):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data[0].to(device), data[1].to(device)
@@ -55,62 +84,50 @@ def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, 
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
+        
+        # Accumulate epoch stats
+        batch_size = inputs.size(0)
+        epoch_examples += batch_size
+        epoch_loss_sum += loss.item() * batch_size
+        epoch_acc_sum += top1_accuracy(outputs, labels) * batch_size
+
+        # --- Per-iteration MLflow metric (rank 0 only) ---
+        if (not distributed) or (rank == 0):
+            # step = global iteration index; you can also use i or (epoch, i)
+            global_step = epoch * len(train_loader) + i
+            mlflow.log_metric("loss_iter", loss.item(), step=global_step)
+
+        # --- Per-epoch metrics ---
+        epoch_time = time.time() - epoch_start
+        avg_loss = epoch_loss_sum / max(epoch_examples, 1)
+        avg_acc = epoch_acc_sum / max(epoch_examples, 1)
+        lr_now = get_lr(optimizer)
+        throughput = epoch_examples / max(epoch_time, 1e-6)
+
+        # Rank 0 logs
+        if (not distributed) or (rank == 0):
+            mlflow.log_metrics({
+                "loss_epoch": avg_loss,
+                "acc_epoch_top1": avg_acc,
+                "throughput_img_per_sec": throughput,
+                "epoch_time_sec": epoch_time,
+            }, step=epoch)
+
+        print(f"Rank {rank}: Finished epoch {epoch} | "
+              f"loss={avg_loss:.4f} acc@1={avg_acc:.4f} lr={lr_now} "
+              f"thr={throughput:.1f} img/s")
 
         # print statistics
         running_loss += loss.item()
         if i % print_freq == 0:  # print every print_freq mini-batches
-            print(
-                "Rank %d: [%d, %5d] loss: %.3f"
-                % (rank, epoch + 1, i + 1, running_loss / print_freq)
-            )
+            histogram.record(running_loss / print_freq, {
+                "sub_id": workspace.subscription_id, "run_id": run.id,
+                "workspace": workspace.name, "resource_group": workspace.resource_group})
+            #print(
+            #    "Rank %d: [%d, %5d] loss: %.3f"
+            #    % (rank, epoch + 1, i + 1, running_loss / print_freq)
+            #)
             running_loss = 0.0
-
-
-def evaluate(test_loader, model, device):
-    classes = (
-        "plane",
-        "car",
-        "bird",
-        "cat",
-        "deer",
-        "dog",
-        "frog",
-        "horse",
-        "ship",
-        "truck",
-    )
-
-    model.eval()
-
-    correct = 0
-    total = 0
-    class_correct = list(0.0 for i in range(10))
-    class_total = list(0.0 for i in range(10))
-    with torch.no_grad():
-        for data in test_loader:
-            images, labels = data[0].to(device), data[1].to(device)
-            outputs = model(images)
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            c = (predicted == labels).squeeze()
-            for i in range(10):
-                label = labels[i]
-                class_correct[label] += c[i].item()
-                class_total[label] += 1
-
-    # print total test set accuracy
-    print(
-        "Accuracy of the network on the 10000 test images: %d %%"
-        % (100 * correct / total)
-    )
-
-    # print test accuracy for each of the classes
-    for i in range(10):
-        print(
-            "Accuracy of %5s : %2d %%"
-            % (classes[i], 100 * class_correct[i] / class_total[i])
-        )
 
 
 def main(args):
@@ -131,17 +148,10 @@ def main(args):
     if distributed:
         torch.distributed.init_process_group(backend="nccl")
 
-    # define train and test dataset DataLoaders
+    # define train and dataset DataLoaders
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
-
-    data_files = os.listdir(args.data_dir)
-    expected_file = "cifar-10-batches-py"
-    if expected_file not in data_files:
-        print("Folder {} expected in args.data_dir".format(expected_file))
-        print("Found:")
-        print(data_files)
 
     train_set = torchvision.datasets.CIFAR10(
         root=args.data_dir, train=True, download=False, transform=transform
@@ -160,13 +170,6 @@ def main(args):
         sampler=train_sampler,
     )
 
-    test_set = torchvision.datasets.CIFAR10(
-        root=args.data_dir, train=False, download=False, transform=transform
-    )
-    test_loader = torch.utils.data.DataLoader(
-        test_set, batch_size=args.batch_size, shuffle=False, num_workers=args.workers
-    )
-
     model = Net().to(device)
 
     # wrap model with DDP
@@ -181,12 +184,29 @@ def main(args):
         model.parameters(), lr=args.learning_rate, momentum=args.momentum
     )
 
+    
+    if (not distributed) or (rank == 0):
+        mlflow.start_run()
+        # Log static params once
+        mlflow.log_params({
+            "epochs": args.epochs,
+            "batch_size": args.batch_size,
+            "workers": args.workers,
+            "learning_rate": args.learning_rate,
+            "momentum": args.momentum,
+            "world_size": world_size,
+            "distributed": distributed,
+            "model": "Net(CIFAR10)",
+        })
+
+
     # train the model
     for epoch in range(args.epochs):
         print("Rank %d: Starting epoch %d" % (rank, epoch))
         if distributed:
             train_sampler.set_epoch(epoch)
         model.train()
+        
         train(
             train_loader,
             model,
@@ -196,16 +216,17 @@ def main(args):
             device,
             args.print_freq,
             rank,
+            distributed,
         )
 
     print("Rank %d: Finished Training" % (rank))
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.log_model(model, "./model")
-
-        # evaluate on full test dataset
-        evaluate(test_loader, model, device)
+        mlflow.pytorch.log_model(model, "model")
+        os.makedirs(args.model_dir, exist_ok=True)
+        torch.save(model, os.path.join(args.model_dir, "model.pt"))
+        # mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
 
 
 def parse_args():
@@ -215,6 +236,9 @@ def parse_args():
     # add arguments
     parser.add_argument(
         "--data-dir", type=str, help="directory containing CIFAR-10 dataset"
+    )
+    parser.add_argument(
+        "--model-dir", type=str, default="./", help="output directory for model"
     )
     parser.add_argument("--epochs", default=10, type=int, help="number of epochs")
     parser.add_argument(
