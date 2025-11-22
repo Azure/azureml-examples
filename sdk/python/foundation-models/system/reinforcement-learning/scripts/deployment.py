@@ -34,10 +34,10 @@ def get_default_request_settings() -> OnlineRequestSettings:
 
 def create_managed_deployment(
     ml_client: MLClient,
-    model_asset_id: str,                                                    # Asset ID of the model to deploy
-    instance_type: str,                                                     # Supported instance type for managed deployment
+    model_asset_id: str,  # Asset ID of the model to deploy
+    instance_type: str,  # Supported instance type for managed deployment
     model_mount_path: Optional[str] = None,
-    environment_asset_id: Optional[str] = None,                             # Asset ID of the serving engine to use
+    environment_asset_id: Optional[str] = None,  # Asset ID of the serving engine to use
     endpoint_name: Optional[str] = None,
     endpoint_description: str = "Sample endpoint",
     endpoint_tags: dict = {},
@@ -153,7 +153,10 @@ def test_deployment(ml_client, endpoint_name):
     """Run a test request against a deployed endpoint and print the result."""
     print("Testing endpoint...")
     # Retrieve endpoint URI and API key to authenticate test request
-    scoring_uri = ml_client.online_endpoints.get(endpoint_name).scoring_uri.replace("/score", "/") + "v1/chat/completions"
+    scoring_uri = (
+        ml_client.online_endpoints.get(endpoint_name).scoring_uri.replace("/score", "/")
+        + "v1/chat/completions"
+    )
     if not scoring_uri:
         raise ValueError("Scoring URI not found for endpoint.")
 
