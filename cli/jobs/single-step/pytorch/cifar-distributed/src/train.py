@@ -23,11 +23,12 @@ configure_azure_monitor(
 from opentelemetry import metrics
 import os
 from azureml.core import Run
+from torch.utils.tensorboard import SummaryWriter
 meter = metrics.get_meter_provider().get_meter("custom_training_metrics")
 histogram = meter.create_histogram("loss")
 run = Run.get_context()
 workspace = run.experiment.workspace
-
+writer = SummaryWriter("outputs/run")
 # TODO - add mlflow logging
 
 # define network architecture
@@ -116,6 +117,9 @@ def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, 
         print(f"Rank {rank}: Finished epoch {epoch} | "
               f"loss={avg_loss:.4f} acc@1={avg_acc:.4f} lr={lr_now} "
               f"thr={throughput:.1f} img/s")
+        
+        # change code
+        print(">>> DEBUG: This is a new print statement in the updated training script.")
 
         # print statistics
         running_loss += loss.item()
