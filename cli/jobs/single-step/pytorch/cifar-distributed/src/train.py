@@ -9,6 +9,7 @@ import os
 import mlflow
 import argparse
 import time
+from typing import Optional
 
 import torch
 import torchvision
@@ -23,12 +24,11 @@ configure_azure_monitor(
 from opentelemetry import metrics
 import os
 from azureml.core import Run
-from torch.utils.tensorboard import SummaryWriter
 meter = metrics.get_meter_provider().get_meter("custom_training_metrics")
 histogram = meter.create_histogram("loss")
 run = Run.get_context()
 workspace = run.experiment.workspace
-writer = SummaryWriter("outputs/run")
+
 # TODO - add mlflow logging
 
 # define network architecture
@@ -66,6 +66,80 @@ def get_lr(optimizer) -> float:
     """Get current LR from the first param group."""
     return optimizer.param_groups[0].get("lr", None)
 
+
+def _is_rank0(distributed: bool, rank: int) -> bool:
+    return (not distributed) or (rank == 0)
+
+def save_checkpoint(ckpt_path: str,
+                    model,
+                    optimizer,
+                    epoch: int,
+                    args):
+    # unwrap DDP if needed
+    model_to_save = model.module if hasattr(model, "module") else model
+
+    state = {
+        "epoch": epoch,
+        "model_state": model_to_save.state_dict(),
+        "optimizer_state": optimizer.state_dict(),
+        "args": vars(args),
+        "timestamp": time.time(),
+        "rng_state": {
+            "python": None,  # optional: random.getstate() if you use Python RNG
+            "torch_cpu": torch.get_rng_state(),
+            "torch_cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
+        },
+    }
+   
+    os.makedirs(args.checkpoint_dir, exist_ok=True)
+    torch.save(state, os.path.join(args.checkpoint_dir, f"epoch_{epoch+1:04d}.pt"))
+    
+    filename = f"epoch_{epoch+1:04d}.pt"
+    print(f"Path {os.path.join(args.checkpoint_dir, filename)}: for epoch {epoch}")
+    
+    return ckpt_path
+
+
+def load_checkpoint(ckpt_path: str,
+                    model,
+                    optimizer,
+                    map_location="cpu",
+                    strict: bool=False):
+    ckpt = torch.load(ckpt_path, map_location=map_location)
+
+    # Load model
+    missing, unexpected = model.load_state_dict(ckpt["model_state"], strict=strict)
+    # If not strict, you can log missing/unexpected keys if desired
+
+    # Load optimizer
+    optimizer.load_state_dict(ckpt["optimizer_state"])
+
+    # Restore RNG (optional but recommended for reproducibility)
+    try:
+        torch.set_rng_state(ckpt["rng_state"]["torch_cpu"])
+        if torch.cuda.is_available() and ckpt["rng_state"]["torch_cuda"] is not None:
+            torch.cuda.set_rng_state_all(ckpt["rng_state"]["torch_cuda"])
+    except Exception:
+        pass
+
+    # Return epoch we should start the next loop from
+    start_epoch = int(ckpt.get("epoch", -1)) + 1
+    print("Resuming training from checkpoint %d" % (start_epoch))
+    return start_epoch, ckpt
+
+def find_latest_checkpoint(dir_path: str) -> Optional[str]:
+    """Return newest epoch_XXXX.pt in a folder (lexicographic sort of zero-padded filenames)."""
+    if not os.path.isdir(args.checkpoint_dir):
+        return None
+
+    files = [f for f in os.listdir(args.checkpoint_dir) if f.startswith("epoch_") and f.endswith(".pt")]
+    if not files:
+        return None
+    files.sort()
+    
+    print(f"Path {os.path.join(args.checkpoint_dir, files[-1])}")
+    return os.path.join(args.checkpoint_dir, files[-1])
+
 # define functions
 def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, rank, distributed):
     running_loss = 0.0
@@ -98,40 +172,36 @@ def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, 
             global_step = epoch * len(train_loader) + i
             mlflow.log_metric("loss_iter", loss.item(), step=global_step)
 
-        # --- Per-epoch metrics ---
-        epoch_time = time.time() - epoch_start
-        avg_loss = epoch_loss_sum / max(epoch_examples, 1)
-        avg_acc = epoch_acc_sum / max(epoch_examples, 1)
-        lr_now = get_lr(optimizer)
-        throughput = epoch_examples / max(epoch_time, 1e-6)
-
-        # Rank 0 logs
-        if (not distributed) or (rank == 0):
-            mlflow.log_metrics({
-                "loss_epoch": avg_loss,
-                "acc_epoch_top1": avg_acc,
-                "throughput_img_per_sec": throughput,
-                "epoch_time_sec": epoch_time,
-            }, step=epoch)
-
-        print(f"Rank {rank}: Finished epoch {epoch} | "
-              f"loss={avg_loss:.4f} acc@1={avg_acc:.4f} lr={lr_now} "
-              f"thr={throughput:.1f} img/s")
-        
-        # change code
-        print(">>> DEBUG: This is a new print statement in the updated training script.")
-
         # print statistics
         running_loss += loss.item()
         if i % print_freq == 0:  # print every print_freq mini-batches
             histogram.record(running_loss / print_freq, {
                 "sub_id": workspace.subscription_id, "run_id": run.id,
                 "workspace": workspace.name, "resource_group": workspace.resource_group})
-            #print(
-            #    "Rank %d: [%d, %5d] loss: %.3f"
-            #    % (rank, epoch + 1, i + 1, running_loss / print_freq)
-            #)
             running_loss = 0.0
+    epoch_time = time.time() - epoch_start
+    avg_loss = epoch_loss_sum / max(epoch_examples, 1)
+    avg_acc = epoch_acc_sum / max(epoch_examples, 1)
+    lr_now = get_lr(optimizer)
+    throughput = epoch_examples / max(epoch_time, 1e-6)
+
+    if (not distributed) or (rank == 0):
+        mlflow.log_metrics({
+            "loss_epoch": avg_loss,
+            "acc_epoch_top1": avg_acc,
+            "throughput_img_per_sec": throughput,
+            "epoch_time_sec": epoch_time,
+        }, step=epoch)
+    print(f"Rank {rank}: Finished epoch {epoch} | "
+            f"Loss={avg_loss:.4f} Acc@1={avg_acc:.4f} LR={lr_now} "
+            f"Throughput={throughput:.1f} img/s")
+
+    # --- Periodic checkpointing (rank 0 only) ---
+    if _is_rank0(distributed, rank) and ((epoch + 1) % args.checkpoint_interval == 0):
+        ckpt_name = f"epoch_{epoch+1:04d}.pt"
+        ckpt_path = os.path.join(args.checkpoint_dir, ckpt_name)
+        save_checkpoint(ckpt_path, model, optimizer, epoch, args)
+        print(f"Rank {rank}: Saved checkpoint {ckpt_name} for epoch {epoch}")
 
 
 def main(args):
@@ -189,6 +259,23 @@ def main(args):
     )
 
     
+    start_epoch = 0
+    resumed_ckpt = None
+    if args.checkpoint_dir:
+        map_loc = "cuda" if device.type == "cuda" else "cpu"
+        
+        latest = find_latest_checkpoint(args.checkpoint_dir)
+        if latest is not None:
+             
+            start_epoch, ckpt_data = load_checkpoint(
+                latest, model=model, optimizer=optimizer, map_location=map_loc, strict=args.resume_strict
+            )
+        resumed_ckpt = args.checkpoint_dir
+        # Deterministic shuffling continuation
+        if distributed and (train_sampler is not None):
+            train_sampler.set_epoch(start_epoch)
+
+    
     if (not distributed) or (rank == 0):
         mlflow.start_run()
         # Log static params once
@@ -202,12 +289,18 @@ def main(args):
             "distributed": distributed,
             "model": "Net(CIFAR10)",
         })
-
+        
+        if resumed_ckpt:
+            mlflow.set_tag("resumed_from", resumed_ckpt)
+            mlflow.set_tag("resume_start_epoch", start_epoch)
 
     # train the model
-    for epoch in range(args.epochs):
+    for epoch in range(start_epoch, args.epochs):
         print("Rank %d: Starting epoch %d" % (rank, epoch))
-        if distributed:
+        # ---- Simulated failure ----
+        #simulate_node_failure(epoch, args, rank)
+
+        if distributed and (train_sampler is not None):
             train_sampler.set_epoch(epoch)
         model.train()
         
@@ -230,7 +323,6 @@ def main(args):
         mlflow.pytorch.log_model(model, "model")
         os.makedirs(args.model_dir, exist_ok=True)
         torch.save(model, os.path.join(args.model_dir, "model.pt"))
-        # mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
 
 
 def parse_args():
@@ -267,6 +359,16 @@ def parse_args():
         type=int,
         help="frequency of printing training statistics",
     )
+    
+    parser.add_argument("--checkpoint-dir", type=str, default="./",
+                        help="Directory to store checkpoints")
+    parser.add_argument("--checkpoint-interval", type=int, default=1,
+                        help="Save checkpoint every N epochs")
+    parser.add_argument("--resume-strict", action="store_true",
+                        help="Strict load of model state (default: non-strict)")
+    parser.add_argument("--fail-epoch", type=int, default=None,help="Simulate node failure at this epoch (after checkpoint)."
+    )
+    parser.add_argument("--fail-random", action="store_true", help="Simulate a random node failure with ~10% probability each epoch.")
 
     # parse args
     args = parser.parse_args()
