@@ -3,7 +3,7 @@ set -e
 # <set_variables>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # sample input URI variable
-SAMPLE_INPUT_URI="https://azuremlexampledata.blob.core.windows.net/data/mnist/sample"
+SAMPLE_INPUT_URI="https://automlsamplenotebookdata.blob.core.windows.net/batch/data/mnist/sample"
 # </set_variables>
 
 # <name_endpoint>
