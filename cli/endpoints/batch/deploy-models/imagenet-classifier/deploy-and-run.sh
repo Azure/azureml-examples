@@ -3,7 +3,7 @@ set -e
 # <set_variables>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
 # imagenet sample base URI
-IMAGENET_SAMPLE_URI="https://azuremlexampledata.blob.core.windows.net/data/imagenet"
+IMAGENET_SAMPLE_URI="https://automlsamplenotebookdata.blob.core.windows.net/batch/data/imagenet"
 # </set_variables>
 
 # <name_endpoint>
