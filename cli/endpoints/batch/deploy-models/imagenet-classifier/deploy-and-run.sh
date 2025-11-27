@@ -2,6 +2,8 @@ set -e
 
 # <set_variables>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+# imagenet sample base URI
+IMAGENET_SAMPLE_URI="https://azuremlexampledata.blob.core.windows.net/data/imagenet"
 # </set_variables>
 
 # <name_endpoint>
@@ -14,7 +16,7 @@ ENDPOINT_NAME="$ENDPOINT_NAME-$ENDPOINT_SUFIX"
 
 echo "Download model from Azure Storage"
 # <download_model>
-wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/model.zip
+wget "${IMAGENET_SAMPLE_URI}/model.zip"
 unzip model.zip -d .
 # </download_model>
 
@@ -51,7 +53,7 @@ az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NA
 # </query_deployment>
 
 # <download_sample_data>
-wget https://azuremlexampledata.blob.core.windows.net/data/imagenet/imagenet-1000.zip
+wget "${IMAGENET_SAMPLE_URI}/imagenet-1000.zip"
 unzip imagenet-1000.zip -d data
 # </download_sample_data>
 
