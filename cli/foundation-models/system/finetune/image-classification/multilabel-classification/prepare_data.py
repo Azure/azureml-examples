@@ -111,7 +111,6 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     branch = "hkotesova/fridge-objects"
     download_url = f"https://raw.githubusercontent.com/Azure/azureml-examples/{branch}/sample-data/image-classification/multilabelFridgeObjects.zip"
 
-
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
     # Get dataset path for later use

@@ -160,7 +160,8 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # download data
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-object-detection/odFridgeObjects.zip"
+    branch = "hkotesova/fridge-objects"
+    download_url = f"https://raw.githubusercontent.com/Azure/azureml-examples/{branch}/sample-data/image-object-detection/odFridgeObjects.zip"
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
