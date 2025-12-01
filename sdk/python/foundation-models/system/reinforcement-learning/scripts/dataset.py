@@ -222,7 +222,9 @@ def _download_and_cache_file(url: str, filename: Optional[str] = None):
     return filename
 
 
-def prepare_sharegpt_dataset(dataset_path="./data/draft_model/sharegpt_train_processed.jsonl") -> str:
+def prepare_sharegpt_dataset(
+    dataset_path="./data/draft_model/sharegpt_train_processed.jsonl",
+) -> str:
     """Prepare the ShareGPT dataset for training the draft model."""
     # Download sharegpt if necessary
     if not os.path.isfile(dataset_path):
@@ -245,26 +247,28 @@ def prepare_sharegpt_dataset(dataset_path="./data/draft_model/sharegpt_train_pro
         new_conversations = []
 
         for i in range(0, len(temp_data["conversations"]), 2):
-            new_conversations.extend([
-                {
-                    "role": "user",
-                    "content": temp_data["conversations"][i]["value"],
-                },
-                {
-                    "role": "assistant",
-                    "content": temp_data["conversations"][i + 1]["value"],
-                }
-            ])
-        
+            new_conversations.extend(
+                [
+                    {
+                        "role": "user",
+                        "content": temp_data["conversations"][i]["value"],
+                    },
+                    {
+                        "role": "assistant",
+                        "content": temp_data["conversations"][i + 1]["value"],
+                    },
+                ]
+            )
+
         new_data = {}
         new_data["id"] = temp_data.get("id", "")
         new_data["conversations"] = new_conversations
 
         new_dataset.append(new_data)
-    
+
     os.makedirs(os.path.dirname(dataset_path), exist_ok=True)
     with open(dataset_path, "w") as f:
         for item in new_dataset:
             f.write(json.dumps(item) + "\n")
-    
+
     return dataset_path
