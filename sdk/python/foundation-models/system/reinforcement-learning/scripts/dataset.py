@@ -6,6 +6,13 @@ from tempfile import TemporaryDirectory
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
+from typing import Optional
+from json import JSONDecodeError
+import requests
+from tqdm import tqdm
+
+
+SHAREGPT_URL = "https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/resolve/main/ShareGPT_V3_unfiltered_cleaned_split.json"
 
 
 def register_dataset(ml_client: MLClient, dataset_name: str, file_path: str):
@@ -164,3 +171,100 @@ def prepare_finqa_dataset(
             return train_data.id, test_data.id, valid_data.id
 
     return train_dataset_path, test_dataset_path, valid_dataset_path
+
+
+def _is_file_valid_json(path):
+    if not os.path.isfile(path):
+        return False
+
+    try:
+        with open(path) as f:
+            json.load(f)
+        return True
+    except JSONDecodeError as e:
+        print(
+            f"{path} exists but json loading fails ({e=}), thus treat as invalid file"
+        )
+        return False
+
+
+def _download_and_cache_file(url: str, filename: Optional[str] = None):
+    """Read and cache a file from a url."""
+    if filename is None:
+        filename = os.path.join("/tmp", url.split("/")[-1])
+
+    # Check if the cache file already exists
+    if _is_file_valid_json(filename):
+        return filename
+
+    print(f"Downloading from {url} to {filename}")
+
+    # Stream the response to show the progress bar
+    response = requests.get(url, stream=True)
+    response.raise_for_status()  # Check for request errors
+
+    # Total size of the file in bytes
+    total_size = int(response.headers.get("content-length", 0))
+    chunk_size = 1024  # Download in chunks of 1KB
+
+    # Use tqdm to display the progress bar
+    with open(filename, "wb") as f, tqdm(
+        desc=filename,
+        total=total_size,
+        unit="B",
+        unit_scale=True,
+        unit_divisor=1024,
+    ) as bar:
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            f.write(chunk)
+            bar.update(len(chunk))
+
+    return filename
+
+
+def prepare_sharegpt_dataset(dataset_path="./data/draft_model/sharegpt_train_processed.jsonl") -> str:
+    """Prepare the ShareGPT dataset for training the draft model."""
+    # Download sharegpt if necessary
+    if not os.path.isfile(dataset_path):
+        temp_dataset_path = _download_and_cache_file(SHAREGPT_URL)
+
+    # Load the dataset.
+    with open(temp_dataset_path) as f:
+        temp_dataset = json.load(f)
+    # Filter out the conversations with less than 2 turns.
+    temp_dataset = [data for data in temp_dataset if len(data["conversations"]) >= 2]
+
+    # Keep one conversation in one list
+    new_dataset = []
+    for temp_data in temp_dataset:
+        if len(temp_data["conversations"]) % 2 != 0:
+            continue
+        if temp_data["conversations"][0]["from"] != "human":
+            continue
+
+        new_conversations = []
+
+        for i in range(0, len(temp_data["conversations"]), 2):
+            new_conversations.extend([
+                {
+                    "role": "user",
+                    "content": temp_data["conversations"][i]["value"],
+                },
+                {
+                    "role": "assistant",
+                    "content": temp_data["conversations"][i + 1]["value"],
+                }
+            ])
+        
+        new_data = {}
+        new_data["id"] = temp_data.get("id", "")
+        new_data["conversations"] = new_conversations
+
+        new_dataset.append(new_data)
+    
+    os.makedirs(os.path.dirname(dataset_path), exist_ok=True)
+    with open(dataset_path, "w") as f:
+        for item in new_dataset:
+            f.write(json.dumps(item) + "\n")
+    
+    return dataset_path
