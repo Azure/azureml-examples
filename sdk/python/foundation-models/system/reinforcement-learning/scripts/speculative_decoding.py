@@ -568,10 +568,13 @@ def run_evaluation_speculative_decoding(
     monitor=False,
 ):
     """Run evaluation pipeline to compare speculative decoding and base model endpoints."""
-    base_conn_name, base_score_uri, speculative_conn_name, speculative_score_uri = (
-        _prepare_evaluation_inputs(
-            ml_client, base_endpoint_name, speculative_endpoint_name
-        )
+    (
+        base_conn_name,
+        base_score_uri,
+        speculative_conn_name,
+        speculative_score_uri,
+    ) = _prepare_evaluation_inputs(
+        ml_client, base_endpoint_name, speculative_endpoint_name
     )
 
     # Load component
