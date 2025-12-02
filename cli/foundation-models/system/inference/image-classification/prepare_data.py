@@ -18,7 +18,7 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
     """
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
-    branch = "hkotesova/fridge-objects"
+    branch = "hkotesova/fridge-data"
 
     # download data
     if is_multilabel_dataset == 0:

@@ -18,7 +18,7 @@ def download_and_unzip(dataset_parent_dir: str) -> None:
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
     # download data
-    branch = "hkotesova/fridge-objects"
+    branch = "hkotesova/fridge-data"
     download_url = f"https://raw.githubusercontent.com/Azure/azureml-examples/{branch}/sample-data/image-object-detection/odFridgeObjects.zip"
     print(f"Downloading data from {download_url}")
 
