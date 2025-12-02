@@ -27,6 +27,8 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+      with:
+        lfs: true
     - name: azure login
       uses: azure/login@v1
       with:
