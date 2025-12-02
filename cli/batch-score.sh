@@ -39,9 +39,11 @@ sleep 60
 
 echo "Extracting MNIST data from zip file"
 # <extract_data>
-TEMP_DATA_PATH="./temp_mnist_data"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+TEMP_DATA_PATH="$REPO_ROOT/temp_mnist_data"
 mkdir -p $TEMP_DATA_PATH
-unzip -q assets/batch-endpoints-data/mnist-batch/data.zip -d $TEMP_DATA_PATH
+unzip -q "$REPO_ROOT/assets/batch-endpoints-data/mnist-batch/data.zip" -d $TEMP_DATA_PATH
 # </extract_data>
 
 echo "Invoking batch endpoint with local data (MNIST)"
