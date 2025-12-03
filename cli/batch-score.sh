@@ -37,18 +37,9 @@ az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NA
 
 sleep 60
 
-echo "Extracting MNIST data from zip file"
-# <extract_data>
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-REPO_ROOT="$(dirname "$SCRIPT_DIR")"
-TEMP_DATA_PATH="$REPO_ROOT/temp_mnist_data"
-mkdir -p $TEMP_DATA_PATH
-unzip -q "$REPO_ROOT/assets/batch-endpoints-data/mnist-batch/data.zip" -d $TEMP_DATA_PATH
-# </extract_data>
-
-echo "Invoking batch endpoint with local data (MNIST)"
+echo "Invoking batch endpoint with public URI (MNIST)"
 # <start_batch_scoring_job>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $TEMP_DATA_PATH/data --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
@@ -80,13 +71,13 @@ fi
 echo "Invoke batch endpoint with specific output file name"
 # <start_batch_scoring_job_configure_output_settings>
 export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $TEMP_DATA_PATH/data --input-type uri_folder --output-path azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --output-path azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
 # </start_batch_scoring_job_configure_output_settings>
 
 echo "Invoke batch endpoint with specific overwrites"
 # <start_batch_scoring_job_overwrite>
 export OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $TEMP_DATA_PATH/data --input-type uri_folder --mini-batch-size 20 --instance-count 5 --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --mini-batch-size 20 --instance-count 5 --query name -o tsv)
 # </start_batch_scoring_job_overwrite>
 
 echo "Stream job detail"
@@ -123,7 +114,7 @@ az ml batch-deployment create --file endpoints/batch/deploy-models/mnist-classif
 echo "Invoke batch endpoint with public data"
 # <test_new_deployment>
 DEPLOYMENT_NAME="mnist-keras-dpl"
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name $DEPLOYMENT_NAME --input $TEMP_DATA_PATH/data --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name $DEPLOYMENT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
 # </test_new_deployment>
 
 echo "Show job detail"
@@ -164,7 +155,7 @@ az ml batch-endpoint show --name $ENDPOINT_NAME --query "{Name:name, Defaults:de
 
 echo "Invoke batch endpoint with the new default deployment with public URI"
 # <test_new_default_deployment>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $TEMP_DATA_PATH/data --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
 # </test_new_default_deployment>
 
 echo "Stream job logs to console"
@@ -262,8 +253,3 @@ az ml batch-deployment delete --name nonmlflowdp --endpoint-name $ENDPOINT_NAME 
 # <delete_endpoint>
 az ml batch-endpoint delete --name $ENDPOINT_NAME --yes
 # </delete_endpoint>
-
-echo "Cleaning up temporary data folder"
-# <cleanup_temp_data>
-rm -rf $TEMP_DATA_PATH
-# </cleanup_temp_data>
