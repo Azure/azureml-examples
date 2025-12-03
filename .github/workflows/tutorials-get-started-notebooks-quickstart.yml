@@ -17,6 +17,7 @@ on:
       - tutorials/get-started-notebooks/**
       - .github/workflows/tutorials-get-started-notebooks-quickstart.yml
       - sdk/python/dev-requirements.txt
+      - sdk/python/mlflow-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
 permissions:
