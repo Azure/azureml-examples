@@ -37,7 +37,7 @@ jobs:
       with:
         python-version: "3.12"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install azure-ai-ml azure-identity pandas ipykernel papermill
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
     - name: pip install forecasting reqs
