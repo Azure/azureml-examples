@@ -17,5 +17,7 @@ environment:
       scoring_route:
           path: /
           port: 8001
+environment_variables:
+  MIR_MODEL_USE_HTTP2: "true"
 instance_type: Standard_F8s_v2
 instance_count: 1
