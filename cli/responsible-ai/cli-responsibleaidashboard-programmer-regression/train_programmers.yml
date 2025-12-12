@@ -21,7 +21,7 @@ outputs:
     type: path
 
 code: ./train.py
-environment: azureml://registries/azureml/environments/responsibleai-tabular/versions/26
+environment: azureml://registries/azureml/environments/responsibleai-tabular/versions/28
 command: >-
   python train.py
   --training_data ${{inputs.training_data}}
