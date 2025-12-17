@@ -7,8 +7,6 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 
-import nebulaml as nm
-
 
 class Net(nn.Module):
     def __init__(self):
@@ -169,9 +167,6 @@ def main():
     else:
         device = torch.device("cpu")
 
-    # Nebula Initialization
-    nm.init(persistent_storage_path="/tmp/test", persistent_time_interval=2)
-
     train_kwargs = {"batch_size": args.batch_size}
     test_kwargs = {"batch_size": args.test_batch_size}
     if use_cuda:
@@ -197,10 +192,7 @@ def main():
         scheduler.step()
 
         if args.save_model:
-            # torch.save(model.state_dict(), "mnist_cnn.pt")
-            # Nebula Save
-            ckpt = nm.Checkpoint(f"global_step{epoch}", 1)
-            ckpt.save("mnist_cnn.pt", model.state_dict())
+            torch.save(model.state_dict(), "mnist_cnn.pt")
 
 
 if __name__ == "__main__":
