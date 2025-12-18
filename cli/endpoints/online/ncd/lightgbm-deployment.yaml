@@ -3,7 +3,7 @@ name: lightgbm-deployment
 endpoint_name: my-endpoint
 model:
   name: mir-sample-lightgbm-ncd-model
-  version: 3
+  version: 4
   path: lightgbm-iris/model
   type: mlflow_model
 instance_type: Standard_DS3_v2
