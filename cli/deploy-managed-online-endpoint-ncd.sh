@@ -13,6 +13,10 @@ echo $AML_SKLEARN_MODEL_NAME
 AML_LIGHTGBM_MODEL_NAME=mir-sample-lightgbm-ncd-model
 echo $AML_LIGHTGBM_MODEL_NAME
 
+# cleanup of existing models
+model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 2 || true)
+model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || true)
+
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/ncd/create-endpoint.yaml
 # </create_endpoint>
@@ -27,11 +31,6 @@ else
   echo "Endpoint creation failed"
   exit 1
 fi
-
-# cleanup of existing models
-model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 2 || true)
-model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || true)
-
 
 # <create_sklearn_deployment>
 az ml online-deployment create --name sklearn-deployment --endpoint $ENDPOINT_NAME -f endpoints/online/ncd/sklearn-deployment.yaml --all-traffic
