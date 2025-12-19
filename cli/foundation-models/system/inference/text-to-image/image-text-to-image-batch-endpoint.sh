@@ -17,7 +17,7 @@ endpoint_name="image-text-to-image-$version"
 deployment_name="image-text-to-image-batch-deploy"
 
 deployment_compute="gpu-cluster"
-compute_sku="Standard_NC6s_v3"
+compute_sku="STANDARD_NC4AS_T4_V3"
 
 # 1. Setup pre-requisites
 if [ "$subscription_id" = "<SUBSCRIPTION_ID>" ] || \
