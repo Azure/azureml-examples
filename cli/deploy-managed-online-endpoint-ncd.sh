@@ -13,9 +13,16 @@ echo $AML_SKLEARN_MODEL_NAME
 AML_LIGHTGBM_MODEL_NAME=mir-sample-lightgbm-ncd-model
 echo $AML_LIGHTGBM_MODEL_NAME
 
-# cleanup of existing models
-model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 2 || true)
-model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || true)
+# cleanup of existing models, using DELETE API instead of archiving them
+TOKEN=$(az account get-access-token --query accessToken -o tsv)
+SUBSCRIPTION=$(az account show --query id -o tsv)
+RESOURCE_GROUP="$(az configure -l --query "[?name=='group'].value | [0]" -o tsv)"
+WORKSPACE="$(az configure -l --query "[?name=='workspace'].value | [0]" -o tsv)"
+LOCATION="$(az configure -l --query "[?name=='location'].value | [0]" -o tsv)"
+URL=https://ml.azure.com/api/eastus/modelmanagement/v1.0/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/$AML_SKLEARN_MODEL_NAME:2
+curl -sS -X DELETE "$URL" -H "Authorization: Bearer $TOKEN"
+URL=https://ml.azure.com/api/eastus/modelmanagement/v1.0/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/$AML_LIGHTGBM_MODEL_NAME:3
+curl -sS -X DELETE "$URL" -H "Authorization: Bearer $TOKEN"
 
 # <create_endpoint>
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/ncd/create-endpoint.yaml
@@ -69,8 +76,10 @@ az ml online-endpoint invoke --name $ENDPOINT_NAME --deployment lightgbm-deploym
 # </test_lightgbm_deployment>
 
 # cleanup of models
-model_archive=$(az ml model archive -n $AML_SKLEARN_MODEL_NAME --version 2 || true)
-model_archive=$(az ml model archive -n $AML_LIGHTGBM_MODEL_NAME --version 3 || true)
+URL=https://ml.azure.com/api/eastus/modelmanagement/v1.0/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/$AML_SKLEARN_MODEL_NAME:2
+curl -sS -X DELETE "$URL" -H "Authorization: Bearer $TOKEN" --include
+URL=https://ml.azure.com/api/eastus/modelmanagement/v1.0/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.MachineLearningServices/workspaces/$WORKSPACE/models/$AML_LIGHTGBM_MODEL_NAME:3
+curl -sS -X DELETE "$URL" -H "Authorization: Bearer $TOKEN" --include
 
 # <delete_endpoint>
 az ml online-endpoint delete --name $ENDPOINT_NAME --yes 
