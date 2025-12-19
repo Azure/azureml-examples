@@ -10,4 +10,5 @@ dependencies:
   - psutil==7.0.0
   - pandas==2.3.0
   - azureml-inference-server-http
+  - azureml-ai-monitoring
 name: mlflow-env
