@@ -66,6 +66,7 @@ allowed_list = [
     "Class BaseIntellectualPropertySchema: This is an experimental class",
     "Class PipelineComponentBatchDeployment: This is an experimental class",
     "Class LinkTabularOutputDatasetConfig: This is an experimental class",
+    "Class DeploymentTemplateOperations: This is an experimental class",
     "Field 'max_nodes': This is an experimental field",
     "Uploading ",
     "Forecasting parameter ",
