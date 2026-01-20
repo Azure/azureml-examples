@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Setup OLive
-pip install onnxruntime_olive-0.3.0-py3-none-any.whl
-pip install onnxruntime_gpu_tensorrt-1.9.0-cp38-cp38-linux_x86_64.whl
+pip install onnxruntime_olive-0.8.0-py3-none-any.whl
+pip install onnxruntime_gpu_tensorrt-1.20.0-cp310-cp310-linux_x86_64.whl
 
 # Setup model analyzer
 pip install triton-model-analyzer

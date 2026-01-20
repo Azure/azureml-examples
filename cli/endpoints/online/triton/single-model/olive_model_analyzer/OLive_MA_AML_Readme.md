@@ -109,7 +109,7 @@ Before running the material, from the content root directory (azureml-examples/c
 
 ```bash
 # Load the Triton Server Container
-docker run --gpus=1 --rm -it -v "$(pwd)":/models nvcr.io/nvidia/tritonserver:21.08-py3 /bin/bash
+docker run --gpus=1 --rm -it -v "$(pwd)":/models nvcr.io/nvidia/tritonserver:25.12-py3 /bin/bash
 
 cd /models
 ```
