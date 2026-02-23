@@ -9,7 +9,7 @@ code: ./src
 
 environment: 
   conda_file: ./conda.yaml
-  image: mcr.microsoft.com/azureml/azureml/openmpi5.0-cuda12.4-ubuntu22.04:latest
+  image: mcr.microsoft.com/azureml/openmpi5.0-cuda12.4-ubuntu22.04:latest
 
 command: >-
   python hello.py
