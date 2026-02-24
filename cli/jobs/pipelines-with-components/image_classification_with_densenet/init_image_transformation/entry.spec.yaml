@@ -124,4 +124,4 @@ command: >-
   
 environment:
   conda_file: ./conda.yaml
-  image: mcr.microsoft.com/azureml/openmpi5.0-cuda12.6-ubuntu24.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.8-cudnn8-ubuntu22.04:latest
