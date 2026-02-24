@@ -24,7 +24,11 @@ jobs:
       random_state: 42
     outputs:
       model_output:
+        type: mlflow_model
+        mode: upload
       test_data:
+        type: uri_folder
+        mode: upload
     sampling_algorithm: random
     trial: ./train.yml
     search_space:
