@@ -6,7 +6,7 @@ version: 1
 type: command
 inputs:
   model: 
-    type: uri_folder
+    type: mlflow_model
   test_data:
     type: uri_folder
 outputs:
