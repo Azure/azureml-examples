@@ -45,12 +45,25 @@ def main(args):
     # write to local folder first, then copy to output folder
 
     mlflow.sklearn.save_model(model, "model")
+    
+    # create a unique subdirectory inside the mounted output folder so that
+    # multiple trials can write to the same base path without colliding. the
+    # sweep engine still mounts the same datastore path for all trials, but we
+    # use the AZUREML_RUN_ID environment variable (unique for each trial) to
+    # separate them.
+    run_id = os.environ.get("AZUREML_RUN_ID") or os.environ.get("AZUREML_RUN_NAME")
+    if run_id:
+        to_directory = os.path.join(args.model_output, run_id)
+    else:
+        to_directory = args.model_output
 
+    os.makedirs(to_directory, exist_ok=True)
+    
     from distutils.dir_util import copy_tree
 
     # copy subdirectory example
     from_directory = "model"
-    to_directory = args.model_output
+    #to_directory = args.model_output
 
     copy_tree(from_directory, to_directory)
 
