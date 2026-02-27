@@ -54,6 +54,11 @@ inputs:
 outputs:
   model_output:
     type: mlflow_model
+    # override default datastore path so it does not contain `${{name}}`.
+    # the service will still create a unique subfolder per trial/run,
+    # but the base path is now constant and contains no `$`, preventing
+    # bash from trying to expand an unfilled variable inside the container.
+    path: azureml://datastores/workspaceblobstore/paths/azureml/sweep_model_output
   test_data:
     type: uri_folder
   
