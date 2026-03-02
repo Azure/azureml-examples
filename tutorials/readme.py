@@ -254,6 +254,18 @@ jobs:
         name: {name}
         path: tutorials/{posix_folder}\n"""
 
+    workflow_yaml += f"""
+    - name: cleanup online endpoints
+      if: ${{{{ always() }}}}
+      run: |
+          source "{github_workspace}/infra/bootstrapping/sdk_helpers.sh";
+          source "{github_workspace}/infra/bootstrapping/init_environment.sh";
+          for ep in $(az ml online-endpoint list --query "[?starts_with(name, 'credit-endpoint-')].name" -o tsv); do
+            echo "Deleting endpoint: $ep"
+            az ml online-endpoint delete --name $ep --yes --no-wait || true
+          done
+      continue-on-error: true\n"""
+
     if nb_config.get(section=name, option=COMPUTE_NAMES, fallback=None):
         workflow_yaml += f"""
     - name: Remove the compute if notebook did not done it properly.
