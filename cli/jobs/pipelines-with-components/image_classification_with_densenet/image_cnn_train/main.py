@@ -544,8 +544,8 @@ if __name__ == "__main__":
     print("started training scripts on ", socket.gethostname())
     args = parser.parse_args()
 
-    args.world_size = int(os.environ["OMPI_COMM_WORLD_SIZE"])  # node count
-    args.rank = int(os.environ["OMPI_COMM_WORLD_RANK"])  # node world rank
+    args.world_size = int(os.environ.get("WORLD_SIZE", os.environ.get("AZUREML_WORLD_SIZE", os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))))
+    args.rank = int(os.environ.get("RANK", os.environ.get("AZUREML_RANK", os.environ.get("OMPI_COMM_WORLD_RANK", "0"))))
     print(f"world size {args.world_size}, rank {args.rank}")
 
     import os
@@ -557,7 +557,9 @@ if __name__ == "__main__":
     # override the master node ip by intention
     # args.dist_url = 'tcp://' + get_master_ip() + ':23456'
     # extract master ip from os env as a workaround
-    args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
+    master_addr = os.environ.get("MASTER_ADDR") or os.environ.get("AZ_BATCHAI_MPI_MASTER_NODE") or "127.0.0.1"
+    master_port = os.environ.get("MASTER_PORT", "23456")
+    args.dist_url = f"tcp://{master_addr}:{master_port}"
 
     ngpus_per_node = torch.cuda.device_count()
     args.distributed = args.world_size > 1
