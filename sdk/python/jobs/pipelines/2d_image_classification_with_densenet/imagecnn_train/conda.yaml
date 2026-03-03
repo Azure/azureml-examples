@@ -7,15 +7,13 @@ dependencies:
   - pip=21.2.2
   - pip:
       - mldesigner==0.1.0b4
-      - watchdog==0.10.3
       - torch==1.8.1
       - torchvision==0.9.1
       - tensorboard==2.5.0
       - pillow==8.2.0
       - numpy==1.19.5
-      - --extra-index-url=https://developer.download.nvidia.com/compute/redist/
-      - nvidia-dali-cuda100
       - azureml-mlflow>=1.41.0
-      - protobuf==3.20.1
+      - azure-ai-ml
+      - azure-identity
       - pandas==1.2.1
       - packaging>=22.0 # fix for https://github.com/pypa/setuptools/issues/4483
