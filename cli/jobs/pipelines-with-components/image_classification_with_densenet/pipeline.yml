@@ -83,9 +83,6 @@ jobs:
       workspace:
         type: uri_folder
         mode: upload
-    distribution:
-      type: mpi
-      process_count_per_instance: 1
     resources:
       instance_count: 2
 # </jobs>
