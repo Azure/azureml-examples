@@ -25,8 +25,10 @@ jobs:
     outputs:
       model_output:
         type: uri_folder
+        mode: upload
       test_data:
         type: uri_folder
+        mode: upload
     sampling_algorithm: random
     trial: ./train.yml
     search_space:
