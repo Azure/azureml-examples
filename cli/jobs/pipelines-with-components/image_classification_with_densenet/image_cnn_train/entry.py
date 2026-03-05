@@ -10,6 +10,9 @@ from enum import Enum
 
 from mldesigner import command_component, Input
 
+import os
+os.environ["MLFLOW_TRACKING_URI"] = "file:/mnt/azureml/cr/mlruns"
+os.environ["MLFLOW_REGISTRY_URI"] = "file:/mnt/azureml/cr/mlruns"
 
 class Data_BackendEnum(Enum):
     pytorch = "pytorch"
