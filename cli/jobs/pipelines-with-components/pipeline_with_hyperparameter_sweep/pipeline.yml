@@ -3,12 +3,13 @@ type: pipeline
 display_name: pipeline_with_hyperparameter_sweep
 description: Tune hyperparameters using TF component
 settings:
-    default_compute: azureml:cpu-cluster
+  default_compute: azureml:cpu-cluster
 jobs:
   sweep_step:
     type: sweep
     inputs:
       data: 
+      data:
         type: uri_file
         path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
       degree: 3
@@ -24,7 +25,11 @@ jobs:
       random_state: 42
     outputs:
       model_output:
-      test_data:
+        type: uri_folder
+        mode: upload
+     test_data:
+        type: uri_folder
+        mode: upload
     sampling_algorithm: random
     trial: ./train.yml
     search_space:
@@ -34,7 +39,10 @@ jobs:
         max_value: 0.9
       kernel:
         type: choice
-        values: ["rbf", "linear", "poly"]
+        values:
+          - rbf
+          - linear
+          - poly
       coef0:
         type: uniform
         min_value: 0.1
@@ -50,8 +58,12 @@ jobs:
   predict_step:
     type: command
     inputs:
-      model: ${{parent.jobs.sweep_step.outputs.model_output}}
-      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+      model: 
+        path: ${{parent.jobs.sweep_step.outputs.model_output}}
+        mode: download
+      test_data: 
+        path: ${{parent.jobs.sweep_step.outputs.test_data}}
+        mode: download
     outputs:
       predict_result:
     component: ./predict.yml

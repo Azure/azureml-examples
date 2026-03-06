@@ -6,7 +6,7 @@ version: 1
 type: command
 inputs:
   model: 
-    type: mlflow_model
+    type: uri_folder
   test_data:
     type: uri_folder
 outputs:
@@ -16,7 +16,7 @@ code: ./predict-src
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 command: >-
   python predict.py 
-  --model ${{inputs.model}} 
-  --test_data ${{inputs.test_data}} 
+  --model ${{inputs.model}}
+  --test_data ${{inputs.test_data}}
   --predict_result ${{outputs.predict_result}}
 # </component>
