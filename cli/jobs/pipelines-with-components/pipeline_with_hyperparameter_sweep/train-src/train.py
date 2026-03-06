@@ -48,6 +48,9 @@ def main(args):
 
     from distutils.dir_util import copy_tree
 
+    os.makedirs(args.model_output, exist_ok=True)
+    os.makedirs(args.test_data, exist_ok=True)
+    
     # copy subdirectory example
     from_directory = "model"
     to_directory = args.model_output
