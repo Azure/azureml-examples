@@ -8,7 +8,7 @@ from pathlib import Path
 
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import f1_score
 # define functions
 def main(args):
     # enable auto logging
@@ -76,6 +76,10 @@ def train_model(params, X_train, X_test, y_train, y_test):
     # train model
     model = SVC(**params)
     model = model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_train)
+    train_f1 = f1_score(y_train, y_pred, average="weighted")
+    mlflow.log_metric("training_f1_score", train_f1)
 
     # return model
     return model
