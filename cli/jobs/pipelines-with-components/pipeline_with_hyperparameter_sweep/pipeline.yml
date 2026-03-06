@@ -4,6 +4,13 @@ display_name: pipeline_with_hyperparameter_sweep
 description: Tune hyperparameters using TF component
 settings:
     default_compute: azureml:cpu-cluster
+outputs:
+  pipeline_model_output:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/${{name}}/model_output
+  pipeline_test_data:
+    type: uri_folder
+    path: azureml://datastores/workspaceblobstore/paths/${{name}}/test_data
 jobs:
   sweep_step:
     type: sweep
@@ -23,12 +30,8 @@ jobs:
       break_ties: False
       random_state: 42
     outputs:
-      model_output:
-        type: uri_folder
-        mode: upload
-      test_data:
-        type: uri_folder
-        mode: upload
+      model_output: ${{parent.outputs.pipeline_model_output}}
+      test_data: ${{parent.outputs.pipeline_test_data}}
     sampling_algorithm: random
     trial: ./train.yml
     search_space:
