@@ -80,3 +80,5 @@ command: >-
   --random_state ${{inputs.random_state}}
   --model_output ${{outputs.model_output}}
   --test_data ${{outputs.test_data}}
+  --model_output ${{outputs.model_output}}
+  --test_data ${{outputs.test_data}}
