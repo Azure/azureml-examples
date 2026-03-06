@@ -28,7 +28,8 @@ jobs:
       test_data:
         type: uri_folder
     sampling_algorithm: random
-    trial: ./train.yml
+    trial: 
+      component: ./train.yml
     search_space:
       c_value:
         type: uniform
