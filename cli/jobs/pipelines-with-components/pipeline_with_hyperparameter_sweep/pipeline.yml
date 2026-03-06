@@ -54,8 +54,12 @@ jobs:
   predict_step:
     type: command
     inputs:
-      model: ${{parent.jobs.sweep_step.outputs.model_output}}
-      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+      model: 
+        path: ${{parent.jobs.sweep_step.outputs.model_output}}
+        mode: download
+      test_data: 
+        path: ${{parent.jobs.sweep_step.outputs.test_data}}
+        mode: download
     outputs:
       predict_result:
     component: ./predict.yml
