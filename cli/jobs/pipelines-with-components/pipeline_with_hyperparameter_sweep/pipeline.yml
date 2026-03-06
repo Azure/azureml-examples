@@ -9,6 +9,7 @@ jobs:
     type: sweep
     inputs:
       data: 
+      data:
         type: uri_file
         path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
       degree: 3
@@ -38,7 +39,10 @@ jobs:
         max_value: 0.9
       kernel:
         type: choice
-        values: ["rbf", "linear", "poly"]
+        values:
+          - rbf
+          - linear
+          - poly
       coef0:
         type: uniform
         min_value: 0.1
