@@ -24,7 +24,11 @@ jobs:
       random_state: 42
     outputs:
       model_output:
+        type: uri_folder
+        mode: upload
       test_data:
+        type: uri_folder
+        mode: upload
     sampling_algorithm: random
     trial: ./train.yml
     search_space:
@@ -50,8 +54,14 @@ jobs:
   predict_step:
     type: command
     inputs:
-      model: ${{parent.jobs.sweep_step.outputs.model_output}}
-      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+      model: 
+        path: ${{parent.jobs.sweep_step.outputs.model_output}}
+        type: uri_folder
+        mode: download
+      test_data:
+        path: ${{parent.jobs.sweep_step.outputs.test_data}}
+        type: uri_folder
+        mode: download
     outputs:
       predict_result:
     component: ./predict.yml
