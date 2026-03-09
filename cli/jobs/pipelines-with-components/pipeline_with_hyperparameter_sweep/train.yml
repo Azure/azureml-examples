@@ -54,8 +54,10 @@ inputs:
 outputs:
   model_output:
     type: uri_folder
+    mode: upload
   test_data:
     type: uri_folder
+    mode: upload
 
 code: ./train-src
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
