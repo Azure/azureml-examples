@@ -522,7 +522,8 @@ def train_loop(
         )
         if writer:
             writer.add_scalar("train/summary/scalar/world_size", world_size, epoch)
-            mlflow.log_metric("train/world_size", step=epoch, value=world_size)
+            if is_first_rank:
+                mlflow.log_metric("train/world_size", step=epoch, value=world_size)
 
         if not skip_training:
             total_train_step = train(
