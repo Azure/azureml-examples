@@ -24,11 +24,14 @@ jobs:
       decision_function_shape: "ovr"
       break_ties: false
       random_state: 42
+
     outputs:
       model_output:
       test_data:
+
     sampling_algorithm: random
     trial: ./train.yml
+
     search_space:
       c_value:
         type: uniform
@@ -41,9 +44,11 @@ jobs:
         type: uniform
         min_value: 0.1
         max_value: 1
+
     objective:
       goal: minimize
       primary_metric: training_f1_score
+
     limits:
       max_total_trials: 5
       max_concurrent_trials: 3
