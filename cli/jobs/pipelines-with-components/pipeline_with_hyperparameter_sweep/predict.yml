@@ -2,10 +2,10 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: predict_component
 display_name: predict_component
-version: 1
+version: 2
 type: command
 inputs:
-  model: 
+  model:
     type: mlflow_model
   test_data:
     type: uri_folder
@@ -15,8 +15,8 @@ outputs:
 code: ./predict-src
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 command: >-
-  python predict.py 
-  --model ${{inputs.model}} 
-  --test_data ${{inputs.test_data}} 
+  python predict.py
+  --model ${{inputs.model}}
+  --test_data ${{inputs.test_data}}
   --predict_result ${{outputs.predict_result}}
 # </component>
