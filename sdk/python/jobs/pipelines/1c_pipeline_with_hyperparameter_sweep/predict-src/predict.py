@@ -17,6 +17,7 @@ parser.add_argument("--predict_result", type=str)
 args = parser.parse_args()
 
 X_test = pd.read_csv(Path(args.test_data) / "X_test.csv")
+# Load model from the directory containing MLflow model
 model = mlflow.sklearn.load_model(args.model)
 y_test = pd.read_csv(Path(args.test_data) / "y_test.csv")
 y_test["predict"] = model.predict(X_test)

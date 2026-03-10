@@ -24,7 +24,7 @@ jobs:
       random_state: 42
     outputs:
       model_output:
-        type: mlflow_model
+        type: uri_folder
       test_data:
         type: uri_folder
     sampling_algorithm: random
