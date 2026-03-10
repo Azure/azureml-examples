@@ -8,32 +8,70 @@ settings:
 jobs:
   sweep_step:
     type: sweep
-    trial: ./train.yml
+
+    trial:
+      type: command
+      code: ./train-src
+      environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
+
+      inputs:
+        data:
+          type: uri_file
+
+      outputs:
+        model_output:
+          type: uri_folder
+          mode: upload
+        test_data:
+          type: uri_folder
+          mode: upload
+
+      command: >-
+        python train.py
+        --data ${{inputs.data}}
+        --model_output ${{outputs.model_output}}
+        --test_data ${{outputs.test_data}}
+
     inputs:
       data:
         type: uri_file
         path: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
-    outputs:
-      model_output:
-      test_data:
+
     sampling_algorithm: random
     search_space:
       c_value:
         type: uniform
         min_value: 0.5
         max_value: 0.9
+
     objective:
       goal: minimize
       primary_metric: training_f1_score
+
     limits:
       max_total_trials: 5
       max_concurrent_trials: 3
 
   predict_step:
     type: command
-    component: ./predict.yml
+    code: ./predict-src
+    environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
+
     inputs:
-      model: ${{parent.jobs.sweep_step.outputs.model_output}}
-      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
+      model:
+        type: uri_folder
+        path: ${{parent.jobs.sweep_step.outputs.model_output}}
+      test_data:
+        type: uri_folder
+        path: ${{parent.jobs.sweep_step.outputs.test_data}}
+
     outputs:
       predict_result:
+        type: uri_folder
+        mode: upload
+
+    command: >-
+      python predict.py
+      --model ${{inputs.model}}
+      --test_data ${{inputs.test_data}}
+      --predict_result ${{outputs.predict_result}}
