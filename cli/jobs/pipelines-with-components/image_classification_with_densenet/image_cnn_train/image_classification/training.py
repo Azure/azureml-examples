@@ -523,8 +523,12 @@ def train_loop(
         )
         if writer:
             writer.add_scalar("train/summary/scalar/world_size", world_size, epoch)
+            # Only rank 0 logs to MLflow to avoid "Run not found" errors in distributed training
             if is_first_rank:
-                mlflow.log_metric("train/world_size", step=epoch, value=world_size)
+                try:
+                    mlflow.log_metric("train/world_size", step=epoch, value=world_size)
+                except Exception as e:
+                    print(f"MLflow metric logging skipped (rank guard): {e}")
 
         if not skip_training:
             total_train_step = train(
