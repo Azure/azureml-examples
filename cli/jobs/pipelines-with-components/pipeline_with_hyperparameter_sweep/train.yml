@@ -3,7 +3,7 @@ type: command
 
 name: train_model_uri
 display_name: train_model_uri
-version: 1
+version: 2   # 🔴 MUST bump version
 
 inputs:
   data:
@@ -54,8 +54,10 @@ inputs:
 outputs:
   model_output:
     type: uri_folder
+    mode: upload     # ✅ KEY FIX
   test_data:
     type: uri_folder
+    mode: upload     # ✅ KEY FIX
 
 code: ./train-src
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
