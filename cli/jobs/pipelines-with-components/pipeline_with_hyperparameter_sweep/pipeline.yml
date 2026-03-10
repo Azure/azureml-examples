@@ -27,10 +27,10 @@ jobs:
           mode: upload
 
       command: >-
-        python train.py
+        bash -lc "python train.py
         --data ${{inputs.data}}
         --model_output ${{outputs.model_output}}
-        --test_data ${{outputs.test_data}}
+        --test_data ${{outputs.test_data}}"
 
     inputs:
       data:
@@ -71,7 +71,7 @@ jobs:
         mode: upload
 
     command: >-
-      python predict.py
+      bash -lc "python predict.py
       --model ${{inputs.model}}
       --test_data ${{inputs.test_data}}
-      --predict_result ${{outputs.predict_result}}
+      --predict_result ${{outputs.predict_result}}"
