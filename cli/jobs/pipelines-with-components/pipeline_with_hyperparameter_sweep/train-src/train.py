@@ -2,17 +2,21 @@
 import os
 import mlflow
 import argparse
-
 import pandas as pd
 from pathlib import Path
 
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import f1_score
 
 # define functions
 def main(args):
     # enable auto logging
     mlflow.autolog()
+
+    # make sure output folders exist (important for sweep trials)
+    os.makedirs(args.model_output, exist_ok=True)
+    os.makedirs(args.test_data, exist_ok=True)
 
     # setup parameters
     params = {
@@ -33,27 +37,26 @@ def main(args):
         "random_state": args.random_state,
     }
 
-    # read in data
+    # read in data (pipeline passes a uri_file CSV)
     df = pd.read_csv(args.data)
 
     # process data
     X_train, X_test, y_train, y_test = process_data(df, args.random_state)
 
     # train model
-    model = train_model(params, X_train, X_test, y_train, y_test)
-    # Output the model and test data
-    # write to local folder first, then copy to output folder
+    model = train_model(params, X_train, y_train)
 
-    mlflow.sklearn.save_model(model, "model")
+    # compute metric for sweep objective
+    y_pred = model.predict(X_test)
+    f1 = f1_score(y_test, y_pred, average="weighted")
 
-    from distutils.dir_util import copy_tree
+    # IMPORTANT: this name must match objective.primary_metric exactly
+    mlflow.log_metric("training_f1_score", float(f1))
 
-    # copy subdirectory example
-    from_directory = "model"
-    to_directory = args.model_output
+    # save model to MLflow format into output folder
+    mlflow.sklearn.save_model(model, path=args.model_output)
 
-    copy_tree(from_directory, to_directory)
-
+    # save test data for downstream predict step
     X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
     y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
@@ -64,28 +67,19 @@ def process_data(df, random_state):
     y = df["species"]
 
     # train/test split
-    X_train, X_test, y_train, y_test = train_test_split(
+    return train_test_split(
         X, y, test_size=0.2, random_state=random_state
     )
 
-    # return split data
-    return X_train, X_test, y_train, y_test
 
-
-def train_model(params, X_train, X_test, y_train, y_test):
-    # train model
+def train_model(params, X_train, y_train):
     model = SVC(**params)
-    model = model.fit(X_train, y_train)
-
-    # return model
-    return model
+    return model.fit(X_train, y_train)
 
 
 def parse_args():
-    # setup arg parser
     parser = argparse.ArgumentParser()
 
-    # add arguments
     parser.add_argument("--data", type=str)
     parser.add_argument("--C", type=float, default=1.0)
     parser.add_argument("--kernel", type=str, default="rbf")
@@ -102,20 +96,12 @@ def parse_args():
     parser.add_argument("--decision_function_shape", type=str, default="ovr")
     parser.add_argument("--break_ties", type=bool, default=False)
     parser.add_argument("--random_state", type=int, default=42)
+
     parser.add_argument("--model_output", type=str, help="Path of output model")
-    parser.add_argument("--test_data", type=str, help="Path of output model")
+    parser.add_argument("--test_data", type=str, help="Path of output test data")
 
-    # parse args
-    args = parser.parse_args()
-
-    # return args
-    return args
+    return parser.parse_args()
 
 
-# run script
 if __name__ == "__main__":
-    # parse args
-    args = parse_args()
-
-    # run main function
-    main(args)
+    main(parse_args())
