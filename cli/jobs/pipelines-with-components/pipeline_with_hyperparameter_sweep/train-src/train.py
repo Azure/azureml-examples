@@ -105,6 +105,7 @@ def parse_args():
     parser.add_argument("--model_output", type=str, help="Path of output model")
     parser.add_argument("--test_data", type=str, help="Path of output model")
 
+    
     # parse args
     args = parser.parse_args()
 
