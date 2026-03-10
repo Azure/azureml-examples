@@ -44,18 +44,18 @@ def main(args):
     # Output the model and test data
     # write to local folder first, then copy to output folder
 
-    # FIX: Ensure output directories exist and are properly formatted
-    model_output_path = str(Path(args.model_output).resolve())
-    test_data_path = str(Path(args.test_data).resolve())
-    # Create directories if they don't exist
-    Path(model_output_path).mkdir(parents=True, exist_ok=True)
-    Path(test_data_path).mkdir(parents=True, exist_ok=True)
-    # Output the model and test data
-    print(f"Saving model to: {model_output_path}")
-    mlflow.sklearn.save_model(model, model_output_path)
-    print(f"Saving test data to: {test_data_path}")
-    X_test.to_csv(Path(test_data_path) / "X_test.csv", index=False)
-    y_test.to_csv(Path(test_data_path) / "y_test.csv", index=False)
+    mlflow.sklearn.save_model(model, "model")
+
+    from distutils.dir_util import copy_tree
+
+    # copy subdirectory example
+    from_directory = "model"
+    to_directory = args.model_output
+
+    copy_tree(from_directory, to_directory)
+
+    X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
+    y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
 
 def process_data(df, random_state):
@@ -105,7 +105,6 @@ def parse_args():
     parser.add_argument("--model_output", type=str, help="Path of output model")
     parser.add_argument("--test_data", type=str, help="Path of output model")
 
-    
     # parse args
     args = parser.parse_args()
 
