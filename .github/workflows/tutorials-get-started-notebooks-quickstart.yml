@@ -97,6 +97,21 @@ jobs:
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python quickstart.ipynb quickstart.output.ipynb
       working-directory: tutorials/get-started-notebooks
+    - name: collect endpoint logs on failure
+      if: ${{ failure() }}
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          endpoint_name=$(az ml online-endpoint list --query "[?starts_with(name, 'credit-endpoint-')]|sort_by(@,&properties.creation_context.created_at)[-1].name" -o tsv);
+          if [ -z "$endpoint_name" ]; then
+            echo "No credit-endpoint-* endpoints found for log collection.";
+            exit 0;
+          fi
+          echo "Collecting logs for endpoint: $endpoint_name";
+          az ml online-deployment list -e "$endpoint_name" --query "[].name" -o tsv;
+          az ml online-deployment get -n blue -e "$endpoint_name" --query "{provisioning_state:provisioning_state,status:status,errors:errors}" -o json || true;
+          az ml online-deployment logs -n blue -e "$endpoint_name" --lines 200 || true;
+      continue-on-error: true
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
       uses: ./.github/actions/upload-artifact
