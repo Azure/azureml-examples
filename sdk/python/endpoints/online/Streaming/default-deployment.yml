@@ -1,0 +1,15 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: aml-streaming
+endpoint_name: endpt-str-111
+model:
+  path: ../../model-1/model/
+code_configuration:
+  code: code
+  scoring_script: score.py
+environment:
+  image: mcr.microsoft.com/azureml/minimal-ubuntu20.04-py38-cpu-inference:latest
+  conda_file: env.yml
+request_settings:
+  request_timeout_ms: 11000
+instance_type: Standard_DS2_v2
+instance_count: 1
