@@ -2,7 +2,7 @@ $schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schem
 type: automl
 
 experiment_name: dpv2-cli-automl-classifier-experiment
-# name: dpv2-cli-classifier-train-job-advanced-01
+# #name: dpv2-cli-classifier-train-job-advanced-01
 description: A Classification job using bank marketing
 
 compute: azureml:cpu-cluster
