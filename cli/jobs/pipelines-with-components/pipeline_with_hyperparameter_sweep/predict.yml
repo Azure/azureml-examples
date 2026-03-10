@@ -22,4 +22,3 @@ command: >-
   --model ${{inputs.model}}
   --test_data ${{inputs.test_data}}
   --predict_result ${{outputs.predict_result}}
-``
