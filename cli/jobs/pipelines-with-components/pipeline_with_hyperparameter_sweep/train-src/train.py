@@ -54,6 +54,7 @@ def main(args):
 
     copy_tree(from_directory, to_directory)
 
+    os.makedirs(args.test_data, exist_ok=True)
     X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
     y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
