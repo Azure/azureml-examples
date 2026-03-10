@@ -79,6 +79,15 @@ jobs:
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
           az account get-access-token --scope https://ml.azure.com/.default --output none
+    - name: delete stale online endpoints
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          for ep in $(az ml online-endpoint list --query "[].name" -o tsv | grep "^credit-endpoint-"); do
+            echo "Deleting stale endpoint: $ep";
+            az ml online-endpoint delete -n "$ep" -y --no-wait || true;
+          done
+      continue-on-error: true
     - name: run get-started-notebooks/quickstart.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
