@@ -12,18 +12,14 @@ parser.add_argument("--predict_result", type=str)
 
 args = parser.parse_args()
 
-# ✅ REQUIRED FOR HYPERPARAMETER (SWEEP) JOBS
+# ensure output folder exists
 os.makedirs(args.predict_result, exist_ok=True)
 
-# load data
 X_test = pd.read_csv(Path(args.test_data) / "X_test.csv")
 y_test = pd.read_csv(Path(args.test_data) / "y_test.csv")
 
-# load model
 model = mlflow.sklearn.load_model(args.model)
 
-# predict
 y_test["predict"] = model.predict(X_test)
 
-# save results
 y_test.to_csv(Path(args.predict_result) / "predict_result.csv", index=False)
