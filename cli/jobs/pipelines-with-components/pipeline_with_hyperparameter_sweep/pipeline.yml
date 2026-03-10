@@ -50,8 +50,8 @@ jobs:
   predict_step:
     type: command
     inputs:
-      model: ${{parent.jobs.sweep_step.outputs.best_trial_output.model_output}}
-      test_data: ${{parent.jobs.sweep_step.outputs.best_trial_output.test_data}}
+      model: ${{parent.jobs.sweep_step.outputs.model_output}}
+      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
     outputs:
       predict_result:
     component: ./predict.yml
