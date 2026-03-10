@@ -493,6 +493,7 @@ def train_loop(
     checkpoint_dir="./",
     total_train_step=0,
 ):
+    # MLflow rank guard fix: v0.0.3 - Only rank 0 logs metrics to prevent "Run not found" errors
     is_first_rank = (
         not torch.distributed.is_initialized() or torch.distributed.get_rank() == 0
     )
