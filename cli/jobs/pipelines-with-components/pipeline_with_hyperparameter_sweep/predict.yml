@@ -1,8 +1,7 @@
-# <component>
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: predict_component
 display_name: predict_component
-version: 4
+version: 2   # 🔴 MUST bump version
 type: command
 
 inputs:
@@ -14,6 +13,7 @@ inputs:
 outputs:
   predict_result:
     type: uri_folder
+    mode: upload     # ✅ KEY FIX
 
 code: ./predict-src
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
@@ -23,4 +23,3 @@ command: >-
   --model ${{inputs.model}}
   --test_data ${{inputs.test_data}}
   --predict_result ${{outputs.predict_result}}
-# </component>
