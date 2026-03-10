@@ -27,9 +27,7 @@ jobs:
 
     outputs:
       model_output:
-        path: azureml://datastores/workspaceblobstore/paths/hpsweep/${{name}}/model_output
       test_data:
-        path: azureml://datastores/workspaceblobstore/paths/hpsweep/${{name}}/test_data
 
     sampling_algorithm: random
     trial: ./train.yml
@@ -63,5 +61,4 @@ jobs:
       test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
     outputs:
       predict_result:
-        path: azureml://datastores/workspaceblobstore/paths/hpsweep/${{name}}/predict_result
     component: ./predict.yml
