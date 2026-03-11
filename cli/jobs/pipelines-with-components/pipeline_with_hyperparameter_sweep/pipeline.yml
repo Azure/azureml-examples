@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
 display_name: pipeline_with_hyperparameter_sweep
-description: Tune hyperparameters using TF component
+description: Tune hyperparameters using sample components
 settings:
     default_compute: azureml:cpu-cluster
 jobs:
@@ -22,11 +22,6 @@ jobs:
       decision_function_shape: "ovr"
       break_ties: False
       random_state: 42
-    outputs:
-      model_output:
-        type: uri_folder
-      test_data:
-        type: uri_folder
     sampling_algorithm: random
     trial: ./train.yml
     search_space:
@@ -48,14 +43,5 @@ jobs:
       max_total_trials: 5
       max_concurrent_trials: 3
       timeout: 7200
-
-  predict_step:
-    type: command
-    inputs:
-      model: ${{parent.jobs.sweep_step.outputs.model_output}}
-      test_data: ${{parent.jobs.sweep_step.outputs.test_data}}
-    outputs:
-      predict_result:
-    component: ./predict.yml
 
     
