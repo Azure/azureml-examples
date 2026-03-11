@@ -1,13 +1,13 @@
 # imports
-import os
-import mlflow
 import argparse
-
-import pandas as pd
+import os
 from pathlib import Path
 
-from sklearn.svm import SVC
+import mlflow
+import pandas as pd
+from distutils.dir_util import copy_tree
 from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
 
 # define functions
 def main(args):
@@ -43,17 +43,11 @@ def main(args):
     model = train_model(params, X_train, X_test, y_train, y_test)
     # Output the model and test data
     # write to local folder first, then copy to output folder
-    
     mlflow.sklearn.save_model(model, "model")
-    
-    from distutils.dir_util import copy_tree
-    
     # copy model to output folder
     from_directory = "model"
     to_directory = args.model_output
-    
     copy_tree(from_directory, to_directory)
-    
     os.makedirs(args.test_data, exist_ok=True)
     X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
     y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
