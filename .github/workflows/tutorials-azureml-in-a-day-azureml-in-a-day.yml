@@ -79,6 +79,21 @@ jobs:
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
           az account get-access-token --scope https://ml.azure.com/.default --output none
+    - name: Clean up orphaned role assignments
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          echo "Cleaning up orphaned role assignments in ${RESOURCE_GROUP_NAME}..."
+          STALE_IDS=$(az role assignment list --resource-group "$RESOURCE_GROUP_NAME" --query "[?principalName==''].id" -o tsv)
+          if [ -n "$STALE_IDS" ]; then
+            echo "$STALE_IDS" | while IFS= read -r id; do
+              az role assignment delete --ids "$id" || true
+            done
+            echo "Orphaned role assignment cleanup complete."
+          else
+            echo "No orphaned role assignments found."
+          fi
+      continue-on-error: true
     - name: run azureml-in-a-day/azureml-in-a-day.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";

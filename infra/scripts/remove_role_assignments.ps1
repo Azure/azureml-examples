@@ -22,8 +22,8 @@ try
     $OBJTYPE = "Unknown"
     Write-Output "Pre-checking the RoleAssignment count..."
     Get-RoleAssignmentCount
-    # Remove only limited RoleDefinitions
-    $staleRoleAssignments = Get-AzRoleAssignment -ResourceGroupName "$ResourceGroupName" | Where-Object {($_.ObjectType -eq $OBJTYPE) -and ($_.RoleDefinitionName -match "Storage Blob Data Reader|AzureML Metrics Writer \(preview\)|AcrPull")}
+    # Remove stale RoleDefinitions created by AzureML endpoints and managed identities
+    $staleRoleAssignments = Get-AzRoleAssignment -ResourceGroupName "$ResourceGroupName" | Where-Object {($_.ObjectType -eq $OBJTYPE) -and ($_.RoleDefinitionName -match "Storage Blob Data Reader|Storage Blob Data Owner|Storage Blob Data Contributor|AzureML Metrics Writer \(preview\)|AcrPull|Contributor")}
     $unknownRoleAssignmentCount = $staleRoleAssignments.Count
     Write-Output "Initiating the cleanup of unknownRole in the ResourceGroup:$ResourceGroupName having count as $unknownRoleAssignmentCount..."
     $staleRoleAssignments | Remove-AzRoleAssignment
