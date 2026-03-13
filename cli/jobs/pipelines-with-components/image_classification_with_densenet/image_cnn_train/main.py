@@ -52,7 +52,8 @@ try:
     from apex import amp
 except ImportError:
     raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
+        "Please install apex from https://www.github.com/nvidia/apex to run this "
+        "example."
     )
 
 import image_classification.resnet as models
@@ -63,13 +64,13 @@ from image_classification.dataloaders import *
 from image_classification.training import *
 from image_classification.utils import *
 
-
 import torch.multiprocessing as mp
 import os
 import os.path as op
 import re
 from datetime import datetime
 import sys
+
 
 # cluster aware logic start
 def get_master_ip():
@@ -152,7 +153,10 @@ def add_parser_arguments(parser):
         default=-1,
         type=int,
         metavar="N",
-        help="size of a total batch size, for simulating bigger batches using gradient accumulation",
+        help=(
+            "size of a total batch size, for simulating bigger batches using "
+            "gradient accumulation"
+        ),
     )
 
     parser.add_argument(
@@ -201,7 +205,10 @@ def add_parser_arguments(parser):
     parser.add_argument(
         "--bn-weight-decay",
         action="store_true",
-        help="use weight_decay on batch normalization learnable parameters, (default: false)",
+        help=(
+            "use weight_decay on batch normalization learnable parameters, "
+            "(default: false)"
+        ),
     )
     parser.add_argument(
         "--nesterov",
@@ -237,7 +244,10 @@ def add_parser_arguments(parser):
         "--static-loss-scale",
         type=float,
         default=1,
-        help="Static loss scale, positive power of 2 values can improve fp16 convergence.",
+        help=(
+            "Static loss scale, positive power of 2 values can improve fp16 "
+            "convergence."
+        ),
     )
     parser.add_argument(
         "--dynamic-loss-scale",
@@ -261,7 +271,10 @@ def add_parser_arguments(parser):
     parser.add_argument(
         "--gather-checkpoints",
         action="store_true",
-        help="Gather checkpoints throughout the training, without this flag only best and last checkpoints will be stored",
+        help=(
+            "Gather checkpoints throughout the training, without this flag only "
+            "best and last checkpoints will be stored"
+        ),
     )
 
     parser.add_argument(
@@ -371,8 +384,9 @@ def main(gpu_index, args):
         tbs = args.world_size * args.batch_size
         if args.optimizer_batch_size % tbs != 0:
             print(
-                "Warning: simulated batch size {} is not divisible by actual batch size {}".format(
-                    args.optimizer_batch_size, tbs
+                (
+                    "Warning: simulated batch size {} is not divisible by actual "
+                    "batch size {}".format(args.optimizer_batch_size, tbs)
                 )
             )
         batch_size_multiplier = int(round(args.optimizer_batch_size / tbs))
@@ -544,8 +558,20 @@ if __name__ == "__main__":
     print("started training scripts on ", socket.gethostname())
     args = parser.parse_args()
 
-    args.world_size = int(os.environ.get("WORLD_SIZE", os.environ.get("AZUREML_WORLD_SIZE", os.environ.get("OMPI_COMM_WORLD_SIZE", "1"))))
-    args.rank = int(os.environ.get("RANK", os.environ.get("AZUREML_RANK", os.environ.get("OMPI_COMM_WORLD_RANK", "0"))))
+    args.world_size = int(
+        os.environ.get(
+            "WORLD_SIZE",
+            os.environ.get(
+                "AZUREML_WORLD_SIZE", os.environ.get("OMPI_COMM_WORLD_SIZE", "1")
+            ),
+        )
+    )
+    args.rank = int(
+        os.environ.get(
+            "RANK",
+            os.environ.get("AZUREML_RANK", os.environ.get("OMPI_COMM_WORLD_RANK", "0")),
+        )
+    )
     print(f"world size {args.world_size}, rank {args.rank}")
 
     import os
@@ -557,7 +583,11 @@ if __name__ == "__main__":
     # override the master node ip by intention
     # args.dist_url = 'tcp://' + get_master_ip() + ':23456'
     # extract master ip from os env as a workaround
-    master_addr = os.environ.get("MASTER_ADDR") or os.environ.get("AZ_BATCHAI_MPI_MASTER_NODE") or "127.0.0.1"
+    master_addr = (
+        os.environ.get("MASTER_ADDR")
+        or os.environ.get("AZ_BATCHAI_MPI_MASTER_NODE")
+        or "127.0.0.1"
+    )
     master_port = os.environ.get("MASTER_PORT", "23456")
     args.dist_url = f"tcp://{master_addr}:{master_port}"
 
