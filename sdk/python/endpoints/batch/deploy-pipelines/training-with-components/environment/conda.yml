@@ -1,10 +1,10 @@
 channels:
 - conda-forge
 dependencies:
-- python=3.8.5
+- python=3.10
 - pip
 - pip:
-  - mlflow
+  - mlflow<3
   - azureml-mlflow
   - datasets
   - jobtools
@@ -13,4 +13,5 @@ dependencies:
   - scikit-learn==1.1.2
   - xgboost==1.3.3
   - pandas==1.4
+  - numpy<2
 name: mlflow-env
