@@ -1,10 +1,10 @@
 # imports
-import os
-import mlflow
 import argparse
-
-import pandas as pd
+from distutils.dir_util import copy_tree
 from pathlib import Path
+
+import mlflow
+import pandas as pd
 
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
@@ -41,10 +41,23 @@ def main(args):
 
     # train model
     model = train_model(params, X_train, X_test, y_train, y_test)
-    # Output the model and test data
-    mlflow.sklearn.save_model(model, args.model_output)
-    X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
-    y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
+
+    # Write to a local folder first, then copy into AML output directories.
+    local_model_dir = Path("model")
+    if local_model_dir.exists():
+        import shutil
+
+        shutil.rmtree(local_model_dir)
+    mlflow.sklearn.save_model(model, local_model_dir.as_posix())
+
+    model_output_dir = Path(args.model_output)
+    test_data_dir = Path(args.test_data)
+    model_output_dir.mkdir(parents=True, exist_ok=True)
+    test_data_dir.mkdir(parents=True, exist_ok=True)
+
+    copy_tree(local_model_dir.as_posix(), model_output_dir.as_posix())
+    X_test.to_csv(test_data_dir / "X_test.csv", index=False)
+    y_test.to_csv(test_data_dir / "y_test.csv", index=False)
 
 
 def process_data(df, random_state):

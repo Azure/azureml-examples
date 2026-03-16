@@ -7,7 +7,7 @@ version: 1
 
 inputs: 
   data:
-    type: uri_file
+    type: uri_folder
   c_value:
     type: number
     default: 1.0
