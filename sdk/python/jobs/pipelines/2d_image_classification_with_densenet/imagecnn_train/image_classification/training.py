@@ -49,6 +49,12 @@ except ImportError:
             return t.item()
         return float(t)
 
+    def network_to_half(model):
+        return model.half()
+
+    class FP16_Optimizer:
+        pass
+
 from torch.utils.tensorboard import SummaryWriter
 
 from datetime import datetime
