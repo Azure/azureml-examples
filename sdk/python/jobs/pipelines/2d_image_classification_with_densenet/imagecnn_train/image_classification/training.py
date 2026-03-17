@@ -69,7 +69,17 @@ from ctypes import c_bool
 
 import mlflow
 
-mlflow.autolog()
+try:
+    mlflow.autolog()
+except Exception:
+    pass
+
+
+def _safe_log_metric(key, step, value):
+    try:
+        mlflow.log_metric(key, step=step, value=value)
+    except Exception:
+        pass
 
 
 class PreemptHandler(FileSystemEventHandler):
@@ -367,16 +377,16 @@ def train(
                     calc_ips(bs, it_time),
                     total_train_step,
                 )
-                mlflow.log_metric("train/learning_rate", step=epoch, value=lr)
-                mlflow.log_metric(
+                _safe_log_metric("train/learning_rate", step=epoch, value=lr)
+                _safe_log_metric(
                     "train/loss", step=total_train_step, value=to_python_float(loss)
                 )
-                mlflow.log_metric(
+                _safe_log_metric(
                     "perf/compute_ips",
                     step=total_train_step,
                     value=calc_ips(bs, it_time - data_time),
                 )
-                mlflow.log_metric(
+                _safe_log_metric(
                     "perf/train_total_ips",
                     step=total_train_step,
                     value=calc_ips(bs, it_time),
@@ -532,7 +542,7 @@ def train_loop(
         )
         if writer:
             writer.add_scalar("train/summary/scalar/world_size", world_size, epoch)
-            mlflow.log_metric("train/world_size", step=epoch, value=world_size)
+            _safe_log_metric("train/world_size", step=epoch, value=world_size)
 
         if not skip_training:
             total_train_step = train(
