@@ -482,7 +482,6 @@ def main(gpu_index, args):
     elif args.lr_schedule == "linear":
         lr_policy = lr_linear_policy(args.lr, args.warmup, args.epochs, logger=None)
 
-
     if args.distributed:
         model_and_loss.model = DDP(model_and_loss.model)
 
