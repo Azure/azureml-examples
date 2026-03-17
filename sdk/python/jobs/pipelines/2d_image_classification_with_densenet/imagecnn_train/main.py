@@ -46,14 +46,18 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
+from torch.nn.parallel import DistributedDataParallel as DDP
+
 try:
-    from apex.parallel import DistributedDataParallel as DDP
     from apex.fp16_utils import *
     from apex import amp
 except ImportError:
-    raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
-    )
+    amp = None
+
+    def to_python_float(t):
+        if hasattr(t, "item"):
+            return t.item()
+        return float(t)
 
 import image_classification.resnet as models
 

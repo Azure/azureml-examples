@@ -36,14 +36,18 @@ from torch.autograd import Variable
 from . import resnet as models
 from . import utils
 
+from torch.nn.parallel import DistributedDataParallel as DDP
+
 try:
-    from apex.parallel import DistributedDataParallel as DDP
     from apex.fp16_utils import *
     from apex import amp
 except ImportError:
-    raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
-    )
+    amp = None
+
+    def to_python_float(t):
+        if hasattr(t, "item"):
+            return t.item()
+        return float(t)
 
 from torch.utils.tensorboard import SummaryWriter
 
