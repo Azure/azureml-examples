@@ -121,7 +121,7 @@ distribution:
   process_count_per_instance: 1
 
 command: >-
-  pip install git+https://github.com/NVIDIA/apex.git@master
+  pip install --no-build-isolation git+https://github.com/NVIDIA/apex.git@master
   && mldesigner execute --source entry.py --name imagecnn_train --inputs train_data=${{inputs.train_data}} 
   val_data=${{inputs.valid_data}} data_backend=${{inputs.data_backend}} arch=${{inputs.arch}} 
   model_config=${{inputs.model_config}} workers=${{inputs.workers}} epochs=${{inputs.epochs}} 
