@@ -4,7 +4,7 @@ flavors:
     env: conda.yaml
     loader_module: mlflow.sklearn
     model_path: model.pkl
-    python_version: 3.9.16
+    python_version: 3.9
   sklearn:
     code: null
     pickled_model: model.pkl
