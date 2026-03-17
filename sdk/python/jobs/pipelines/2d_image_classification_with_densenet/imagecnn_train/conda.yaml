@@ -3,20 +3,18 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - python=3.8.12
-  - pip=21.2.2
+  - python=3.10
+  - pip=23.3.1
   - pip:
-      - mldesigner==0.1.0b4
-      - watchdog==0.10.3
-      - torch==1.8.1
-      - torchvision==0.9.1
-      - tensorboard==2.5.0
-      - pillow==8.2.0
-      - numpy==1.19.5
-      - --extra-index-url=https://developer.download.nvidia.com/compute/redist/
-      - nvidia-dali-cuda100
+      - mldesigner==0.1.0b17
+      - watchdog>=2.0.0
+      - torch==2.5.1
+      - torchvision==0.20.1
+      - tensorboard>=2.10.0
+      - pillow>=9.0.0
+      - numpy>=1.23.0,<2.0
       - azureml-mlflow>=1.41.0
       - azure-common>=1.1.28
-      - protobuf==3.20.1
-      - pandas==1.2.1
-      - packaging>=22.0 # fix for https://github.com/pypa/setuptools/issues/4483
+      - protobuf>=3.20.0
+      - pandas>=1.5.0
+      - packaging>=22.0
