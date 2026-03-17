@@ -530,6 +530,9 @@ def main(gpu_index, args):
     )
     exp_duration = time.time() - exp_start_time
 
+    if torch.distributed.is_initialized():
+        torch.distributed.destroy_process_group()
+
     print("Experiment ended")
 
     sys.stdout.flush()
@@ -564,6 +567,8 @@ if __name__ == "__main__":
     args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
 
     ngpus_per_node = torch.cuda.device_count()
+    if ngpus_per_node == 0:
+        raise RuntimeError("No CUDA GPUs available. This training script requires at least one GPU.")
     args.distributed = args.world_size > 1
 
     # Since we have ngpus_per_node processes per node, the total world_size
