@@ -1,0 +1,12 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.8.18
+- pip
+- pip:
+  - azureml-inference-server-http
+  - scikit-learn==0.24.2
+  - numpy==1.23.5
+  - scipy==1.9.3
+  - cloudpickle==2.2.0
+name: deployment-env
