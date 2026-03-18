@@ -9,7 +9,7 @@ flavors:
     code: null
     pickled_model: model.pkl
     serialization_format: cloudpickle
-    sklearn_version: 1.0.2
+    sklearn_version: 0.24.2
 mlflow_version: 2.8.1
 model_uuid: 3d4b3022e6ca4afeaa4a6b1616c46486
 run_id: coral_bell_shm9lpzkyl
