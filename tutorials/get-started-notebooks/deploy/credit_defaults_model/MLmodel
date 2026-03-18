@@ -4,12 +4,12 @@ flavors:
     env: conda.yaml
     loader_module: mlflow.sklearn
     model_path: model.pkl
-    python_version: 3.10.14
+    python_version: 3.9.18
   sklearn:
     code: null
     pickled_model: model.pkl
     serialization_format: cloudpickle
-    sklearn_version: 1.3.2
+    sklearn_version: 0.24.2
 mlflow_version: 2.8.1
 model_uuid: 3d4b3022e6ca4afeaa4a6b1616c46486
 run_id: coral_bell_shm9lpzkyl
