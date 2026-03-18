@@ -26,7 +26,7 @@ These notebooks will guide you through the process of deploying these healthcare
 
 ## Healthcare AI Examples Repository
 
-For more detailed examples, usage patterns, and solution templates demonstrating how to utilize these models, explore the [Healthcare AI Examples repository](https://aka.ms/healthcare-ai-examples). This repository provides practical examples and templates to help you get started with Microsoft's multimodal Healthcare AI models. The Healthcare AI Examples repository includes a helpful healthcareai_toolkit package that simplifies working with the deployed endpoints, DICOM files, and other common healthcare AI tasks.
+For more detailed examples, usage patterns, and solution templates demonstrating how to utilize these models, explore the [Healthcare AI Examples repository](https://aka.ms/HealthcareAIExamples). This repository provides practical examples and templates to help you get started with Microsoft's multimodal Healthcare AI models. The Healthcare AI Examples repository includes a helpful healthcareai_toolkit package that simplifies working with the deployed endpoints, DICOM files, and other common healthcare AI tasks.
 
 This repository also contains numerous samples that guide you through scenarios like:
 
