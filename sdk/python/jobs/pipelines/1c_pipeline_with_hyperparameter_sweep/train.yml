@@ -3,7 +3,7 @@ type: command
 
 name: train_model
 display_name: train_model
-version: 1
+version: 2
 
 inputs: 
   data:
