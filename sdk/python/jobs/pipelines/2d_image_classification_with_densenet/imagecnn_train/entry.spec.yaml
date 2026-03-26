@@ -2,10 +2,11 @@ $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.jso
 type: command
 
 name: train_image_classification
-version: 0.0.1
-display_name: Train Image Classification
+version: 0.0.4
+display_name: Train Image Classification (Distributed with MLflow rank guard)
+description: "Distributed image classification training with DenseNet and PyTorch. Includes MLflow metric logging with distributed rank guard to prevent child processes from accessing parent run context."
 
-tags: {}
+tags: {distributed: "true", mlflow-protected: "true"}
 inputs:
   train_data:
     type: uri_folder
