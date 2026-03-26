@@ -1,9 +1,12 @@
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
-import os
 import json
+import logging
+import os
+import time
 
-multiplier: int = None
+logger = logging.getLogger("keyvault-score")
+multiplier: int | None = None
 
 
 def load_secrets():
@@ -20,13 +23,13 @@ def load_secrets():
     secret_clients = {}
     credential = ManagedIdentityCredential()
 
-    for k, v in os.environ.items():
-        if "KV_SECRET" in k:
+    for env_name, env_value in os.environ.items():
+        if "KV_SECRET" in env_name:
             try:
-                secret_name, vault_url = v.split("@")
+                secret_name, vault_url = env_value.split("@", maxsplit=1)
             except ValueError:
                 raise ValueError(
-                    f"Wrong value format for env var {k} with value {v}. Should be of the form <SECRET_NAME>@<VAULT_URL>"
+                    f"Wrong value format for env var {env_name} with value {env_value}. Should be of the form <SECRET_NAME>@<VAULT_URL>"
                 )
 
             if vault_url in secret_clients:
@@ -36,19 +39,44 @@ def load_secrets():
                 secret_clients[vault_url] = secret_client
 
             secret_value = secret_client.get_secret(secret_name).value
-            os.environ[k] = secret_value
+            os.environ[env_name] = secret_value
+
+
+def resolve_multiplier(retries=1, delay_seconds=5):
+    global multiplier
+
+    if multiplier is not None:
+        return multiplier
+
+    last_error = None
+
+    for attempt in range(retries):
+        try:
+            load_secrets()
+            multiplier = int(os.getenv("KV_SECRET_MULTIPLIER"))
+            return multiplier
+        except Exception as exc:
+            last_error = exc
+            if attempt < retries - 1:
+                time.sleep(delay_seconds)
+
+    raise RuntimeError("Failed to load multiplier secret from Key Vault.") from last_error
 
 
 def init():
-    load_secrets()
-
-    global multiplier
-    multiplier = int(os.getenv("KV_SECRET_MULTIPLIER"))
+    try:
+        resolve_multiplier()
+    except Exception as exc:
+        logger.warning(
+            "Key Vault secret is not ready during container startup. Requests will retry secret resolution. Error: %s",
+            exc,
+        )
 
 
 def run(data):
+    current_multiplier = resolve_multiplier(retries=12, delay_seconds=5)
     data = json.loads(data)
-    input = data["input"]
-    output = input * multiplier
+    model_input = data["input"]
+    output = model_input * current_multiplier
 
     return {"output": output}
