@@ -19,8 +19,8 @@ outputs:
 code: ./
 
 environment:
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
-  conda_file: environment_parallel.yml
+  build:
+    path: ./
 
 command: >-
   python prepare_data.py
