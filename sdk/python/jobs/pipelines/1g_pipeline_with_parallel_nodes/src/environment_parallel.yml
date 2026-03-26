@@ -6,8 +6,10 @@ dependencies:
   - pip
   - setuptools
   - pip:
+      - setuptools>=65.0
       - mlflow
       - mltable>=1.2.0
+      - azureml-dataset-runtime[pandas]
       - azureml-telemetry
       - pandas
       - pillow
