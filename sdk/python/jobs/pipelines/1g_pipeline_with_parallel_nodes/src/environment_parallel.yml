@@ -11,6 +11,6 @@ dependencies:
       - azureml-telemetry
       - pandas
       - pillow
-      - azureml-core
+      - azureml-core==1.61.0.post3
       - scikit-learn==0.20.3
       - cloudpickle==1.1.1
