@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.7.6
+  - setuptools<81
   - pip
   - pip:
       - mlflow
@@ -11,6 +12,6 @@ dependencies:
       - azureml-telemetry
       - pandas
       - pillow
-      - azureml-core==1.61.0.post3
+      - azureml-core
       - scikit-learn==0.20.3
       - cloudpickle==1.1.1
