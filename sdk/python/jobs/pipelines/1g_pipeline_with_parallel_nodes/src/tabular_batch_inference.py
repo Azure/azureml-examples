@@ -6,7 +6,15 @@
 import argparse
 import os
 import pickle
+import sys
 from pathlib import Path
+
+# The model was pickled with sklearn 0.20.x which stored LogisticRegression at
+# sklearn.linear_model.logistic. In sklearn 1.0+ it moved to
+# sklearn.linear_model._logistic. Register the old path so pickle can resolve it.
+import sklearn.linear_model._logistic
+
+sys.modules["sklearn.linear_model.logistic"] = sklearn.linear_model._logistic
 
 from mlflow.sklearn import load_model
 

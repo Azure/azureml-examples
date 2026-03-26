@@ -18,7 +18,9 @@ outputs:
 
 code: ./
 
-environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+  conda_file: environment_parallel.yml
 
 command: >-
   python prepare_data.py
