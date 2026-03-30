@@ -1,16 +1,16 @@
-FROM python:3.8.13
+FROM python:3.10
 
 # Install pip dependencies
-RUN pip install 'matplotlib>=3.3,<3.4' \
-                'psutil>=5.8,<5.9' \
-                'tqdm>=4.59,<4.60' \
-                'pandas>=1.1,<1.2' \
-                'scipy>=1.5,<1.6' \
-                'numpy>=1.10,<1.20' \
+RUN pip install 'matplotlib>=3.5' \
+                'psutil>=5.8' \
+                'tqdm>=4.59' \
+                'pandas>=1.5' \
+                'scipy>=1.9' \
+                'numpy>=1.23,<2.0' \
                 'ipykernel~=6.0' \
                 'azureml-core' \
                 'azureml-defaults' \
                 'azureml-mlflow' \
                 'azureml-telemetry' \
-                'scikit-learn==1.2.2'
+                'scikit-learn==1.5.2'
 
