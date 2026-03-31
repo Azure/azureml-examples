@@ -172,6 +172,21 @@ function ensure_aml_compute() {
     fi
 }
 
+function cleanup_role_assignments() {
+    echo_info "Cleaning up orphaned role assignments in resource group ${RESOURCE_GROUP_NAME}..."
+    RESOURCE_GROUP_ID=$(az group show --name "${RESOURCE_GROUP_NAME}" --query id -o tsv | tail -n1 | tr -d "[:cntrl:]")
+    # Find role assignments where the principal no longer exists (orphaned)
+    orphaned_ids=$(az role assignment list --scope "$RESOURCE_GROUP_ID" --query "[?principalName==''].id" -o tsv)
+    if [[ -n "$orphaned_ids" ]]; then
+        echo "$orphaned_ids" | while read -r assignment_id; do
+            echo_info "Deleting orphaned role assignment: $assignment_id"
+            az role assignment delete --ids "$assignment_id" 2>/dev/null || true
+        done
+        echo_info "Orphaned role assignment cleanup complete."
+    else
+        echo_info "No orphaned role assignments found."
+    fi
+}
 
 function grant_permission_app_id_on_rg() {
     local SERVICE_PRINCIPAL_NAME="${1:-APP_NAME}"
