@@ -83,10 +83,11 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          STALE_ENDPOINTS=$(az ml online-endpoint list -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --query "[?starts_with(name,'credit-endpoint-')].[name]" -o tsv)
-          for ep in $STALE_ENDPOINTS; do
-            echo "Deleting stale endpoint: $ep"
-            az ml online-endpoint delete --name "$ep" -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --yes --no-wait || true
+          # Delete all online endpoints to free up role assignments
+          ALL_ENDPOINTS=$(az ml online-endpoint list -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --query "[*].[name]" -o tsv)
+          for ep in $ALL_ENDPOINTS; do
+            echo "Deleting endpoint: $ep"
+            az ml online-endpoint delete --name "$ep" -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --yes || true
           done
       continue-on-error: true
     - name: run azureml-in-a-day/azureml-in-a-day.ipynb
