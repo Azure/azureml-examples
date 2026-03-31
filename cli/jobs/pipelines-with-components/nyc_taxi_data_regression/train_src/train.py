@@ -4,6 +4,7 @@ from uuid import uuid4
 from datetime import datetime
 import os
 import pandas as pd
+import sklearn
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
@@ -85,7 +86,11 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
+    pip_requirements=[f"scikit-learn=={sklearn.__version__}"],
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
