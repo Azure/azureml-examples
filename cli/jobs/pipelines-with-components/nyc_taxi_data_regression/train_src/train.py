@@ -94,6 +94,8 @@ mlflow.sklearn.save_model(
         f"mlflow=={mlflow.__version__}",
         f"scikit-learn=={sklearn.__version__}",
         f"cloudpickle=={cloudpickle.__version__}",
+        "numpy<2",
+        "pandas",
     ],
 )
 
