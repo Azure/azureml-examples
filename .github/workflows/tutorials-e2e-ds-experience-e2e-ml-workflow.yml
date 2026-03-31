@@ -79,6 +79,25 @@ jobs:
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
           az account get-access-token --scope https://ml.azure.com/.default --output none
+    - name: cleanup stale endpoints and role assignments
+      run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          ALL_ENDPOINTS=$(az ml online-endpoint list -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --query "[*].[name]" -o tsv)
+          for ep in $ALL_ENDPOINTS; do
+            echo "Deleting endpoint: $ep"
+            az ml online-endpoint delete --name "$ep" -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --yes || true
+          done
+          ALL_BATCH=$(az ml batch-endpoint list -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --query "[*].[name]" -o tsv)
+          for ep in $ALL_BATCH; do
+            echo "Deleting batch endpoint: $ep"
+            az ml batch-endpoint delete --name "$ep" -g "$RESOURCE_GROUP_NAME" -w "$WORKSPACE_NAME" --yes || true
+          done
+          ORPHANED=$(az role assignment list --resource-group "$RESOURCE_GROUP_NAME" --query "[?principalName==''].id" -o tsv)
+          for id in $ORPHANED; do
+            az role assignment delete --ids "$id" || true
+          done
+      continue-on-error: true
     - name: run e2e-ds-experience/e2e-ml-workflow.ipynb
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
