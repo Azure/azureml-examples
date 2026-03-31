@@ -91,11 +91,12 @@ mlflow.sklearn.save_model(
     model,
     args.model_output,
     pip_requirements=[
-        f"mlflow=={mlflow.__version__}",
+        "mlflow",
         f"scikit-learn=={sklearn.__version__}",
         f"cloudpickle=={cloudpickle.__version__}",
         "numpy<2",
-        "pandas",
+        "psutil",
+        "azureml-inference-server-http",
     ],
 )
 
