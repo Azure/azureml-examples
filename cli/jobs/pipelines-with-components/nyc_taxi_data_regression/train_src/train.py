@@ -6,6 +6,7 @@ import os
 import pandas as pd
 import sklearn
 import cloudpickle
+import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
@@ -90,14 +91,25 @@ print(model.score(trainX, trainy))
 mlflow.sklearn.save_model(
     model,
     args.model_output,
-    pip_requirements=[
-        "mlflow",
-        f"scikit-learn=={sklearn.__version__}",
-        f"cloudpickle=={cloudpickle.__version__}",
-        "numpy<2",
-        "psutil",
-        "azureml-inference-server-http",
-    ],
+    conda_env={
+        "channels": ["conda-forge"],
+        "dependencies": [
+            "python=3.10",
+            "pip",
+            {
+                "pip": [
+                    "mlflow",
+                    f"scikit-learn=={sklearn.__version__}",
+                    f"cloudpickle=={cloudpickle.__version__}",
+                    f"numpy=={np.__version__}",
+                    "psutil",
+                    "azureml-inference-server-http",
+                    "azureml-ai-monitoring",
+                ]
+            },
+        ],
+        "name": "mlflow-env",
+    },
 )
 
 # test_data = pd.DataFrame(testX, columns = )
