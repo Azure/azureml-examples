@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: triton-grpc-blue
+endpoint_name: "{{ENDPOINT_NAME}}"
+model: 
+  path: ./models/model_1
+model_mount_path: /models 
+environment: 
+  name: triton-cc-env
+  image: {{acr_name}}.azurecr.io/azureml-examples/triton-grpc:latest
+  inference_config:
+      liveness_route:
+          path: /v2/health/live
+          port: 8000
+      readiness_route:
+          path: /v2/health/ready
+          port: 8000
+      scoring_route:
+          path: /
+          port: 8001
+instance_type: Standard_F8s_v2
+instance_count: 1
