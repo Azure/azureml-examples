@@ -34,7 +34,7 @@ def run(mini_batch):
         #  even the folder did exist per logs.
         # This is to simulate such case and hope we can repro in our gated build.
         output_dir = Path(OUTPUT_PATH)
-        output_dir.mkdir(parents=True, exist_ok=True)
+        print("output_dir", output_dir)
         print("output_dir exits", Path(output_dir).exists())
         (Path(output_dir) / file.name).write_text(file_path)
 
