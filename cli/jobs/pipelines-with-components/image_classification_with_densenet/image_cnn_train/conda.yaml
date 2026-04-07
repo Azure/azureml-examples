@@ -13,6 +13,8 @@ dependencies:
       - tensorboard>=2.14.0
       - pillow==10.4.0
       - numpy==1.26.4
+      - --extra-index-url=https://developer.download.nvidia.com/compute/redist/
+      - nvidia-dali-cuda120
       - azureml-mlflow>=1.41.0
       - protobuf>=3.20.1
       - pandas>=1.5.0
