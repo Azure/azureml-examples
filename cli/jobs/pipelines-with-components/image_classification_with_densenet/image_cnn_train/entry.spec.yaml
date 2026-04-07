@@ -121,8 +121,7 @@ distribution:
   process_count_per_instance: 1
 
 command: >-
-  git clone https://github.com/NVIDIA/apex && cd apex && git checkout 3303b3e7174383312a3468ef390060c26e640cb1 
-  && python setup.py install && cd ..  
+  pip install nvidia-apex -f https://developer.download.nvidia.com/compute/redist
   && mldesigner execute --source entry.py --name imagecnn_train --inputs train_data=${{inputs.train_data}} 
   val_data=${{inputs.valid_data}} data_backend=${{inputs.data_backend}} arch=${{inputs.arch}} 
   model_config=${{inputs.model_config}} workers=${{inputs.workers}} epochs=${{inputs.epochs}} 
