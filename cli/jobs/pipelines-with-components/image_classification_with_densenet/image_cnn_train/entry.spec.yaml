@@ -115,7 +115,7 @@ environment:
   conda_file: ./conda.yaml
 
 resources:
-  instance_count: 2
+  instance_count: 1
 distribution:
   type: mpi
   process_count_per_instance: 1

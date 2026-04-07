@@ -90,5 +90,5 @@ jobs:
       type: mpi
       process_count_per_instance: 1
     resources:
-      instance_count: 2
+      instance_count: 1
 # </jobs>
