@@ -4,10 +4,10 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10
-  - pip=21.2.2
+  - pip>=22.0
   - pip:
       - mldesigner==0.1.0b4
-      - watchdog==0.10.3
+      - watchdog>=2.1.0
       - torch==2.4.0
       - torchvision==0.19.0
       - tensorboard>=2.14.0
