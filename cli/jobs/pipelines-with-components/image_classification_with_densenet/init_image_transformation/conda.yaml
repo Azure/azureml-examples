@@ -2,7 +2,7 @@ name: designer-cv-transform
 channels:
   - defaults
 dependencies:
-  - pip>=22.0
-  - python=3.8
+  - pip=20.2
+  - python=3.7.9
   - pip:
     - azureml-designer-cv-modules==0.0.41
