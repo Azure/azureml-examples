@@ -111,7 +111,7 @@ outputs:
 code: ./
 
 environment:
-  image: mcr.microsoft.com/azureml/openmpi5.0-cuda12.4-ubuntu22.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.8-cudnn8-ubuntu22.04:latest
   conda_file: ./conda.yaml
 
 resources:
@@ -121,7 +121,6 @@ distribution:
   process_count_per_instance: 1
 
 command: >-
-  export PMIX_MCA_gds=hash &&
   pip install --no-build-isolation --no-cache-dir git+https://github.com/NVIDIA/apex.git
   && mldesigner execute --source entry.py --name imagecnn_train --inputs train_data=${{inputs.train_data}} 
   val_data=${{inputs.valid_data}} data_backend=${{inputs.data_backend}} arch=${{inputs.arch}} 
