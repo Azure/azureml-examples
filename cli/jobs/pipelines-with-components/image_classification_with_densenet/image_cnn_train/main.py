@@ -47,12 +47,11 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 try:
-    from apex.parallel import DistributedDataParallel as DDP
-    from apex.fp16_utils import *
-    from apex import amp
+    from torch.nn.parallel import DistributedDataParallel as DDP
+    from torch.amp import autocast, GradScaler
 except ImportError:
     raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
+        "PyTorch with CUDA support is required to run this example."
     )
 
 import image_classification.resnet as models
@@ -489,16 +488,12 @@ def main(gpu_index, args):
     elif args.lr_schedule == "linear":
         lr_policy = lr_linear_policy(args.lr, args.warmup, args.epochs, logger=None)
 
+    scaler = None
     if args.amp:
-        model_and_loss, optimizer = amp.initialize(
-            model_and_loss,
-            optimizer,
-            opt_level="O2",
-            loss_scale="dynamic" if args.dynamic_loss_scale else args.static_loss_scale,
-        )
+        scaler = GradScaler('cuda')
 
     if args.distributed:
-        model_and_loss.distributed()
+        model_and_loss.distributed(args.gpu)
 
     model_and_loss.load_model_state(model_state)
 
@@ -514,6 +509,7 @@ def main(gpu_index, args):
         should_backup_checkpoint(args),
         args.save_checkpoint_epochs,
         use_amp=args.amp,
+        scaler=scaler,
         batch_size_multiplier=batch_size_multiplier,
         start_epoch=start_epoch,
         best_prec1=best_prec1,

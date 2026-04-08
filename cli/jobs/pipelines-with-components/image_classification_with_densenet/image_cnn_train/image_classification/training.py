@@ -36,14 +36,8 @@ from torch.autograd import Variable
 from . import resnet as models
 from . import utils
 
-try:
-    from apex.parallel import DistributedDataParallel as DDP
-    from apex.fp16_utils import *
-    from apex import amp
-except ImportError:
-    raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
-    )
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.amp import autocast, GradScaler
 
 from torch.utils.tensorboard import SummaryWriter
 
@@ -109,7 +103,7 @@ class ModelAndLoss(nn.Module):
         if cuda:
             model = model.cuda()
         if fp16:
-            model = network_to_half(model)
+            model = model.half()
 
         # define loss function (criterion) and optimizer
         criterion = loss()
@@ -126,8 +120,8 @@ class ModelAndLoss(nn.Module):
 
         return loss, output
 
-    def distributed(self):
-        self.model = DDP(self.model)
+    def distributed(self, gpu=0):
+        self.model = DDP(self.model, device_ids=[gpu])
 
     def load_model_state(self, state):
         if not state is None:
@@ -171,13 +165,6 @@ def get_optimizer(
             momentum=momentum,
             weight_decay=weight_decay,
             nesterov=nesterov,
-        )
-    if fp16:
-        optimizer = FP16_Optimizer(
-            optimizer,
-            static_loss_scale=static_loss_scale,
-            dynamic_loss_scale=dynamic_loss_scale,
-            verbose=False,
         )
 
     if not state is None:
@@ -255,36 +242,39 @@ def lr_exponential_policy(
 
 
 def get_train_step(
-    model_and_loss, optimizer, fp16, use_amp=False, batch_size_multiplier=1
+    model_and_loss, optimizer, fp16, use_amp=False, batch_size_multiplier=1, scaler=None
 ):
     def _step(input, target, optimizer_step=True):
         input_var = Variable(input)
         target_var = Variable(target)
-        loss, output = model_and_loss(input_var, target_var)
+
+        if use_amp:
+            with autocast('cuda'):
+                loss, output = model_and_loss(input_var, target_var)
+        else:
+            loss, output = model_and_loss(input_var, target_var)
+
         if torch.distributed.is_initialized():
             reduced_loss = utils.reduce_tensor(loss.data)
         else:
             reduced_loss = loss.data
 
-        if fp16:
-            optimizer.backward(loss)
-        elif use_amp:
-            with amp.scale_loss(loss, optimizer) as scaled_loss:
-                scaled_loss.backward()
+        if use_amp and scaler is not None:
+            scaler.scale(loss).backward()
         else:
             loss.backward()
 
         if optimizer_step:
-            opt = (
-                optimizer.optimizer
-                if isinstance(optimizer, FP16_Optimizer)
-                else optimizer
-            )
-            for param_group in opt.param_groups:
+            for param_group in optimizer.param_groups:
                 for param in param_group["params"]:
-                    param.grad /= batch_size_multiplier
+                    if param.grad is not None:
+                        param.grad /= batch_size_multiplier
 
-            optimizer.step()
+            if use_amp and scaler is not None:
+                scaler.step(optimizer)
+                scaler.update()
+            else:
+                optimizer.step()
             optimizer.zero_grad()
 
         torch.cuda.synchronize()
@@ -304,6 +294,7 @@ def train(
     epoch,
     detector,
     use_amp=False,
+    scaler=None,
     prof=-1,
     batch_size_multiplier=1,
     register_metrics=True,
@@ -319,6 +310,7 @@ def train(
         fp16,
         use_amp=use_amp,
         batch_size_multiplier=batch_size_multiplier,
+        scaler=scaler,
     )
 
     model_and_loss.train()
@@ -345,7 +337,7 @@ def train(
             if writer:
                 writer.add_scalar("train/summary/scalar/learning_rate", lr, epoch)
                 writer.add_scalar(
-                    "train/summary/scalar/loss", to_python_float(loss), total_train_step
+                    "train/summary/scalar/loss", float(loss), total_train_step
                 )
                 writer.add_scalar(
                     "perf/summary/scalar/compute_ips",
@@ -359,7 +351,7 @@ def train(
                 )
                 mlflow.log_metric("train/learning_rate", step=epoch, value=lr)
                 mlflow.log_metric(
-                    "train/loss", step=total_train_step, value=to_python_float(loss)
+                    "train/loss", step=total_train_step, value=float(loss)
                 )
                 mlflow.log_metric(
                     "perf/compute_ips",
@@ -448,7 +440,7 @@ def validate(
 
         it_time = time.time() - end
 
-        loss_sum += to_python_float(loss)
+        loss_sum += float(loss)
         total_val_step += 1
 
         end = time.time()
@@ -483,6 +475,7 @@ def train_loop(
     should_backup_checkpoint,
     save_checkpoint_epochs,
     use_amp=False,
+    scaler=None,
     batch_size_multiplier=1,
     best_prec1=0,
     start_epoch=0,
@@ -535,6 +528,7 @@ def train_loop(
                 epoch,
                 detector,
                 use_amp=use_amp,
+                scaler=scaler,
                 prof=prof,
                 register_metrics=epoch == start_epoch,
                 batch_size_multiplier=batch_size_multiplier,
