@@ -22,11 +22,10 @@ import image_classification.resnet as models
 from image_classification.dataloaders import load_jpeg_from_file
 
 try:
-    from apex.fp16_utils import *
-    from apex import amp
+    from torch.amp import autocast, GradScaler
 except ImportError:
     raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
+        "PyTorch with CUDA support is required to run this example."
     )
 
 
@@ -68,7 +67,7 @@ def main(args):
     model = model.cuda()
 
     if args.precision == "FP16":
-        model = network_to_half(model)
+        model = model.half()
 
     model.eval()
 
