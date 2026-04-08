@@ -121,8 +121,8 @@ distribution:
   process_count_per_instance: 1
 
 command: >-
-  pip install --no-build-isolation --no-cache-dir git+https://github.com/NVIDIA/apex.git
-  && pip install "setuptools<82"
+  pip install "setuptools<82"
+  && APEX_CPP_EXT=1 APEX_CUDA_EXT=1 pip install --no-build-isolation --no-cache-dir git+https://github.com/NVIDIA/apex.git
   && mldesigner execute --source entry.py --name imagecnn_train --inputs train_data=${{inputs.train_data}} 
   val_data=${{inputs.valid_data}} data_backend=${{inputs.data_backend}} arch=${{inputs.arch}} 
   model_config=${{inputs.model_config}} workers=${{inputs.workers}} epochs=${{inputs.epochs}} 
