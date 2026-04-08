@@ -71,6 +71,9 @@ jobs:
     type: command
     component: ./image_cnn_train/entry.spec.yaml
     compute: azureml:gpu-cluster
+    environment_variables:
+      PMIX_MCA_gds: "hash"
+      PMIX_MCA_pcompress_base_silence_warning: "1"
     inputs:
       train_data: ${{parent.jobs.transform_on_training_image.outputs.output_path}}
       valid_data: ${{parent.jobs.transform_on_evaluation_image.outputs.output_path}}
@@ -87,5 +90,5 @@ jobs:
       type: mpi
       process_count_per_instance: 1
     resources:
-      instance_count: 2
+      instance_count: 1
 # </jobs>
