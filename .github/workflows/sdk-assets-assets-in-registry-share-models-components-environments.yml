@@ -49,7 +49,7 @@ jobs:
         az ad sp show --id ${{ secrets.OIDC_AZURE_CLIENT_ID }}
     - name: Test AML registry access
       run: |
-        az ml registry show --name DemoRegistry409
+        az ml registry show --resource-group amlsdkv2022604 --subscription b17253fa-f327-42d6-9686-f3e553e24763 --name DemoRegistry409
     - name: bootstrap resources
       run: |
           echo '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}';
