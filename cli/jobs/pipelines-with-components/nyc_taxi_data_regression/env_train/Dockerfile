@@ -1,7 +1,6 @@
-FROM python:3.10-slim
+FROM python:3.10
 
 # Install pip dependencies
-# Let azureml-core manage transitive deps (numpy, pandas, scipy)
 RUN pip install 'azureml-core' \
                 'azureml-defaults' \
                 'azureml-mlflow' \
