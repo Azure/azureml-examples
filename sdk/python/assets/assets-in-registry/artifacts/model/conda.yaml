@@ -5,9 +5,11 @@ dependencies:
 - pip<=22.0.4
 - pip:
   - azureml-defaults
-  - mlflow==1.29.0
+  - azureml-sdk
+  - mlflow==2.17.2
   - cloudpickle==2.2.0
   - psutil==5.8.0
-  - scikit-learn==0.24.1
-  - typing-extensions==4.4.0
+  - scikit-learn==1.2.2
+  - typing-extensions==4.13.2
+  - azureml-ai
 name: mlflow-env
