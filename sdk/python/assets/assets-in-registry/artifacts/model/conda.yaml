@@ -9,4 +9,5 @@ dependencies:
   - psutil==5.8.0
   - scikit-learn==1.2.2
   - typing-extensions==4.13.2
+  - azureml-inference-server-http
 name: mlflow-env
