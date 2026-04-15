@@ -13,10 +13,10 @@ outputs:
   predict_result:
     type: uri_folder
 code: ./predict-src
-environment: azureml://registries/azureml/environments/sklearn-1.5/versions/42
+environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 command: >-
   python predict.py 
-  --model '${{inputs.model}}' 
-  --test_data '${{inputs.test_data}}' 
-  --predict_result '${{outputs.predict_result}}'
+  --model ${{inputs.model}} 
+  --test_data ${{inputs.test_data}} 
+  --predict_result ${{outputs.predict_result}}
 # </component>
