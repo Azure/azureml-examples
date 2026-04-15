@@ -53,13 +53,13 @@ inputs:
 
 outputs:
   model_output:
-    type: uri_folder
+    type: mlflow_model
   test_data:
     type: uri_folder
   
 code: ./train-src
 
-environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/versions/42
 
 command: >-
   python train.py 
