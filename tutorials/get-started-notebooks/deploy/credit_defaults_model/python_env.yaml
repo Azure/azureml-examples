@@ -1,4 +1,4 @@
-python: 3.9
+python: "3.9"
 build_dependencies:
 - pip==23.3.2
 - setuptools==69.0.3
