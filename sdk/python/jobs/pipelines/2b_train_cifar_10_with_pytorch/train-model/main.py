@@ -5,10 +5,12 @@
 # ==============================================================================
 
 # imports
-import os
-import mlflow
 import argparse
+import copy
+import os
 
+import mlflow
+import numpy as np
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -16,7 +18,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-# TODO - add mlflow logging
+
+#- add mlflow logging
+mlflow.set_experiment("pipeline_samples") # enter the corresponding experiment name
 
 # define network architecture
 class Net(nn.Module):
@@ -43,8 +47,10 @@ class Net(nn.Module):
 
 
 # define functions
-def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, rank):
+def train(train_loader, valid_loader,  model, criterion, optimizer, epoch, device, print_freq, rank):
     running_loss = 0.0
+    epoch_loss=0.0
+    model.train()
     for i, data in enumerate(train_loader, 0):
         # get the inputs; data is a list of [inputs, labels]
         inputs, labels = data[0].to(device), data[1].to(device)
@@ -60,12 +66,28 @@ def train(train_loader, model, criterion, optimizer, epoch, device, print_freq, 
 
         # print statistics
         running_loss += loss.item()
+        epoch_loss+= loss.item()
         if i % print_freq == 0:  # print every print_freq mini-batches
             print(
                 "Rank %d: [%d, %5d] loss: %.3f"
                 % (rank, epoch + 1, i + 1, running_loss / print_freq)
             )
+
             running_loss = 0.0
+    model.eval()
+    valid_loss=0.0
+    with torch.no_grad():
+        for i, data in enumerate(valid_loader):
+            # get the inputs; data is a list of [inputs, labels]
+            inputs, labels = data[0].to(device), data[1].to(device)
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            # print statistics
+            valid_loss += loss.item()
+        print("Rank %d: [%d] valid loss: %.3f" % (rank, epoch + 1, valid_loss /  len(valid_loader) ))
+        
+    return epoch_loss/ len(train_loader), valid_loss /  len(valid_loader)
+            
 
 
 def main(args):
@@ -91,14 +113,25 @@ def main(args):
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
 
-    train_set = torchvision.datasets.CIFAR10(
+    trainset = torchvision.datasets.CIFAR10(
         root=args.data_dir, train=True, download=False, transform=transform
     )
+    n_train= len(trainset)
+    # split train set into trainset and validset
+    # select 20% as valid and the rest as training
+    trains = list(np.random.choice(list(range(0, n_train)), size= int(0.8*n_train), replace=False))
+    valids = [ idd for idd in list(range(0, n_train)) if idd not in trains]
+    train_set = torch.utils.data.Subset(trainset, trains)
+    valid_set = torch.utils.data.Subset(trainset, valids)
+
 
     if distributed:
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_set)
+        valid_sampler = torch.utils.data.distributed.DistributedSampler(valid_set)
     else:
         train_sampler = None
+        valid_sampler = None
+    
 
     train_loader = torch.utils.data.DataLoader(
         train_set,
@@ -106,6 +139,14 @@ def main(args):
         shuffle=(train_sampler is None),
         num_workers=args.workers,
         sampler=train_sampler,
+    )
+    
+    
+    valid_loader = torch.utils.data.DataLoader(
+        valid_set,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.workers,
     )
 
     model = Net().to(device)
@@ -123,27 +164,42 @@ def main(args):
     )
 
     # train the model
-    for epoch in range(args.epochs):
-        print("Rank %d: Starting epoch %d" % (rank, epoch))
-        if distributed:
-            train_sampler.set_epoch(epoch)
-        model.train()
-        train(
-            train_loader,
-            model,
-            criterion,
-            optimizer,
-            epoch,
-            device,
-            args.print_freq,
-            rank,
-        )
+    valid_min_loss= float('inf')
+    best_model= copy.deepcopy(model)
+    with mlflow.start_run() as run:
+        for epoch in range(args.epochs):
+            print("Rank %d: Starting epoch %d" % (rank, epoch))
+            if distributed:
+                train_sampler.set_epoch(epoch)
+            model.train()
+            # Start the run, log metrics, end the run
 
+            train_loss, valid_loss=train(
+                train_loader,
+                valid_loader,
+                model,
+                criterion,
+                optimizer,
+                epoch,
+                device,
+                args.print_freq,
+                rank,
+            )
+            mlflow.log_metric('train loss',train_loss, step=epoch )
+            mlflow.log_metric('validation loss',valid_loss, step=epoch )
+            
+            if valid_min_loss>=valid_loss:
+                valid_min_loss=valid_loss
+                print("Rank %d: Found min valid loss" % (rank))
+                best_model=copy.deepcopy(model)
+                
     print("Rank %d: Finished Training" % (rank))
-
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
+        print("Rank %d: Found min valid loss, saving the model..." % (rank))
+        mlflow.pytorch.save_model(best_model, f"{args.model_dir}/model")
+        print("done.")
+
 
 
 def parse_args():
