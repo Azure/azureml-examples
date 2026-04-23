@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.7.6
+  - setuptools<81
   - pip
   - pip:
       - mlflow
