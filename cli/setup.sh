@@ -6,11 +6,11 @@
 ###  * Comment the ml extension install within <az_ml_install>
 
 # {
-#      wheel_url='https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.9.0-py3-none-any.whl'
-#
+#      wheel_url='https://azuremlsdktestpypi.blob.core.windows.net/wheels/sdk-cli-v2-public/ml-2.36.0-py3-none-any.whl'
+
 #      az extension remove -n ml
 #      if ! az extension add --yes --upgrade --source "$wheel_url"; then
-#
+
 #          echo "Error: Failed to install release candidate"
 #          exit 1
 #      fi
