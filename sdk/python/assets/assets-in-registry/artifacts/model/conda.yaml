@@ -10,4 +10,5 @@ dependencies:
   - scikit-learn==1.2.2
   - typing-extensions==4.13.2
   - azureml-inference-server-http
+  - azureml-ai-monitoring
 name: mlflow-env
