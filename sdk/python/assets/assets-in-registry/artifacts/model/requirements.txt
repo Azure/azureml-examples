@@ -4,3 +4,4 @@ psutil==5.8.0
 scikit-learn==0.24.1
 typing-extensions==4.4.0
 azureml-inference-server-http
+azureml-ai-monitoring
