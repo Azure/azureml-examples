@@ -9,6 +9,54 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
+def download_from_blob(url, dest):
+    """Download from Azure Blob Storage with az cli fallback for auth."""
+    try:
+        urllib.request.urlretrieve(url, filename=dest)
+    except urllib.error.HTTPError as e:
+        import subprocess
+        from urllib.parse import urlparse
+
+        print(f"Anonymous download failed ({e}), trying az cli...")
+        parsed = urlparse(url)
+        account_name = parsed.hostname.split(".")[0]
+        parts = parsed.path.lstrip("/").split("/", 1)
+        container_name = parts[0]
+        blob_name = parts[1] if len(parts) > 1 else ""
+
+        cmd = [
+            "az", "storage", "blob", "download",
+            "--account-name", account_name,
+            "--container-name", container_name,
+            "--name", blob_name,
+            "--file", dest,
+            "--auth-mode", "login",
+            "--only-show-errors",
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"az cli auth-mode login failed: {result.stderr}")
+            # Try with account key as last resort
+            cmd_key = [
+                "az", "storage", "blob", "download",
+                "--account-name", account_name,
+                "--container-name", container_name,
+                "--name", blob_name,
+                "--file", dest,
+                "--only-show-errors",
+            ]
+            result2 = subprocess.run(cmd_key, capture_output=True, text=True)
+            if result2.returncode != 0:
+                print(f"az cli key-based also failed: {result2.stderr}")
+                raise RuntimeError(
+                    f"Cannot download {url}. Both anonymous and authenticated "
+                    f"downloads failed. The storage account may have network "
+                    f"restrictions blocking this runner."
+                )
+        print("az cli download succeeded.")
+
+
+
 
 def create_ml_table_file(filename):
     """Create ML Table definition"""
@@ -108,7 +156,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # download data
     print("Downloading data.")
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/multilabelFridgeObjects.zip"
+    download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-classification/multilabelFridgeObjects.zip"
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
@@ -119,7 +167,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
 
     # Download data from public url
-    urllib.request.urlretrieve(download_url, filename=data_file)
+    download_from_blob(download_url, data_file)
 
     # extract files
     with ZipFile(data_file, "r") as zip:
