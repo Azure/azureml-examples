@@ -129,7 +129,9 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
 
     repo_root = get_repo_root()
-    local_zip = os.path.join(repo_root, "data", "fridge-objects", "fridgeObjects.zip")
+    local_zip = os.path.join(
+        repo_root, "data", "fridge-objects", "multilabelFridgeObjects.zip"
+    )
     shutil.copy2(local_zip, data_file)
 
     # extract files
