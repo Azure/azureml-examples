@@ -9,6 +9,7 @@ from zipfile import ZipFile
 import random
 import string
 
+
 def get_repo_root():
     """Get the root of the git repository."""
     result = subprocess.run(

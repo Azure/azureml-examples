@@ -14,6 +14,7 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
+
 def get_repo_root():
     """Get the root of the git repository."""
     result = subprocess.run(

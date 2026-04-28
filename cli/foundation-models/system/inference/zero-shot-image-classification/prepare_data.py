@@ -7,6 +7,7 @@ import subprocess
 import pandas as pd
 from zipfile import ZipFile
 
+
 def get_repo_root():
     """Get the root of the git repository."""
     result = subprocess.run(
