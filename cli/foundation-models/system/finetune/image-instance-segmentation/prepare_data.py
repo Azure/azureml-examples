@@ -14,6 +14,21 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Data
 from azure.ai.ml.constants import AssetTypes
 
+def get_repo_root():
+    """Get the root of the git repository."""
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
+    )
+    if result.returncode == 0:
+        return result.stdout.strip()
+    # Fallback: walk up from this file
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        if os.path.isdir(os.path.join(d, ".git")):
+            return d
+        d = os.path.dirname(d)
+    return os.path.dirname(os.path.abspath(__file__))
+
 
 def create_ml_table_file(filename):
     """Create ML Table definition
@@ -156,25 +171,16 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     # Create data folder if it doesnt exist.
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # Download data
-    download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-instance-segmentation/odFridgeObjectsMask.zip"
-
-    # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
+    dataset_name = "odFridgeObjectsMask"
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
 
     # Get the data zip file path
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
 
-    # Download the dataset
     # Copy dataset from repo's local data directory
-    repo_root = subprocess.run(
-        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
-    ).stdout.strip()
-    local_zip = os.path.join(
-        repo_root, "data", "fridge-objects", "odFridgeObjectsMask.zip"
-    )
+    repo_root = get_repo_root()
+    local_zip = os.path.join(repo_root, "data", "fridge-objects", f"{dataset_name}.zip")
     shutil.copy2(local_zip, data_file)
 
     # Extract files

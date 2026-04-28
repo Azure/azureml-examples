@@ -7,6 +7,21 @@ import subprocess
 import pandas as pd
 from zipfile import ZipFile
 
+def get_repo_root():
+    """Get the root of the git repository."""
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
+    )
+    if result.returncode == 0:
+        return result.stdout.strip()
+    # Fallback: walk up from this file
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        if os.path.isdir(os.path.join(d, ".git")):
+            return d
+        d = os.path.dirname(d)
+    return os.path.dirname(os.path.abspath(__file__))
+
 
 def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> None:
     """Download image dataset and unzip it.
@@ -35,9 +50,7 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
 
     # Copy dataset from repo's local data directory
-    repo_root = subprocess.run(
-        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
-    ).stdout.strip()
+    repo_root = get_repo_root()
     local_zip = os.path.join(repo_root, "data", "fridge-objects", zip_name)
     shutil.copy2(local_zip, data_file)
 
