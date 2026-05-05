@@ -3,3 +3,5 @@ cloudpickle==2.2.0
 psutil==5.8.0
 scikit-learn==1.2.2
 typing-extensions==4.3.0
+azureml-ai-monitoring
+azureml-inference-server-http
