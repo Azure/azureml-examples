@@ -1,7 +1,7 @@
 channels:
 - conda-forge
 dependencies:
-- python=3.8.13
+- python=3.10.16
 - pip<=22.0.4
 - pip:
   - mlflow
@@ -10,4 +10,5 @@ dependencies:
   - scikit-learn==1.2.2
   - typing-extensions==4.4.0
   - azureml-ai-monitoring
+  - azureml-inference-server-http
 name: mlflow-env

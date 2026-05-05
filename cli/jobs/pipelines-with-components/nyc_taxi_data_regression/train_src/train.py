@@ -85,11 +85,12 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-# Get default conda env and add azureml-ai-monitoring for managed endpoint deployment
+# Get default conda env and add required packages for managed endpoint deployment
 conda_env = mlflow.sklearn.get_default_conda_env()
 for dep in conda_env["dependencies"]:
     if isinstance(dep, dict) and "pip" in dep:
         dep["pip"].append("azureml-ai-monitoring")
+        dep["pip"].append("azureml-inference-server-http")
         break
 
 mlflow.sklearn.save_model(model, args.model_output, conda_env=conda_env)
