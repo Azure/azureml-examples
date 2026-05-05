@@ -85,11 +85,14 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(
-    model,
-    args.model_output,
-    extra_pip_requirements=["azureml-ai-monitoring"],
-)
+# Get default conda env and add azureml-ai-monitoring for managed endpoint deployment
+conda_env = mlflow.sklearn.get_default_conda_env()
+for dep in conda_env["dependencies"]:
+    if isinstance(dep, dict) and "pip" in dep:
+        dep["pip"].append("azureml-ai-monitoring")
+        break
+
+mlflow.sklearn.save_model(model, args.model_output, conda_env=conda_env)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
