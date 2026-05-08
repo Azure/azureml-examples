@@ -1,13 +1,14 @@
 channels:
 - conda-forge
 dependencies:
-- python=3.10.11
-- pip<=26.1.1
+- python=3.10.15
+- pip
 - pip:
   - mlflow==2.17.0
   - cloudpickle==2.2.1
-  - numpy==1.26.4
-  - pandas==2.1.4
+  - pandas==1.5.3
+  - psutil==5.8.0
   - scikit-learn==1.5.2
-  - scipy==1.13.1
+  - numpy==1.26.4
+  - azureml-ai-monitoring
 name: mlflow-env
