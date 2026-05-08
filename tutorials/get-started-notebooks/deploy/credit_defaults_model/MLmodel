@@ -1,16 +1,18 @@
-artifact_path: credit_defaults_model
 flavors:
   python_function:
-    env: conda.yaml
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
     loader_module: mlflow.sklearn
     model_path: model.pkl
-    python_version: 3.8.15
+    predict_fn: predict
+    python_version: 3.10.11
   sklearn:
     code: null
     pickled_model: model.pkl
     serialization_format: cloudpickle
-    sklearn_version: 0.24.2
-mlflow_version: 1.26.1
-model_uuid: 3d4b3022e6ca4afeaa4a6b1616c46486
-run_id: coral_bell_shm9lpzkyl
-utc_time_created: '2022-12-15 05:52:49.308371'
+    sklearn_version: 1.5.2
+mlflow_version: 2.17.0
+model_size_bytes: 135573
+model_uuid: 48ed1bb3393d42fa974471eeedddf919
+utc_time_created: '2026-05-08 09:06:59.118257'
