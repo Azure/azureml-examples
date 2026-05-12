@@ -85,16 +85,7 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-# Include inference-time dependencies in the model artifact so deployments from
-# job output have the required azureml namespaces available.
-mlflow.sklearn.save_model(
-    model,
-    args.model_output,
-    extra_pip_requirements=[
-        "azureml-ai-monitoring",
-        "azureml-contrib-services",
-    ],
-)
+mlflow.sklearn.save_model(model, args.model_output)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
