@@ -5,6 +5,7 @@ dependencies:
 - pip<=22.0.4
 - pip:
   - mlflow
+  - azureml-ai-monitoring
   - cloudpickle==2.2.0
   - psutil==5.8.0
   - scikit-learn==1.2.2
