@@ -5,7 +5,7 @@
 # </az_ml_sdk_install>
 
 # <mldesigner_install>
-pip install mldesigner
+pip install mldesigner==0.1.0b18 --extra-index-url https://azuremlsdktestpypi.azureedge.net/test-sdk-cli-v2
 # </mldesigner_install>
 
 # <mltable_install>
