@@ -9,7 +9,7 @@ def upload_file(endpoint: str, api_key: str, file_path: str, purpose: str = "fin
     """Upload a JSONL file to Azure OpenAI for fine-tuning.
 
     Args:
-        endpoint: Azure OpenAI endpoint URL (e.g. https://<resource>.openai.azure.com).
+        endpoint: Azure AI Foundry project endpoint URL.
         api_key: Azure OpenAI API key.
         file_path: Local path to the JSONL file.
         purpose: Upload purpose. Default is "fine-tune".
@@ -19,13 +19,16 @@ def upload_file(endpoint: str, api_key: str, file_path: str, purpose: str = "fin
     """
     url = f"{endpoint}/openai/v1/files"
     headers = {"api-key": api_key}
+    filename = file_path.split("\\")[-1].split("/")[-1]
     with open(file_path, "rb") as f:
         resp = requests.post(
             url,
             headers=headers,
-            files={"file": (file_path.split("\\")[-1].split("/")[-1], f, "application/json")},
+            files={"file": (filename, f, "application/octet-stream")},
             data={"purpose": purpose},
         )
+    if not resp.ok:
+        print(f"Upload failed ({resp.status_code}): {resp.text}")
     resp.raise_for_status()
     return resp.json()
 
@@ -42,23 +45,20 @@ def create_finetuning_job(
     """Submit a fine-tuning job via the REST API.
 
     Args:
-        endpoint: Azure OpenAI endpoint URL.
+        endpoint: Azure AI Foundry project endpoint URL.
         api_key: Azure OpenAI API key.
         model: Base model name (e.g. "gpt-4.1-mini-2025-04-14").
         training_file_id: File ID of the uploaded training data.
         validation_file_id: (Optional) File ID of the uploaded validation data.
         suffix: (Optional) Suffix for the fine-tuned model name (up to 18 chars).
         seed: (Optional) Seed for reproducibility.
-        n_epochs: (Optional) Number of training epochs.
-        batch_size: (Optional) Training batch size.
-        learning_rate_multiplier: (Optional) Learning rate multiplier.
 
     Returns:
         dict: The fine-tuning job response JSON.
     """
-    url = f"{endpoint}/openai/v1/fine_tuning/jobs"
+    url = f"{endpoint}/fine_tuning/jobs?api-version=v1"
     headers = {"Content-Type": "application/json", "api-key": api_key}
-    payload = {"model": model, "training_file": training_file_id}
+    payload = {"model": model, "training_file": training_file_id, "trainingType": 1}
 
     if validation_file_id:
         payload["validation_file"] = validation_file_id
@@ -68,6 +68,8 @@ def create_finetuning_job(
         payload["seed"] = seed
 
     resp = requests.post(url, headers=headers, json=payload)
+    if not resp.ok:
+        print(f"Job submission failed ({resp.status_code}): {resp.text}")
     resp.raise_for_status()
     return resp.json()
 
@@ -76,14 +78,14 @@ def get_job_status(endpoint: str, api_key: str, job_id: str) -> dict:
     """Retrieve the status of a fine-tuning job.
 
     Args:
-        endpoint: Azure OpenAI endpoint URL.
+        endpoint: Azure AI Foundry project endpoint URL.
         api_key: Azure OpenAI API key.
         job_id: The fine-tuning job ID.
 
     Returns:
         dict: The job status response JSON.
     """
-    url = f"{endpoint}/openai/v1/fine_tuning/jobs/{job_id}"
+    url = f"{endpoint}/fine_tuning/jobs/{job_id}?api-version=v1"
     headers = {"api-key": api_key}
     resp = requests.get(url, headers=headers)
     resp.raise_for_status()
@@ -96,7 +98,7 @@ def poll_job_until_complete(
     """Poll the fine-tuning job until it reaches a terminal state.
 
     Args:
-        endpoint: Azure OpenAI endpoint URL.
+        endpoint: Azure AI Foundry project endpoint URL.
         api_key: Azure OpenAI API key.
         job_id: The fine-tuning job ID.
         poll_interval: Seconds to wait between polls. Default 60.
@@ -118,14 +120,14 @@ def list_job_events(endpoint: str, api_key: str, job_id: str) -> dict:
     """List events for a fine-tuning job.
 
     Args:
-        endpoint: Azure OpenAI endpoint URL.
+        endpoint: Azure AI Foundry project endpoint URL.
         api_key: Azure OpenAI API key.
         job_id: The fine-tuning job ID.
 
     Returns:
         dict: The events response JSON.
     """
-    url = f"{endpoint}/openai/v1/fine_tuning/jobs/{job_id}/events"
+    url = f"{endpoint}/fine_tuning/jobs/{job_id}/events?api-version=v1"
     headers = {"api-key": api_key}
     resp = requests.get(url, headers=headers)
     resp.raise_for_status()
@@ -136,7 +138,7 @@ def download_result_file(endpoint: str, api_key: str, file_id: str, output_path:
     """Download a result file from Azure OpenAI.
 
     Args:
-        endpoint: Azure OpenAI endpoint URL.
+        endpoint: Azure AI Foundry project endpoint URL.
         api_key: Azure OpenAI API key.
         file_id: The result file ID.
         output_path: Local path to save the file.
@@ -200,5 +202,7 @@ def deploy_finetuned_model(
         },
     }
     resp = requests.put(url, headers=headers, json=payload)
+    if not resp.ok:
+        print(f"Deployment failed ({resp.status_code}): {resp.text}")
     resp.raise_for_status()
     return resp.json()
