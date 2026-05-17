@@ -18,3 +18,14 @@ materialization_settings:
     spark.executor.cores: 4
     spark.executor.instances: 2
     spark.executor.memory: 36g
+    spark.synapse.library.python.env:
+      dependencies:
+        - python=3.10
+        - pip:
+          - mlflow-skinny==2.8.1
+          - azureml-mlflow
+          - protobuf==3.19.6
+          - azureml-featurestore==1.2.1
+          - azure-mgmt-msi
+          - aiohttp==3.8.4
+      name: envdef
