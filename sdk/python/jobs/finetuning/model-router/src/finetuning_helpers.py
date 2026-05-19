@@ -165,6 +165,7 @@ def deploy_finetuned_model(
     fine_tuned_model: str,
     sku_name: str = "standard",
     sku_capacity: int = 1,
+    mode: str = "quality"
 ) -> dict:
     """Deploy a fine-tuned model using the Azure Management REST API.
 
@@ -177,7 +178,7 @@ def deploy_finetuned_model(
         fine_tuned_model: The fine-tuned model name (e.g. gpt-4.1-mini-2025-04-14.ft-<id>).
         sku_name: SKU name for the deployment. Default "standard".
         sku_capacity: SKU capacity. Default 1.
-
+        mode: Deployment mode. Default "quality".
     Returns:
         dict: The deployment response JSON.
     """
@@ -185,7 +186,7 @@ def deploy_finetuned_model(
         f"https://management.azure.com/subscriptions/{subscription_id}"
         f"/resourceGroups/{resource_group}"
         f"/providers/Microsoft.CognitiveServices/accounts/{resource_name}"
-        f"/deployments/{deployment_name}?api-version=2024-10-21"
+        f"/deployments/{deployment_name}?api-version=2026-03-15-preview"
     )
     headers = {
         "Authorization": f"Bearer {token}",
@@ -198,6 +199,10 @@ def deploy_finetuned_model(
                 "format": "OpenAI",
                 "name": fine_tuned_model,
                 "version": "1",
+                "sourceAccount": f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}/providers/Microsoft.CognitiveServices/accounts/{resource_name}"
+            },
+            "routing": {
+                "mode": mode
             }
         },
     }
