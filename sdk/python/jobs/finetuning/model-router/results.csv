@@ -1,1 +1,2 @@
-step,checkpoint_save_step,epoch,grad_norm,learning_rate,train_loss,total_flos,avg_train_loss,train_runtime,train_samples_per_second,train_steps_per_second,eval_loss,eval_runtime,eval_samples_per_second,eval_steps_per_second
+base_cost,base_accuracy,ft_cost_balanced_mode,ft_accuracy_balanced_mode,ft_cost_quality_mode,ft_accuracy_quality_mode,ft_cost_cost_mode,ft_accuracy_cost_mode
+0.56,84.9,0.37,91,2.17,93,0.03,70
