@@ -9,6 +9,6 @@ dependencies:
   - azureml-contrib-services
   - cloudpickle==2.2.0
   - psutil==5.8.0
-  - scikit-learn==0.24.1
+  - scikit-learn==1.2.2
   - typing-extensions==4.4.0
 name: mlflow-env
