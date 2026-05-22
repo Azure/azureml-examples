@@ -10,7 +10,7 @@ RUN pip install 'matplotlib>=3.3,<3.4' \
                 'ipykernel~=6.0' \
                 'azureml-core' \
                 'azureml-defaults' \
-                'azureml-mlflow' \
+                'mlflow==1.29.0' \
                 'azureml-telemetry' \
                 'scikit-learn==1.2.2'
 
