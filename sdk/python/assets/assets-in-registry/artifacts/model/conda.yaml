@@ -4,11 +4,11 @@ dependencies:
 - python=3.8.13
 - pip<=22.0.4
 - pip:
-  - mlflow
+  - mlflow==1.29.0
   - azureml-ai-monitoring
   - azureml-contrib-services
   - cloudpickle==2.2.0
   - psutil==5.8.0
-  - scikit-learn==1.2.2
+  - scikit-learn==0.24.1
   - typing-extensions==4.4.0
 name: mlflow-env
