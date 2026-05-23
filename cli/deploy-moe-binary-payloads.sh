@@ -9,7 +9,12 @@ ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f
 BASE_PATH="endpoints/online/managed/binary-payloads"
 
 # <download_sample_data> 
-wget https://aka.ms/peacock-pic -O endpoints/online/managed/binary-payloads/input.jpg
+SOURCE_IMAGE="$BASE_PATH/sample-input.jpg"
+if [[ ! -f "$SOURCE_IMAGE" ]]; then
+  echo "Sample image not found at $SOURCE_IMAGE"
+  exit 1
+fi
+cp "$SOURCE_IMAGE" "$BASE_PATH/input.jpg"
 # </download_sample_data>
 
 # <create_endpoint> 
