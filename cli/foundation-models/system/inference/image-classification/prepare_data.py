@@ -3,9 +3,25 @@ import base64
 import json
 import os
 import shutil
-import urllib.request
+import subprocess
 import pandas as pd
 from zipfile import ZipFile
+
+
+def get_repo_root():
+    """Get the root of the git repository."""
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
+    )
+    if result.returncode == 0:
+        return result.stdout.strip()
+    # Fallback: walk up from this file
+    d = os.path.dirname(os.path.abspath(__file__))
+    while d != os.path.dirname(d):
+        if os.path.isdir(os.path.join(d, ".git")):
+            return d
+        d = os.path.dirname(d)
+    return os.path.dirname(os.path.abspath(__file__))
 
 
 def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> None:
@@ -19,15 +35,12 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
+    # Determine dataset name based on multilabel flag
     if is_multilabel_dataset == 0:
-        download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/fridgeObjects.zip"
+        zip_name = "fridgeObjects.zip"
     else:
-        download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/multilabelFridgeObjects.zip"
-    print(f"Downloading data from {download_url}")
-
-    # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
+        zip_name = "multilabelFridgeObjects.zip"
+    dataset_name = zip_name.split(".")[0]
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
 
@@ -37,8 +50,10 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
     # Get the name of zip file
     data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
 
-    # Download data from public url
-    urllib.request.urlretrieve(download_url, filename=data_file)
+    # Copy dataset from repo's local data directory
+    repo_root = get_repo_root()
+    local_zip = os.path.join(repo_root, "data", "fridge-objects", zip_name)
+    shutil.copy2(local_zip, data_file)
 
     # extract files
     with ZipFile(data_file, "r") as zip:
