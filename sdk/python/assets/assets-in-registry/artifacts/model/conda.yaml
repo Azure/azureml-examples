@@ -4,7 +4,7 @@ dependencies:
 - python=3.8.13
 - pip<=22.0.4
 - pip:
-  - mlflow==1.29.0
+  - mlflow
   - azureml-ai-monitoring
   - azureml-contrib-services
   - cloudpickle==2.2.0
