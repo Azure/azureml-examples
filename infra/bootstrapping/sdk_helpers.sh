@@ -158,6 +158,7 @@ function ensure_aml_compute() {
             --name "${COMPUTE_NAME}" \
             --resource-group "${RESOURCE_GROUP_NAME}"  \
             --type amlcompute --min-instances "${MIN_INSTANCES}" --max-instances "${MAX_INSTANCES}"  \
+            --identity-type system_assigned \
             --size "${COMPUTE_SIZE}" \
             --output tsv  \
             > /dev/null)
@@ -169,6 +170,42 @@ function ensure_aml_compute() {
         fi
     else
         echo_warning "Compute ${COMPUTE_NAME} already exist, skipping creation step..." >&2
+
+        # Ensure existing compute has an identity so it can authenticate to ACR.
+        compute_identity_type=$(az ml compute show --name "${COMPUTE_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --query "identity.type" -o tsv | tail -n1 | tr -d "[:cntrl:]" || true)
+        if [[ -z "${compute_identity_type}" || "${compute_identity_type}" == "null" ]]; then
+            echo_info "Compute ${COMPUTE_NAME} has no identity; enabling system-assigned identity" >&2
+            az ml compute update --name "${COMPUTE_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --identity-type system_assigned > /dev/null
+        fi
+    fi
+
+    ensure_compute_acr_pull "${COMPUTE_NAME}"
+}
+
+function ensure_compute_acr_pull() {
+    local COMPUTE_NAME="${1:-cpu-cluster}"
+
+    local ACR_ID
+    ACR_ID=$(az ml workspace show --name "${WORKSPACE_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --query "container_registry" -o tsv | tail -n1 | tr -d "[:cntrl:]" || true)
+    if [[ -z "${ACR_ID}" || "${ACR_ID}" == "null" ]]; then
+        echo_warning "Workspace ${WORKSPACE_NAME} has no container registry configured; skipping AcrPull assignment for ${COMPUTE_NAME}." >&2
+        return 0
+    fi
+
+    local COMPUTE_PRINCIPAL_ID
+    COMPUTE_PRINCIPAL_ID=$(az ml compute show --name "${COMPUTE_NAME}" --resource-group "${RESOURCE_GROUP_NAME}" --query "identity.principal_id" -o tsv | tail -n1 | tr -d "[:cntrl:]" || true)
+    if [[ -z "${COMPUTE_PRINCIPAL_ID}" || "${COMPUTE_PRINCIPAL_ID}" == "null" ]]; then
+        echo_warning "Compute ${COMPUTE_NAME} has no principal id yet; skipping AcrPull assignment." >&2
+        return 0
+    fi
+
+    local ROLE_EXISTS
+    ROLE_EXISTS=$(az role assignment list --assignee-object-id "${COMPUTE_PRINCIPAL_ID}" --scope "${ACR_ID}" --query "[?roleDefinitionName=='AcrPull'] | length(@)" -o tsv | tail -n1 | tr -d "[:cntrl:]" || true)
+    if [[ "${ROLE_EXISTS}" == "0" || -z "${ROLE_EXISTS}" ]]; then
+        az role assignment create --assignee-object-id "${COMPUTE_PRINCIPAL_ID}" --assignee-principal-type ServicePrincipal --role "AcrPull" --scope "${ACR_ID}" > /dev/null
+        echo_info "Granted AcrPull on workspace ACR for compute ${COMPUTE_NAME}" >&2
+    else
+        echo_info "AcrPull already assigned on workspace ACR for compute ${COMPUTE_NAME}" >&2
     fi
 }
 
