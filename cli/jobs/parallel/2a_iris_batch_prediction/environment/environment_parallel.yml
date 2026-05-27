@@ -5,7 +5,7 @@ dependencies:
   - python=3.7.6
   - pip
   - pip:
-      - mlflow
+      - mlflow<2.0.0
       - mltable>=1.2.0
       - azureml-dataset-runtime[pandas,fuse]
       - azureml-telemetry
