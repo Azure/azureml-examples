@@ -2,15 +2,15 @@ name: prs-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.7.6
+  - python=3.8
   - pip
   - pip:
-      - mlflow<2.0.0
+      - mlflow
       - mltable>=1.2.0
       - azureml-dataset-runtime[pandas,fuse]
       - azureml-telemetry
       - pandas
       - pillow
       - azureml-core
-      - scikit-learn==0.20.3
-      - cloudpickle==1.1.1
+      - scikit-learn>=1.0.0
+      - cloudpickle
