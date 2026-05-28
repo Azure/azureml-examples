@@ -3,6 +3,8 @@ channels:
   - conda-forge
 dependencies:
   - python=3.8
+  - numpy
+  - scipy
   - pip
   - pip:
       - mlflow
@@ -13,4 +15,4 @@ dependencies:
       - pillow
       - azureml-core
       - scikit-learn==1.3.2
-      - cloudpickle==1.1.1
+      - cloudpickle>=2.2,<3
