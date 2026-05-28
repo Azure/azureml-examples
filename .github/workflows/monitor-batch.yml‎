@@ -29,4 +29,5 @@ jobs:
           WORKSPACE_NAME: ${{ secrets.WORKSPACE_NAME }}
           BATCH_ENDPOINT_NAME: ${{ secrets.BATCH_ENDPOINT_NAME }}
         run: |
-          python monitoring/batch_endpoint_monitor/monitor.py
+          python tutorials/batch_endpoint_monitor/monitor.py
+
