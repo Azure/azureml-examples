@@ -13,8 +13,10 @@ MODEL_NAME = "iris_model"
 class ConstantModel:
     """Fallback predictor used when model loading fails."""
 
+    DEFAULT_PREDICTION = "Iris-setosa"
+
     def predict(self, input_data):
-        return ["Iris-setosa"] * len(input_data)
+        return [self.DEFAULT_PREDICTION] * len(input_data)
 
 
 def init():
