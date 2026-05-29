@@ -5,6 +5,7 @@
 
 import argparse
 import os
+import traceback
 
 MODEL_NAME = "iris_model"
 
@@ -36,7 +37,8 @@ def init():
         iris_model = load_model(model_path)
         print(f"Loaded MLflow model from {model_path}")
     except Exception as ex:
-        print(f"Failed to load MLflow model from {model_path}: {ex}")
+        print(f"Failed to load MLflow model from {model_path}: {type(ex).__name__}: {ex}")
+        print(traceback.format_exc())
         print("Falling back to ConstantModel.")
         iris_model = ConstantModel()
 
