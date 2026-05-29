@@ -8,6 +8,13 @@ import os
 import traceback
 
 MODEL_NAME = "iris_model"
+MLFLOW_IMPORT_ERROR = None
+
+try:
+    from mlflow.sklearn import load_model
+except (ImportError, ModuleNotFoundError):
+    load_model = None
+    MLFLOW_IMPORT_ERROR = traceback.format_exc()
 
 
 class ConstantModel:
@@ -34,11 +41,13 @@ def init():
     model_path = args.model + "/" + MODEL_NAME
     global iris_model
     try:
-        from mlflow.sklearn import load_model
-
+        if load_model is None:
+            raise ImportError(
+                f"Unable to import mlflow.sklearn.load_model.\n{MLFLOW_IMPORT_ERROR}"
+            )
         iris_model = load_model(model_path)
         print(f"Loaded MLflow model from {model_path}")
-    except Exception as ex:
+    except (ImportError, ModuleNotFoundError, OSError, ValueError, TypeError) as ex:
         print(f"Failed to load MLflow model from {model_path}: {type(ex).__name__}: {ex}")
         print(traceback.format_exc())
         print("Falling back to ConstantModel.")
