@@ -35,8 +35,7 @@ def run(input_data):
 
     # input_data is a Pandas DataFrame for Tabular Data
 
-    num_rows, num_cols = input_data.shape
-    pred = iris_model.predict(input_data.iloc[:, :4]).reshape((num_rows, 1))
+    pred = iris_model.predict(input_data.iloc[:, :4].to_numpy())
 
     # cleanup output
     result = input_data.drop(input_data.columns[4:], axis=1)
