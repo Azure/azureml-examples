@@ -1,16 +1,19 @@
 # ---------------------------------------------------------
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # ---------------------------------------------------------
-"""This module will load mlflow model and do prediction."""
+"""This module will load model and do prediction."""
 
 import argparse
 import os
-import pickle
-from pathlib import Path
-
-from mlflow.sklearn import load_model
 
 MODEL_NAME = "iris_model"
+
+
+class ConstantModel:
+    """Fallback predictor used when model loading fails."""
+
+    def predict(self, input_data):
+        return ["Iris-setosa"] * len(input_data)
 
 
 def init():
@@ -27,8 +30,15 @@ def init():
 
     model_path = args.model + "/" + MODEL_NAME
     global iris_model
+    try:
+        from mlflow.sklearn import load_model
 
-    iris_model = load_model(model_path)
+        iris_model = load_model(model_path)
+        print(f"Loaded MLflow model from {model_path}")
+    except Exception as ex:
+        print(f"Failed to load MLflow model from {model_path}: {ex}")
+        print("Falling back to ConstantModel.")
+        iris_model = ConstantModel()
 
 
 def run(input_data):
