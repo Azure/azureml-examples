@@ -29,7 +29,8 @@ def init():
 
 
 def run(input_data):
-    pred = iris_model.predict(input_data.iloc[:, :4].to_numpy())
+    num_rows, num_cols = input_data.shape
+    pred = iris_model.predict(input_data).reshape((num_rows, 1))
 
     # cleanup output
     result = input_data.drop(input_data.columns[4:], axis=1)
