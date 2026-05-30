@@ -1,0 +1,16 @@
+name: myworkspace_dep
+managed_network:
+  isolation_mode: allow_only_approved_outbound
+  outbound_rules:
+  - name: added-servicetagrule
+    type: service_tag
+    destination:
+      port_ranges: 80, 8080
+      protocol: TCP
+      service_tag: DataFactory
+  - name: docker_images
+    type: fqdn
+    destination: 'mcr.microsoft.com'
+  - name: add-fqdnrule
+    destination: 'pypi.org'
+    type: fqdn
