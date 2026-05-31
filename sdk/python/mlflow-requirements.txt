@@ -1,3 +1,3 @@
 # required for mlflow notebooks
-azureml-mlflow
+azureml_mlflow-0.1.0.0-py3-none-any.whl
 mlflow
