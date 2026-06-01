@@ -5,6 +5,9 @@ import os
 import numpy as np
 import argparse
 import tensorflow as tf
+
+tf.compat.v1.disable_eager_execution()
+
 from PIL import Image
 
 
@@ -21,9 +24,13 @@ def init():
     model_path = args.model
 
     # contruct graph to execute
-    tf.reset_default_graph()
-    saver = tf.train.import_meta_graph(os.path.join(model_path, "mnist-tf.model.meta"))
-    g_tf_sess = tf.Session(config=tf.ConfigProto(device_count={"GPU": 0}))
+    tf.compat.v1.reset_default_graph()
+    saver = tf.compat.v1.train.import_meta_graph(
+        os.path.join(model_path, "mnist-tf.model.meta")
+    )
+    g_tf_sess = tf.compat.v1.Session(
+        config=tf.compat.v1.ConfigProto(device_count={"GPU": 0})
+    )
     saver.restore(g_tf_sess, os.path.join(model_path, "mnist-tf.model"))
 
 
