@@ -47,7 +47,7 @@ jobs:
       environment:
         name: "prs-env"
         version: 1
-        image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+        image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
         conda_file: ./environment/environment_parallel.yml
       program_arguments: >-
         --model ${{inputs.score_model}}
@@ -57,5 +57,5 @@ jobs:
         --progress_update_timeout 600
         --first_task_creation_timeout 600
         --copy_logs_to_parent True
-        --resource_monitor_interva 20
+        --resource_monitor_interval 20
       append_row_to: ${{outputs.job_output_file}}
