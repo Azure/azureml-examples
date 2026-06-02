@@ -46,7 +46,7 @@ jobs:
       entry_script: iris_prediction.py
       environment:
         name: "prs-env"
-        version: 2
+        version: 1
         image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
         conda_file: ./environment/environment_parallel.yml
       program_arguments: >-
