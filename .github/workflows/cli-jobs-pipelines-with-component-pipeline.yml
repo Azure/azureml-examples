@@ -1,0 +1,60 @@
+name: cli-jobs-pipelines-with-components-sa_v1_workflow-pipeline
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - cli/jobs/pipelines-with-components/sa_v1_workflow/**
+      - infra/bootstrapping/**
+      - .github/workflows/cli-jobs-pipelines-with-components-sa_v1_workflow-pipeline.yml
+      - cli/run-job.sh
+      - cli/setup.sh
+permissions:
+  id-token: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v2
+
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.OIDC_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.OIDC_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.OIDC_AZURE_SUBSCRIPTION_ID }}
+
+      - name: bootstrap resources
+        run: |
+          echo "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+          bash bootstrap.sh
+        working-directory: infra/bootstrapping
+
+      - name: setup-cli
+        run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh"
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh"
+          bash setup.sh
+        working-directory: cli
+
+      - name: Eagerly cache access tokens for required scopes
+        run: |
+          az account get-access-token --scope https://management.azure.com/.default --output none
+          az account get-access-token --scope https://ml.azure.com/.default --output none
+
+      - name: run job
+        run: |
+          source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh"
+          source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh"
+          bash -x ../../../../run-job.sh workflow.yml
+        working-directory: cli/jobs/pipelines-with-components/sa_v1_workflow
+
+      - name: validate readme
+        run: |
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/sa_v1_workflow"
+        working-directory: infra/bootstrapping

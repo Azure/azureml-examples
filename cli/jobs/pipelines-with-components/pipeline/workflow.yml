@@ -1,0 +1,12 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+display_name: sa_v1_workflow
+description: Run local pipeline_component with step_1 component
+
+settings:
+  default_compute: azureml:cpu-cluster
+
+jobs:
+  run_pipeline_component:
+    type: pipeline
+    component: ./pipeline_component.yml
