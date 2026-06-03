@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
 type: pipeline
-display_name: sa_v1_workflow
+display_name: pipeline_workflow
 description: Run local pipeline_component with step_1 component
 
 settings:
