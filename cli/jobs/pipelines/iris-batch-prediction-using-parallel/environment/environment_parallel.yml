@@ -13,4 +13,5 @@ dependencies:
       - pillow
       - azureml-core
       - scikit-learn==0.23.2
+      - numpy<1.24
       - cloudpickle==2.2.1
