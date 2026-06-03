@@ -25,15 +25,28 @@ def init():
 
     global iris_model
 
-    iris_model = load_model(args.model)
+    try:
+        iris_model = load_model(args.model)
+    except Exception as e:
+        import traceback
+        print("INIT_ERROR:", repr(e), flush=True)
+        traceback.print_exc()
+        raise
 
 
 def run(input_data):
-    num_rows, num_cols = input_data.shape
-    pred = iris_model.predict(input_data).reshape((num_rows, 1))
+    try:
+        num_rows, num_cols = input_data.shape
+        print("RUN_SHAPE:", num_rows, num_cols, flush=True)
+        pred = iris_model.predict(input_data).reshape((num_rows, 1))
 
-    # cleanup output
-    result = input_data.drop(input_data.columns[4:], axis=1)
-    result["variety"] = pred
+        # cleanup output
+        result = input_data.drop(input_data.columns[4:], axis=1)
+        result["variety"] = pred
 
-    return result
+        return result
+    except Exception as e:
+        import traceback
+        print("RUN_ERROR:", repr(e), flush=True)
+        traceback.print_exc()
+        raise
