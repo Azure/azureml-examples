@@ -85,7 +85,17 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+# Include packages required by AzureML's auto-generated MLflow inference
+# scoring script (mlflow_score_script.py) so no-code deployments of this
+# model build an inference environment that can import these modules.
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
+    extra_pip_requirements=[
+        "azureml-ai-monitoring",
+        "azureml-contrib-services",
+    ],
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
