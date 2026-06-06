@@ -1,13 +1,13 @@
-name: cli-jobs-pipelines-with-components-sa_v1_workflow-pipeline
+name: cli-jobs-pipelines-with-component-pipeline
 on:
   workflow_dispatch:
   pull_request:
     branches:
       - main
     paths:
-      - cli/jobs/pipelines-with-components/sa_v1_workflow/**
+      - cli/jobs/pipelines-with-components/pipeline/**
       - infra/bootstrapping/**
-      - .github/workflows/cli-jobs-pipelines-with-components-sa_v1_workflow-pipeline.yml
+      - .github/workflows/cli-jobs-pipelines-with-component-pipeline.yml
       - cli/run-job.sh
       - cli/setup.sh
 permissions:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    if: ${{ secrets.OIDC_AZURE_CLIENT_ID != '' && secrets.OIDC_AZURE_TENANT_ID != '' && secrets.OIDC_AZURE_SUBSCRIPTION_ID != '' }}
+     if: ${{ secrets.OIDC_AZURE_CLIENT_ID != '' && secrets.OIDC_AZURE_TENANT_ID != '' && secrets.OIDC_AZURE_SUBSCRIPTION_ID != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: check out repo
@@ -53,9 +53,9 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh"
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh"
           bash -x ../../../../run-job.sh workflow.yml
-        working-directory: cli/jobs/pipelines-with-components/sa_v1_workflow
+        working-directory: cli/jobs/pipelines-with-components/pipeline
 
       - name: validate readme
         run: |
-          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/sa_v1_workflow"
+          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines-with-components/pipeline"
         working-directory: infra/bootstrapping
