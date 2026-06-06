@@ -1,4 +1,4 @@
-FROM python:3.8.13
+FROM python:3.10.14
 
 # Install pip dependencies
 RUN pip install 'matplotlib>=3.3,<3.4' \
@@ -13,4 +13,3 @@ RUN pip install 'matplotlib>=3.3,<3.4' \
                 'azureml-mlflow' \
                 'azureml-telemetry' \
                 'scikit-learn==1.2.2'
-
