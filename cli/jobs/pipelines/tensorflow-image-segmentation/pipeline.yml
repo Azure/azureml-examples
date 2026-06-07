@@ -52,6 +52,8 @@ jobs:
 
     # NOTE: set env var if needed
     environment_variables:
+      # force pure-python protobuf to avoid _upb FieldDescriptor.label bug with MLflow
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: "python"
       # adjusts the level of info from NCCL tests
       NCCL_DEBUG: "INFO"
       NCCL_DEBUG_SUBSYS: "GRAPH,INIT,ENV"
