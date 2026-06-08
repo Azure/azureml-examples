@@ -2,3 +2,5 @@ mlflow
 cloudpickle==3.1.2
 psutil==5.9.4
 scikit-learn==1.6.1
+azureml-ai-monitoring
+azureml-inference-server-http
