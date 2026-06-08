@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/online/mlflow/**
       - .github/workflows/sdk-endpoints-online-mlflow-online-endpoints-deploy-mlflow-model.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

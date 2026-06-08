@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/foundation-models/system/distillation/nli/
       - .github/workflows/sdk-foundation-models-system-distillation-nli-distillation_chat_completion.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

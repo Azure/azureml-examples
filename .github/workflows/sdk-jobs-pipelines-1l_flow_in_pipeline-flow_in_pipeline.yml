@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/1l_flow_in_pipeline/**
       - .github/workflows/sdk-jobs-pipelines-1l_flow_in_pipeline-flow_in_pipeline.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

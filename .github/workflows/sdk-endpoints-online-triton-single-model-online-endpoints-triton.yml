@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/online/triton/single-model/**
       - .github/workflows/sdk-endpoints-online-triton-single-model-online-endpoints-triton.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

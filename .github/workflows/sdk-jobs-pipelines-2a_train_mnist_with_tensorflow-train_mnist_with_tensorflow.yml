@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/2a_train_mnist_with_tensorflow/**
       - .github/workflows/sdk-jobs-pipelines-2a_train_mnist_with_tensorflow-train_mnist_with_tensorflow.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

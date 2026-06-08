@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/1h_automl_in_pipeline/automl-image-classification-multiclass-in-pipeline/**
       - .github/workflows/sdk-jobs-pipelines-1h_automl_in_pipeline-automl-image-classification-multiclass-in-pipeline-automl-image-classification-multiclass-in-pipeline.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

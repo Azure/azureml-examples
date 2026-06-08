@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/online/managed/managed-identities/**
       - .github/workflows/sdk-endpoints-online-managed-managed-identities-online-endpoints-managed-identity-sai.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write
