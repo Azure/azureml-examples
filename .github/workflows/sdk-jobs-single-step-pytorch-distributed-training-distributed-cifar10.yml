@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/single-step/pytorch/distributed-training/**
       - .github/workflows/sdk-jobs-single-step-pytorch-distributed-training-distributed-cifar10.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

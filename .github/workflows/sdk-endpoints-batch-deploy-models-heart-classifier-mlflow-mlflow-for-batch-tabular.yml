@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/batch/deploy-models/heart-classifier-mlflow/**
       - .github/workflows/sdk-endpoints-batch-deploy-models-heart-classifier-mlflow-mlflow-for-batch-tabular.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-image-object-detection-task-fridge-items/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-image-object-detection-task-fridge-items-automl-image-object-detection-task-fridge-items.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

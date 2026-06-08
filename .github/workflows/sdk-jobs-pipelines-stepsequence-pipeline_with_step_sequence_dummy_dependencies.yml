@@ -10,9 +10,7 @@ on:
       - sdk/python/jobs/pipelines/stepsequence/pipeline_with_step_sequence_dummy_dependencies.ipynb
       - .github/workflows/sdk-jobs-pipelines-stepsequence-pipeline_with_step_sequence_dummy_dependencies.yml
       - "!sdk/python/jobs/pipelines/stepsequence/**/*.md"
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

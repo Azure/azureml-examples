@@ -145,9 +145,7 @@ on:\n"""
     workflow_yaml += f"""    paths:
       - tutorials/{posix_folder}/**
       - .github/workflows/tutorials-{classification}-{name}.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 permissions:
   id-token: write
 concurrency:

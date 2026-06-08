@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-regression-task-hardware-performance/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-regression-task-hardware-performance-automl-regression-task-hardware-performance.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

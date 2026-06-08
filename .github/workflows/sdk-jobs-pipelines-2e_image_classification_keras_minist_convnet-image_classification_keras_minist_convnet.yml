@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/**
       - .github/workflows/sdk-jobs-pipelines-2e_image_classification_keras_minist_convnet-image_classification_keras_minist_convnet.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write
