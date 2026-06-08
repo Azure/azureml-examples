@@ -13,8 +13,6 @@ Usage:
 Requires an .azureml/config.json (or env vars) for workspace connection.
 """
 
-import json
-import os
 from pathlib import Path
 
 from azure.ai.ml import MLClient, load_component
@@ -23,7 +21,6 @@ from azure.ai.ml.sweep import (
     BanditPolicy,
     Choice,
     LogUniform,
-    Uniform,
 )
 from azure.identity import DefaultAzureCredential
 
