@@ -7,8 +7,8 @@ dependencies:
   - mlflow
   - cloudpickle==2.2.0
   - psutil==5.8.0
-  - numpy<1.24
-  - scipy<1.10
+  - numpy>=1.21,<1.24
+  - scipy>=1.7,<1.10
   - scikit-learn==0.24.2
   - azureml-ai-monitoring
   - azureml-contrib-services
