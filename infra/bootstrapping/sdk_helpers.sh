@@ -532,7 +532,7 @@ function ensure_aks_compute() {
     AKS_CLUSTER_NAME=${1:-aks-cluster}
     MIN_COUNT="${2:-1}"
     MAX_COUNT="${3:-3}"
-    VM_SKU="${4:-STANDARD_D4S_V3}"
+    VM_SKU="${4:-STANDARD_NC6S_V3}"
     compute_exists=$(az aks list --resource-group "${RESOURCE_GROUP_NAME}" --query "[?name == '${AKS_CLUSTER_NAME}']" |tail -n1|tr -d "[:cntrl:]")
     if [[ "${compute_exists}" = "[]" ]]; then
         echo_info "AKS Compute ${AKS_CLUSTER_NAME} does not exist; creating" >&2
@@ -855,7 +855,7 @@ function ensure_k8s_compute(){
         fi
     fi 
 
-    LOCATION=eastus2 ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D4S_V3"
+    ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_NC6S_V3"
     install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
     setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
     setup_instance_type_aml_arc "${arc_compute}"
