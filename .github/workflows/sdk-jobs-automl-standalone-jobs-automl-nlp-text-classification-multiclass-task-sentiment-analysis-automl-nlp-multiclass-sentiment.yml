@@ -19,6 +19,7 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+      - sdk/python/mlflow-requirements.txt
 
 permissions:
   id-token: write

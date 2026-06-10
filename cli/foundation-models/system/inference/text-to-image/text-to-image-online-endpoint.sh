@@ -15,7 +15,7 @@ version=$(date +%s)
 endpoint_name="text-to-image-$version"
 
 # Todo: fetch deployment_sku from the min_inference_sku tag of the model
-deployment_sku="Standard_NC6s_v3"
+deployment_sku="STANDARD_NC4AS_T4_V3"
 
 # sample_request_data
 sample_request_data="./sample_request_data.json"
@@ -51,7 +51,7 @@ az ml online-endpoint create --name $endpoint_name $workspace_info || {
 max_concurrent_request=2  # the maximum number of concurrent requests supported by the endpoint
 
 # Note: We have set the value of `max_concurrent_request` to 2, 
-# as we are utilizing the `Standard_NC6s_v3` SKU for deployment, which has one GPU. 
+# as we are utilizing the `STANDARD_NC4AS_T4_V3` SKU for deployment, which has one GPU. 
 # If you are using a larger SKU, please increase this value to get the maximum performance.
 # For model `stabilityai-stable-diffusion-xl-base-1-0`, set the value of `MAX_CONCURRENT_REQUESTS` to 1
 

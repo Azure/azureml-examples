@@ -1,0 +1,44 @@
+{
+  "deepspeed_multinode_launcher": "standard",
+  "offload_optimizer_device": "cpu",
+  "offload_param_device": "cpu",
+  "zero3_init_flag": true,
+  "zero3_save_16bit_model": true,
+  "zero_stage": 3,
+  "overlap_comm": true,
+  "sub_group_size": 1000000,
+  "stage3_max_live_parameters": 1000,
+  "stage3_max_reuse_distance": 1000000,
+  "stage3_gather_16bit_weights_on_model_save": true,
+  "train_batch_size": 16,
+  "train_micro_batch_size_per_gpu": 1,
+  "gradient_accumulation_steps" : 1,
+  "reduce_bucket_size": 5000000,
+  "stage3_prefetch_bucket_size": 5000000,
+  "stage3_param_persistence_threshold": 5000000,
+  "memory_efficient_linear": true,
+  "contiguous_gradients": true,
+  "zero_optimization": {
+    "stage": 3,
+    "cpu_offload": true,
+    "contiguous_gradients": true,
+    "sub_group_size": 1000000,
+    "stage3_prefetch_bucket_size": 5000000,
+    "stage3_param_persistence_threshold": 5000000,
+    "stage3_max_live_parameters": 1000,
+    "stage3_max_reuse_distance": 1000000,
+    "stage3_gather_16bit_weights_on_model_save": true
+  },
+  "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 3e-06,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-8,
+      "weight_decay": 0.0
+    }
+  }
+}

@@ -7,4 +7,4 @@ model:
   path: ./models
   type: triton_model
 instance_count: 1
-instance_type: Standard_NC6s_v3
+instance_type: STANDARD_NC4AS_T4_V3

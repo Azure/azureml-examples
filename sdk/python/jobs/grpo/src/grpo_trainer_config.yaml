@@ -1,0 +1,76 @@
+# There are two modes to run vllm for generating samples: server and colocate. 
+# We use the colocate mode here, which runs the sampler and trainer on the same GPU.
+use_vllm: True
+vllm_mode: "colocate"
+# This ratio controls memory distribution between sampler and trainer.
+vllm_gpu_memory_utilization: 0.25
+vllm_tensor_parallel_size: 4 
+
+# Evaluation settings
+do_eval: true
+eval_strategy: steps
+eval_steps: 5
+eval_on_start: true
+per_device_eval_batch_size: 1
+
+# Flash Attention 2 distributes computations more granularly across GPU threads, reducing bottlenecks and improving throughput
+attn_implementation: flash_attention_2
+
+# Sampler settings
+max_prompt_length: 1500
+max_completion_length: 5000
+# Number of samples to generate for each prompt
+num_generations: 2
+log_completions: true
+num_completions_to_print: 2
+
+# Enable logging metrics to Azure ML
+report_to:
+- azure_ml
+
+# Logging settings
+log_level: info
+logging_first_step: true
+logging_steps: 5
+logging_strategy: steps
+
+# Checkpoint settings
+save_strategy: "steps"
+save_steps: 100
+save_total_limit: 20 
+
+# Reward settings for sample rewarding.
+reward_funcs:
+- accuracy
+- format
+# reward = 0.8*accuracy + 0.2*format
+# These weights helps us define the importance of each reward function.
+reward_weights:
+- 0.8
+- 0.2
+
+# Training settings
+max_steps: 100 
+num_train_epochs: 3
+per_device_train_batch_size: 1
+learning_rate: 3.0e-06
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+
+# Specifies how many batches to process before performing a backward/update step.
+# A higher value improves GPU utilization, but it comes with the risk of running out of memory.
+gradient_accumulation_steps: 1
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+run_name: rlm8
+seed: 42
+overwrite_output_dir: false
+push_to_hub: false
+hub_model_id: NA
+hub_strategy: checkpoint
+hub_private_repo: true
+model_revision: main
+torch_dtype: bfloat16
+bf16: true
+dataset_config: default

@@ -4,6 +4,7 @@
 import argparse
 import json
 import os
+import tempfile
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.compose import ColumnTransformer
@@ -17,8 +18,6 @@ import mlflow.sklearn
 import mltable
 
 import time
-
-from azureml.core.run import Run
 
 
 def parse_args():
@@ -69,11 +68,8 @@ def get_regression_model_pipeline(continuous_features, categorical_features):
 
 
 def main(args):
-    current_experiment = Run.get_context().experiment
-    tracking_uri = current_experiment.workspace.get_mlflow_tracking_uri()
+    tracking_uri = mlflow.get_tracking_uri()
     print("tracking_uri: {0}".format(tracking_uri))
-    mlflow.set_tracking_uri(tracking_uri)
-    mlflow.set_experiment(current_experiment.name)
 
     # Read in data
     print("Reading data")
@@ -93,18 +89,39 @@ def main(args):
     model = pipeline.fit(X_train, y_train)
 
     # Saving model with mlflow
-    print("Saving model with MLFlow to temporary directory")
+    print("Saving model with MLFlow to model_output directory")
     mlflow.sklearn.save_model(sk_model=model, path=args.model_output)
 
     suffix = int(time.time())
     registered_name = "{0}_{1}".format(args.model_name, suffix)
     print(f"Registering model as {registered_name}")
 
-    mlflow.sklearn.log_model(
-        sk_model=model,
-        registered_model_name=registered_name,
-        artifact_path=registered_name,
-    )
+    # Use save_model and create_model_version with file:// URI to let Azure ML handle the upload
+    with tempfile.TemporaryDirectory() as temp_dir:
+        model_dir = os.path.join(temp_dir, registered_name)
+        mlflow.sklearn.save_model(model, model_dir)
+
+        # Use the older model registry API directly to avoid logged-models search
+        from mlflow.tracking import MlflowClient
+
+        client = MlflowClient()
+
+        try:
+            # Try to create the registered model (will fail if it already exists)
+            client.create_registered_model(registered_name)
+            print(f"Created new registered model: {registered_name}")
+        except Exception as e:
+            print(f"Registered model {registered_name} already exists: {e}")
+
+        # Create a new version of the model using file:// URI
+        # Azure ML will handle the upload and generate the proper azureml:// URI
+        file_uri = f"file://{model_dir}"
+        print("Registering model with file_uri: {0}".format(file_uri))
+
+        model_version = client.create_model_version(
+            name=registered_name, source=file_uri
+        )
+        print(f"Created model version {model_version.version} for {registered_name}")
 
     model_info = {"id": "{0}:1".format(registered_name)}
     output_path = os.path.join(args.model_output_json, "model_info.json")
