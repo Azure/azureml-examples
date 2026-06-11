@@ -27,6 +27,8 @@ finetuned_model_name=$model_name"-extractive-qna"
 endpoint_name="ext-qna-$version"
 deployment_sku="Standard_DS3_v2"
 
+# For complete guide on preparing your data please refer to
+# https://github.com/Azure/azureml-examples/blob/main/cli/foundation-models/system/finetune/question-answering/question-answering-data-prep-guide.md
 
 # training data
 train_data="squad-dataset/small_train.jsonl"
@@ -89,8 +91,14 @@ else
     }
 fi
 
-# download the dataset
+compute_size=$((az ml compute show --name $compute_cluster $workspace_info --query size) | tr '[:upper:]' '[:lower:]' | tr -d '"')
 
+case $compute_size in "standard_nc6"|"standard_nc12"|"standard_nc24"|"standard_nc24r")
+    echo "VM size $compute_size is currently not supported for finetuning"
+    exit 1
+esac
+
+# download the dataset
 python ./download-dataset.py || {
     echo "Failed to download dataset"
     exit 1
