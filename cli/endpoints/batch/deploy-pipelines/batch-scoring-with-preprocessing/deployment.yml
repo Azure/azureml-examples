@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
 name: uci-classifier-prepros-xgb
+description: A sample deployment with pre and post processing done before and after inference.
 endpoint_name: uci-classifier-batch
 type: pipeline
 component: pipeline.yml
