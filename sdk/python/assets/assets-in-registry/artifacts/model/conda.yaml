@@ -2,7 +2,7 @@ channels:
 - conda-forge
 dependencies:
 - python=3.8.13
-- pip<=22.0.4
+- pip
 - pip:
   - mlflow
   - azureml-ai-monitoring
