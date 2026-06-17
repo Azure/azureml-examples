@@ -1,12 +1,12 @@
 channels:
 - conda-forge
 dependencies:
-- python=3.8.13
+- python=3.10
 - pip
 - pip:
   - mlflow
   - azureml-ai-monitoring
-  - azureml-contrib-services
+  - azureml-inference-server-http
   - cloudpickle==2.2.0
   - psutil==5.8.0
   - scikit-learn==1.2.2
