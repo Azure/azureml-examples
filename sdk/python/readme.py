@@ -259,11 +259,11 @@ jobs:
     - name: pip install notebook reqs
       run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
-            uses: azure/login@v2
+        uses: azure/login@v2
       with:
-                client-id: ${{{{ vars.OIDC_AZURE_CLIENT_ID || secrets.OIDC_AZURE_CLIENT_ID }}}}
-                tenant-id: ${{{{ vars.OIDC_AZURE_TENANT_ID || secrets.OIDC_AZURE_TENANT_ID }}}}
-                subscription-id: ${{{{ vars.OIDC_AZURE_SUBSCRIPTION_ID || secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
+          client-id: ${{{{ vars.OIDC_AZURE_CLIENT_ID || secrets.OIDC_AZURE_CLIENT_ID }}}}
+          tenant-id: ${{{{ vars.OIDC_AZURE_TENANT_ID || secrets.OIDC_AZURE_TENANT_ID }}}}
+          subscription-id: ${{{{ vars.OIDC_AZURE_SUBSCRIPTION_ID || secrets.OIDC_AZURE_SUBSCRIPTION_ID }}}}
     - name: bootstrap resources
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
