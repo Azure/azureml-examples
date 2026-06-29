@@ -226,6 +226,10 @@ def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
     run_script = run_script_path.read_text()
     assert f"python3 {installed_scanner_path.as_posix()} \"$@\"" in run_script
     assert os.path.abspath(amlsecscan.__file__) not in run_script
+    assert "cgroup.controllers" in run_script
+    assert "cpu.max" in run_script
+    assert "cpu.cfs_quota_us" in run_script
+    assert "configure_cgroup || true" in run_script
 
     cron = cron_path.read_text()
     assert f"root {run_script_path.as_posix()} heartbeat" in cron

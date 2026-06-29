@@ -347,14 +347,25 @@ set -e
 exec 1> >(logger -s -t AMLSECSCAN) 2>&1
 
 # Limit CPU usage to 20% and reduce priority (note: the configuration is not persisted during reboot)
-if [ ! -d /sys/fs/cgroup/cpu/amlsecscan ]
-then
-    mkdir -p /sys/fs/cgroup/cpu/amlsecscan
-    echo 100000 | tee /sys/fs/cgroup/cpu/amlsecscan/cpu.cfs_period_us > /dev/null
-    echo 20000 | tee /sys/fs/cgroup/cpu/amlsecscan/cpu.cfs_quota_us > /dev/null
-    echo 5 | tee /sys/fs/cgroup/cpu/amlsecscan/cpu.shares > /dev/null
-fi
-echo $$ | tee /sys/fs/cgroup/cpu/amlsecscan/tasks > /dev/null
+configure_cgroup() {{
+    if [ -f /sys/fs/cgroup/cgroup.controllers ]
+    then
+        cgroup_path=/sys/fs/cgroup/amlsecscan
+        mkdir -p "$cgroup_path" || return 0
+        [ -w "$cgroup_path/cpu.max" ] && echo "20000 100000" > "$cgroup_path/cpu.max"
+        [ -w "$cgroup_path/cpu.weight" ] && echo 5 > "$cgroup_path/cpu.weight"
+        [ -w "$cgroup_path/cgroup.procs" ] && echo $$ > "$cgroup_path/cgroup.procs"
+    elif [ -d /sys/fs/cgroup/cpu ]
+    then
+        cgroup_path=/sys/fs/cgroup/cpu/amlsecscan
+        mkdir -p "$cgroup_path" || return 0
+        [ -w "$cgroup_path/cpu.cfs_period_us" ] && echo 100000 > "$cgroup_path/cpu.cfs_period_us"
+        [ -w "$cgroup_path/cpu.cfs_quota_us" ] && echo 20000 > "$cgroup_path/cpu.cfs_quota_us"
+        [ -w "$cgroup_path/cpu.shares" ] && echo 5 > "$cgroup_path/cpu.shares"
+        [ -w "$cgroup_path/tasks" ] && echo $$ > "$cgroup_path/tasks"
+    fi
+}}
+configure_cgroup || true
 
 nice -n 19 python3 {_installed_scanner_path} "$@"
 """
