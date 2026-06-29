@@ -82,6 +82,7 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
+          bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" ensure_aml_compute "cpu-cluster" 0 20 "Standard_DS3_v2";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "share-models-components-environments.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
           papermill -k python share-models-components-environments.ipynb share-models-components-environments.output.ipynb
