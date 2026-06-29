@@ -10,6 +10,7 @@ import logging
 import logging.handlers
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -31,6 +32,9 @@ _azure_ml_resource_id = (
 # Configuration priority: 1) command-line parameters, 2) local config file, 3) global config file
 _config_folder_path = "/home/azureuser/.amlsecscan"
 _global_config_path = _config_folder_path + "/config.json"
+_installed_scanner_path = _config_folder_path + "/amlsecscan.py"
+_state_folder_path = "/var/lib/amlsecscan"
+_cron_path = "/etc/cron.d/amlsecscan"
 _local_config_path = os.path.abspath(os.path.splitext(__file__)[0] + ".json")
 
 
@@ -75,6 +79,18 @@ def _run(command, check=True):
             f"Error: {e}\n    stdout:\n{e.stdout}\n    stderr:\n{e.stderr}"
         )
         raise
+
+
+def _recreate_owned_directory(path, user, group, mode):
+    if os.path.lexists(path):
+        if os.path.isdir(path) and not os.path.islink(path):
+            shutil.rmtree(path)
+        else:
+            os.unlink(path)
+
+    os.makedirs(path, mode=mode, exist_ok=False)
+    shutil.chown(path, user, group)
+    os.chmod(path, mode)
 
 
 class StdOutTelemetry:
@@ -255,9 +271,8 @@ def _install(log_analytics_resource_id):
             "Installation must be performed by the root user. Please run again using sudo."
         )
 
-    _logger.debug(f"Creating folder {_config_folder_path}")
-    os.makedirs(_config_folder_path, exist_ok=True)
-    shutil.chown(_config_folder_path, "azureuser", "azureuser")
+    with open(os.path.abspath(__file__), "rb") as file:
+        scanner_source = file.read()
 
     config = {"logAnalyticsResourceId": None}
 
@@ -292,10 +307,17 @@ def _install(log_analytics_resource_id):
 
     _logger.debug(f"Configuration: {config}")
 
+    _logger.debug(f"Creating folder {_config_folder_path}")
+    _recreate_owned_directory(_config_folder_path, "root", "root", 0o0755)
+
+    _logger.debug(f"Creating state folder {_state_folder_path}")
+    _recreate_owned_directory(_state_folder_path, "root", "root", 0o0755)
+
     _logger.info(f"Writing configuration file {_global_config_path}")
     with open(_global_config_path, "wt") as file:
         json.dump(config, file, indent=2)
-    shutil.chown(_global_config_path, "azureuser", "azureuser")
+    shutil.chown(_global_config_path, "root", "root")
+    os.chmod(_global_config_path, 0o0644)
 
     _logger.info("Installing Trivy")
     _run(
@@ -309,6 +331,12 @@ def _install(log_analytics_resource_id):
     )
     _run("apt-get update")
     _run("apt-get install -y --no-install-recommends --quiet trivy")
+
+    _logger.info(f"Writing scanner file {_installed_scanner_path}")
+    with open(_installed_scanner_path, "wb") as file:
+        file.write(scanner_source)
+    shutil.chown(_installed_scanner_path, "root", "root")
+    os.chmod(_installed_scanner_path, 0o0755)
 
     script_path = _config_folder_path + "/run.sh"
     _logger.info(f"Writing script file {script_path}")
@@ -328,20 +356,21 @@ then
 fi
 echo $$ | tee /sys/fs/cgroup/cpu/amlsecscan/tasks > /dev/null
 
-nice -n 19 python3 {os.path.abspath(__file__)} $1 $2 $3 $4 $5
+nice -n 19 python3 {_installed_scanner_path} "$@"
 """
         )
+    shutil.chown(script_path, "root", "root")
     os.chmod(script_path, 0o0755)
 
-    _logger.info(f"Writing crontab file /etc/cron.d/amlsecscan")
-    with open("/etc/cron.d/amlsecscan", "wt") as file:
+    _logger.info(f"Writing crontab file {_cron_path}")
+    with open(_cron_path, "wt") as file:
         file.write(
             f"""*/10 * * * * root {script_path} heartbeat
 37 5 * * * root {script_path} scan all
 @reboot root sleep 600 && {script_path} scan all
 """
         )
-    os.chmod("/etc/cron.d/amlsecscan", 0o0644)
+    os.chmod(_cron_path, 0o0644)
 
 
 def _uninstall():
@@ -350,11 +379,14 @@ def _uninstall():
             "Uninstallation must be performed by the root user. Please run again using sudo."
         )
 
-    _logger.info(f"Deleting crontab file /etc/cron.d/amlsecscan")
-    _run("rm -f /etc/cron.d/amlsecscan")
+    _logger.info(f"Deleting crontab file {_cron_path}")
+    _run(f"rm -f {_cron_path}")
 
     _logger.info(f"Deleting folder {_config_folder_path}")
     shutil.rmtree(_config_folder_path, ignore_errors=True)
+
+    _logger.info(f"Deleting state folder {_state_folder_path}")
+    shutil.rmtree(_state_folder_path, ignore_errors=True)
 
 
 def _sanitize_log_analytics_resource_id(log_analytics_resource_id):
@@ -499,25 +531,27 @@ def _scan_vulnerabilities(telemetry):
     _send_health(telemetry, "ScanVulnerabilities", "Started")
 
     try:
-        shutil.rmtree(f"{_config_folder_path}/anaconda", ignore_errors=True)
+        os.makedirs(_state_folder_path, exist_ok=True)
+        shutil.rmtree(f"{_state_folder_path}/anaconda", ignore_errors=True)
         for env_name in (
             entry.name for entry in os.scandir("/anaconda/envs") if entry.is_dir()
         ):
+            requirements_path = f"{_state_folder_path}/anaconda/{env_name}/requirements.txt"
             _logger.info(
-                f"Saving pip freeze of conda environment {env_name} to {_config_folder_path}/anaconda/{env_name}/requirements.txt"
+                f"Saving pip freeze of conda environment {env_name} to {requirements_path}"
             )
-            os.makedirs(f"{_config_folder_path}/anaconda/{env_name}", exist_ok=True)
+            os.makedirs(os.path.dirname(requirements_path), exist_ok=True)
             _run(
-                f"/anaconda/envs/{env_name}/bin/python3 -m pip freeze > {_config_folder_path}/anaconda/{env_name}/requirements.txt"
+                f"{shlex.quote(f'/anaconda/envs/{env_name}/bin/python3')} -m pip freeze > {shlex.quote(requirements_path)}"
             )
 
         _logger.info("Running Trivy scan")
         _run(
-            f"/usr/local/bin/trivy filesystem --format json --output {_config_folder_path}/trivy.json --security-checks vuln --severity HIGH,CRITICAL --ignore-unfixed /"
+            f"/usr/local/bin/trivy filesystem --format json --output {_state_folder_path}/trivy.json --security-checks vuln --severity HIGH,CRITICAL --ignore-unfixed /"
         )
 
         findings_os, findings_python = _parse_trivy_results(
-            f"{_config_folder_path}/trivy.json"
+            f"{_state_folder_path}/trivy.json"
         )
 
         _send_assessment(

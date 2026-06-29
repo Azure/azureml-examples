@@ -1,8 +1,9 @@
+import json
 import os
 import sys
 import pytest
 import requests
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 # Mock environment variables
 os.environ["MSI_ENDPOINT"] = "http://127.0.0.1:46808/MSI/auth"
@@ -188,6 +189,59 @@ def test_sanitize_log_analytics_resource_id():
         amlsecscan._sanitize_log_analytics_resource_id(
             "/subscriptions/d94a7037-ed50-426f-8a48-03035940fc7a/resourceGroups/WUS2/providers/Microsoft.OperationalInsights/workspaces"
         )
+
+
+def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
+    config_dir = tmp_path / "config"
+    state_dir = tmp_path / "state"
+    cron_path = tmp_path / "cron.d" / "amlsecscan"
+    cron_path.parent.mkdir()
+
+    global_config_path = config_dir / "config.json"
+    installed_scanner_path = config_dir / "amlsecscan.py"
+    run_script_path = config_dir / "run.sh"
+
+    monkeypatch.setattr(amlsecscan, "_config_folder_path", config_dir.as_posix())
+    monkeypatch.setattr(amlsecscan, "_global_config_path", global_config_path.as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_installed_scanner_path", installed_scanner_path.as_posix()
+    )
+    monkeypatch.setattr(amlsecscan, "_state_folder_path", state_dir.as_posix())
+    monkeypatch.setattr(amlsecscan, "_cron_path", cron_path.as_posix())
+    monkeypatch.setattr(amlsecscan, "_local_config_path", (tmp_path / "missing.json").as_posix())
+    monkeypatch.setattr(amlsecscan.os, "geteuid", lambda: 0, raising=False)
+    monkeypatch.setattr(amlsecscan, "_run", lambda command, check=True: None)
+
+    log_analytics_resource_id = "/subscriptions/mock-s/resourceGroups/mock-rg/providers/Microsoft.OperationalInsights/workspaces/mock-w"
+
+    with patch.object(amlsecscan.shutil, "chown") as mock_chown:
+        amlsecscan._install(log_analytics_resource_id)
+
+    assert json.loads(global_config_path.read_text()) == {
+        "logAnalyticsResourceId": log_analytics_resource_id
+    }
+    assert installed_scanner_path.exists()
+    assert state_dir.is_dir()
+
+    run_script = run_script_path.read_text()
+    assert f"python3 {installed_scanner_path.as_posix()} \"$@\"" in run_script
+    assert os.path.abspath(amlsecscan.__file__) not in run_script
+
+    cron = cron_path.read_text()
+    assert f"root {run_script_path.as_posix()} heartbeat" in cron
+
+    mock_chown.assert_has_calls(
+        [
+            call(config_dir.as_posix(), "root", "root"),
+            call(state_dir.as_posix(), "root", "root"),
+            call(global_config_path.as_posix(), "root", "root"),
+            call(installed_scanner_path.as_posix(), "root", "root"),
+            call(run_script_path.as_posix(), "root", "root"),
+        ],
+        any_order=True,
+    )
+    for chown_call in mock_chown.call_args_list:
+        assert chown_call.args[1:] == ("root", "root")
 
 
 def test_parse_trivy_results_1():

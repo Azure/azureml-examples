@@ -176,8 +176,12 @@ After installation, the following files should be present on the Compute Instanc
 File|Description
 --|--
 `/home/azureuser/.amlsecscan/config.json`|Scanner configuration
+`/home/azureuser/.amlsecscan/amlsecscan.py`|Scanner executable used by the CRON entry point
 `/home/azureuser/.amlsecscan/run.sh`|Scanner CRON entry point
+`/var/lib/amlsecscan`|Scanner working directory for generated scan artifacts
 `/etc/cron.d/amlsecscan`|Scanner CRON schedule
+
+The files under `/home/azureuser/.amlsecscan` are owned by root so unprivileged users cannot replace the scheduled scanner entry point.
 
 ### Verify that resource-usage limits are in place
 
