@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
 
-mlflow.sklearn.autolog()
+mlflow.sklearn.autolog(log_models=False)
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
@@ -85,33 +85,19 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-# Pin the model's scoring environment so a no-code MLflow deployment builds a
-# working container and can unpickle the model. In particular numpy must stay
-# <2 (the model is pickled under numpy 1.x / scikit-learn 1.2.2) and mlflow <3
-# (MLflow 3.x crashes AzureML's no-code scoring server).
-conda_env = {
-    "name": "model-env",
-    "channels": ["conda-forge"],
-    "dependencies": [
-        "python=3.8",
-        "pip",
-        {
-            "pip": [
-                "mlflow<3",
-                "cloudpickle==2.2.1",
-                "scikit-learn==1.2.2",
-                "numpy<2",
-                "scipy>=1.5,<1.6",
-                "pandas>=1.1,<1.2",
-                "psutil>=5.8,<5.9",
-                "azureml-ai-monitoring",
-                "azureml-contrib-services",
-            ]
-        },
-    ],
-}
+# Log the model that is later deployed no-code to an online endpoint. AzureML's
+# MLflow no-code scoring server imports azureml-ai-monitoring and
+# azureml-contrib-services, so they must be present in the model's environment;
+# without them the scoring container crashes on startup (502 at deploy time).
+# extra_pip_requirements keeps MLflow's inferred environment and just adds the
+# two packages the scoring script needs.
+mlflow.sklearn.log_model(
+    sk_model=model,
+    artifact_path="model",
+    extra_pip_requirements=["azureml-ai-monitoring", "azureml-contrib-services"],
+)
 
-mlflow.sklearn.save_model(model, args.model_output, conda_env=conda_env)
+mlflow.sklearn.save_model(model, args.model_output)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
