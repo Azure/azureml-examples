@@ -85,7 +85,33 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+# Pin the model's scoring environment so a no-code MLflow deployment builds a
+# working container and can unpickle the model. In particular numpy must stay
+# <2 (the model is pickled under numpy 1.x / scikit-learn 1.2.2) and mlflow <3
+# (MLflow 3.x crashes AzureML's no-code scoring server).
+conda_env = {
+    "name": "model-env",
+    "channels": ["conda-forge"],
+    "dependencies": [
+        "python=3.8",
+        "pip",
+        {
+            "pip": [
+                "mlflow<3",
+                "cloudpickle==2.2.1",
+                "scikit-learn==1.2.2",
+                "numpy<2",
+                "scipy>=1.5,<1.6",
+                "pandas>=1.1,<1.2",
+                "psutil>=5.8,<5.9",
+                "azureml-ai-monitoring",
+                "azureml-contrib-services",
+            ]
+        },
+    ],
+}
+
+mlflow.sklearn.save_model(model, args.model_output, conda_env=conda_env)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
