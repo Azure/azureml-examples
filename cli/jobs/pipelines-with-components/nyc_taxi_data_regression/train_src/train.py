@@ -88,7 +88,11 @@ print(model.score(trainX, trainy))
 mlflow.sklearn.save_model(
     model,
     args.model_output,
-    pip_requirements=["azureml-ai-monitoring"],
+    extra_pip_requirements=[
+        "azureml-ai-monitoring",
+        "azureml-inference-server-http",
+        "azureml-contrib-services",
+    ],
 )
 
 # test_data = pd.DataFrame(testX, columns = )
