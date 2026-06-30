@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
 
-mlflow.sklearn.autolog(log_models=False)
+mlflow.sklearn.autolog()
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
@@ -85,19 +85,17 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-# Log the model that is later deployed no-code to an online endpoint. AzureML's
-# MLflow no-code scoring server imports azureml-ai-monitoring and
-# azureml-contrib-services, so they must be present in the model's environment;
-# without them the scoring container crashes on startup (502 at deploy time).
-# extra_pip_requirements keeps MLflow's inferred environment and just adds the
-# two packages the scoring script needs.
-mlflow.sklearn.log_model(
-    sk_model=model,
-    artifact_path="model",
+# Save the model to the component's model_output port. AzureML's MLflow no-code
+# scoring server imports azureml-ai-monitoring and azureml-contrib-services, so
+# they must be present in the model's environment; without them the scoring
+# container crashes on startup (502 at deploy time). extra_pip_requirements
+# keeps MLflow's inferred environment and just adds the two packages the scoring
+# script needs.
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
     extra_pip_requirements=["azureml-ai-monitoring", "azureml-contrib-services"],
 )
-
-mlflow.sklearn.save_model(model, args.model_output)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
