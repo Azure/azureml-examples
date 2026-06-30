@@ -85,16 +85,29 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-# Save the model to the component's model_output port. AzureML's MLflow no-code
-# scoring server imports azureml-ai-monitoring and azureml-contrib-services, so
-# they must be present in the model's environment; without them the scoring
-# container crashes on startup (502 at deploy time). extra_pip_requirements
-# keeps MLflow's inferred environment and just adds the two packages the scoring
-# script needs.
+# Save the model to the component's model_output port with an explicit inference
+# environment. AzureML's MLflow no-code scoring server imports
+# azureml-ai-monitoring and azureml-contrib-services, so they must be installed
+# in the model's environment or the scoring container crashes on startup (502).
+# azureml-ai-monitoring requires pandas>=1.5.2 (which needs numpy>=1.20.3), so we
+# pin a mutually compatible set here rather than reuse MLflow's inferred low pins
+# from the training image (which would conflict and fail the scoring image build).
+# scikit-learn is kept at the training version so the pickled model still loads.
+pip_requirements = [
+    "mlflow<3",
+    "scikit-learn==1.2.2",
+    "cloudpickle==2.2.1",
+    "numpy>=1.21,<2",
+    "scipy<1.11",
+    "pandas>=1.5.2,<2.1",
+    "psutil",
+    "azureml-ai-monitoring",
+    "azureml-contrib-services",
+]
 mlflow.sklearn.save_model(
     model,
     args.model_output,
-    extra_pip_requirements=["azureml-ai-monitoring", "azureml-contrib-services"],
+    pip_requirements=pip_requirements,
 )
 
 # test_data = pd.DataFrame(testX, columns = )
