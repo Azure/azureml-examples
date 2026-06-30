@@ -191,6 +191,11 @@ def test_sanitize_log_analytics_resource_id():
         )
 
 
+def test_default_install_path_is_root_controlled():
+    assert amlsecscan._config_folder_path == "/opt/amlsecscan"
+    assert amlsecscan._installed_scanner_path == "/opt/amlsecscan/amlsecscan.py"
+
+
 def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
     config_dir = tmp_path / "config"
     state_dir = tmp_path / "state"

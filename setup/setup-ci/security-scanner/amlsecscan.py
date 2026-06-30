@@ -30,7 +30,7 @@ _azure_ml_resource_id = (
 )  # Get the ARM Resource ID of the Azure ML Workspace we are running on
 
 # Configuration priority: 1) command-line parameters, 2) local config file, 3) global config file
-_config_folder_path = "/home/azureuser/.amlsecscan"
+_config_folder_path = "/opt/amlsecscan"
 _global_config_path = _config_folder_path + "/config.json"
 _installed_scanner_path = _config_folder_path + "/amlsecscan.py"
 _state_folder_path = "/var/lib/amlsecscan"
