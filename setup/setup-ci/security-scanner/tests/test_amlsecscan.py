@@ -191,6 +191,12 @@ def test_sanitize_log_analytics_resource_id():
         )
 
 
+def test_default_scheduled_entrypoint_path_is_root_controlled():
+    assert amlsecscan._config_folder_path == "/etc/amlsecscan"
+    assert amlsecscan._installed_scanner_path == "/etc/amlsecscan/amlsecscan.py"
+    assert not amlsecscan._config_folder_path.startswith("/home/azureuser/")
+
+
 def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
     config_dir = tmp_path / "config"
     state_dir = tmp_path / "state"
