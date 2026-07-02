@@ -202,13 +202,17 @@ def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
     run_script_path = config_dir / "run.sh"
 
     monkeypatch.setattr(amlsecscan, "_config_folder_path", config_dir.as_posix())
-    monkeypatch.setattr(amlsecscan, "_global_config_path", global_config_path.as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_global_config_path", global_config_path.as_posix()
+    )
     monkeypatch.setattr(
         amlsecscan, "_installed_scanner_path", installed_scanner_path.as_posix()
     )
     monkeypatch.setattr(amlsecscan, "_state_folder_path", state_dir.as_posix())
     monkeypatch.setattr(amlsecscan, "_cron_path", cron_path.as_posix())
-    monkeypatch.setattr(amlsecscan, "_local_config_path", (tmp_path / "missing.json").as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_local_config_path", (tmp_path / "missing.json").as_posix()
+    )
     monkeypatch.setattr(amlsecscan.os, "geteuid", lambda: 0, raising=False)
     monkeypatch.setattr(amlsecscan, "_run", lambda command, check=True: None)
 
@@ -224,7 +228,7 @@ def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
     assert state_dir.is_dir()
 
     run_script = run_script_path.read_text()
-    assert f"python3 {installed_scanner_path.as_posix()} \"$@\"" in run_script
+    assert f'python3 {installed_scanner_path.as_posix()} "$@"' in run_script
     assert os.path.abspath(amlsecscan.__file__) not in run_script
     assert "cgroup.controllers" in run_script
     assert "cpu.max" in run_script

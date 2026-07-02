@@ -547,7 +547,9 @@ def _scan_vulnerabilities(telemetry):
         for env_name in (
             entry.name for entry in os.scandir("/anaconda/envs") if entry.is_dir()
         ):
-            requirements_path = f"{_state_folder_path}/anaconda/{env_name}/requirements.txt"
+            requirements_path = (
+                f"{_state_folder_path}/anaconda/{env_name}/requirements.txt"
+            )
             _logger.info(
                 f"Saving pip freeze of conda environment {env_name} to {requirements_path}"
             )
