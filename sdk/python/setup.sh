@@ -14,7 +14,7 @@ pip install pandas
 
 
 # <az_ml_sdk_test_install>
-pip install https://azuresdkartifacts.z5.web.core.windows.net/python/distributions/ml-sample/6528728/azure_ai_ml-1.35.0-py3-none-any.whl
+pip install https://azuresdkartifacts.z5.web.core.windows.net/python/distributions/ml-sample/6528728/azure_ai_ml-1.35.0-py3-none-any.whl || pip install azure-ai-ml
 # </az_ml_sdk_test_install>
 
 # protobuf==5.29.0 has IndentationError bug
