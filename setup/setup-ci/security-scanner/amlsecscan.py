@@ -12,8 +12,10 @@ import os
 import re
 import shlex
 import shutil
+import stat
 import subprocess
 import sys
+import tempfile
 import time
 import requests
 from urllib.parse import urlparse
@@ -81,7 +83,44 @@ def _run(command, check=True):
         raise
 
 
-def _recreate_owned_directory(path, user, group, mode):
+def _is_trusted_root_directory(path, allowed_entries=None):
+    try:
+        directory_stat = os.lstat(path)
+    except FileNotFoundError:
+        return False
+
+    if (
+        not stat.S_ISDIR(directory_stat.st_mode)
+        or directory_stat.st_uid != 0
+        or directory_stat.st_gid != 0
+        or stat.S_IMODE(directory_stat.st_mode) & 0o022
+    ):
+        return False
+
+    if allowed_entries is None:
+        return True
+
+    for entry in os.scandir(path):
+        if entry.name not in allowed_entries:
+            return False
+        entry_stat = entry.stat(follow_symlinks=False)
+        if (
+            not stat.S_ISREG(entry_stat.st_mode)
+            or entry_stat.st_uid != 0
+            or entry_stat.st_gid != 0
+            or stat.S_IMODE(entry_stat.st_mode) & 0o022
+        ):
+            return False
+
+    return True
+
+
+def _ensure_root_owned_directory(path, mode, allowed_entries=None):
+    if _is_trusted_root_directory(path, allowed_entries):
+        shutil.chown(path, "root", "root")
+        os.chmod(path, mode)
+        return
+
     if os.path.lexists(path):
         if os.path.isdir(path) and not os.path.islink(path):
             shutil.rmtree(path)
@@ -89,8 +128,79 @@ def _recreate_owned_directory(path, user, group, mode):
             os.unlink(path)
 
     os.makedirs(path, mode=mode, exist_ok=False)
-    shutil.chown(path, user, group)
+    shutil.chown(path, "root", "root")
     os.chmod(path, mode)
+
+
+def _stage_root_owned_file(path, content, mode):
+    descriptor, temporary_path = tempfile.mkstemp(
+        prefix=".amlsecscan-", dir=os.path.dirname(path)
+    )
+    try:
+        if isinstance(content, bytes):
+            with os.fdopen(descriptor, "wb") as file:
+                file.write(content)
+                file.flush()
+                os.fsync(file.fileno())
+        else:
+            with os.fdopen(descriptor, "w", encoding="utf-8") as file:
+                file.write(content)
+                file.flush()
+                os.fsync(file.fileno())
+
+        shutil.chown(temporary_path, "root", "root")
+        os.chmod(temporary_path, mode)
+        return temporary_path
+    except Exception:
+        if os.path.lexists(temporary_path):
+            os.unlink(temporary_path)
+        raise
+
+
+def _create_backup(path):
+    descriptor, backup_path = tempfile.mkstemp(
+        prefix=".amlsecscan-backup-", dir=os.path.dirname(path)
+    )
+    os.close(descriptor)
+    os.unlink(backup_path)
+    try:
+        os.link(path, backup_path, follow_symlinks=False)
+        return backup_path
+    except Exception:
+        if os.path.lexists(backup_path):
+            os.unlink(backup_path)
+        raise
+
+
+def _write_files_atomically(files):
+    staged_files = []
+    backups = {}
+    replaced_paths = []
+    try:
+        for path, content, mode in files:
+            staged_files.append((path, _stage_root_owned_file(path, content, mode)))
+
+        for path, _ in staged_files:
+            backups[path] = _create_backup(path) if os.path.lexists(path) else None
+
+        for path, staged_path in staged_files:
+            os.replace(staged_path, path)
+            replaced_paths.append(path)
+    except Exception:
+        for path in reversed(replaced_paths):
+            backup_path = backups[path]
+            if backup_path is None:
+                os.unlink(path)
+            else:
+                os.replace(backup_path, path)
+        raise
+    finally:
+        for _, staged_path in staged_files:
+            if os.path.lexists(staged_path):
+                os.unlink(staged_path)
+        for backup_path in backups.values():
+            if backup_path is not None and os.path.lexists(backup_path):
+                os.unlink(backup_path)
 
 
 class StdOutTelemetry:
@@ -307,19 +417,8 @@ def _install(log_analytics_resource_id):
 
     _logger.debug(f"Configuration: {config}")
 
-    _logger.debug(f"Creating folder {_config_folder_path}")
-    _recreate_owned_directory(_config_folder_path, "root", "root", 0o0755)
-
-    _logger.debug(f"Creating state folder {_state_folder_path}")
-    _recreate_owned_directory(_state_folder_path, "root", "root", 0o0755)
-
-    _logger.info(f"Writing configuration file {_global_config_path}")
-    with open(_global_config_path, "wt") as file:
-        json.dump(config, file, indent=2)
-    shutil.chown(_global_config_path, "root", "root")
-    os.chmod(_global_config_path, 0o0644)
-
     _logger.info("Installing Trivy")
+    _run("apt-get update")
     _run(
         "apt-get install -y --no-install-recommends --quiet wget apt-transport-https gnupg lsb-release"
     )
@@ -332,17 +431,18 @@ def _install(log_analytics_resource_id):
     _run("apt-get update")
     _run("apt-get install -y --no-install-recommends --quiet trivy")
 
-    _logger.info(f"Writing scanner file {_installed_scanner_path}")
-    with open(_installed_scanner_path, "wb") as file:
-        file.write(scanner_source)
-    shutil.chown(_installed_scanner_path, "root", "root")
-    os.chmod(_installed_scanner_path, 0o0755)
+    _logger.debug(f"Ensuring folder {_config_folder_path}")
+    _ensure_root_owned_directory(
+        _config_folder_path,
+        0o0755,
+        {"config.json", "amlsecscan.py", "run.sh"},
+    )
+
+    _logger.debug(f"Ensuring state folder {_state_folder_path}")
+    _ensure_root_owned_directory(_state_folder_path, 0o0755)
 
     script_path = _config_folder_path + "/run.sh"
-    _logger.info(f"Writing script file {script_path}")
-    with open(script_path, "wt") as file:
-        file.write(
-            f"""#!/bin/bash
+    script = f"""#!/bin/bash
 set -e
 exec 1> >(logger -s -t AMLSECSCAN) 2>&1
 
@@ -369,19 +469,21 @@ configure_cgroup || true
 
 nice -n 19 python3 {_installed_scanner_path} "$@"
 """
-        )
-    shutil.chown(script_path, "root", "root")
-    os.chmod(script_path, 0o0755)
 
-    _logger.info(f"Writing crontab file {_cron_path}")
-    with open(_cron_path, "wt") as file:
-        file.write(
-            f"""*/10 * * * * root {script_path} heartbeat
+    cron = f"""*/10 * * * * root {script_path} heartbeat
 37 5 * * * root {script_path} scan all
 @reboot root sleep 600 && {script_path} scan all
 """
-        )
-    os.chmod(_cron_path, 0o0644)
+
+    _logger.info("Writing scanner files and CRON schedule")
+    _write_files_atomically(
+        [
+            (_global_config_path, json.dumps(config, indent=2), 0o0644),
+            (_installed_scanner_path, scanner_source, 0o0755),
+            (script_path, script, 0o0755),
+            (_cron_path, cron, 0o0644),
+        ]
+    )
 
 
 def _uninstall():
@@ -547,7 +649,9 @@ def _scan_vulnerabilities(telemetry):
         for env_name in (
             entry.name for entry in os.scandir("/anaconda/envs") if entry.is_dir()
         ):
-            requirements_path = f"{_state_folder_path}/anaconda/{env_name}/requirements.txt"
+            requirements_path = (
+                f"{_state_folder_path}/anaconda/{env_name}/requirements.txt"
+            )
             _logger.info(
                 f"Saving pip freeze of conda environment {env_name} to {requirements_path}"
             )
