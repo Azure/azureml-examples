@@ -92,3 +92,4 @@ jobs:
       with:
         name: image_classification_with_densenet
         path: sdk/python/jobs/pipelines/2d_image_classification_with_densenet
+

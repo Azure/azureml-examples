@@ -92,3 +92,4 @@ jobs:
       with:
         name: component
         path: sdk/python/assets/component
+

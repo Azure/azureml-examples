@@ -92,3 +92,4 @@ jobs:
       with:
         name: online-endpoints-managed-identity-sai
         path: sdk/python/endpoints/online/managed/managed-identities
+

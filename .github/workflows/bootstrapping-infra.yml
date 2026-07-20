@@ -58,3 +58,4 @@ jobs:
           bash bootstrap.sh
       working-directory: infra/bootstrapping
       continue-on-error: true
+

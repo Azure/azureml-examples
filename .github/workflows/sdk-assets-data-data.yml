@@ -92,3 +92,4 @@ jobs:
       with:
         name: data
         path: sdk/python/assets/data
+

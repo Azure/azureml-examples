@@ -92,3 +92,4 @@ jobs:
       with:
         name: working_with_mltable
         path: sdk/python/assets/data
+

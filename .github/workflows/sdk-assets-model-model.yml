@@ -92,3 +92,4 @@ jobs:
       with:
         name: model
         path: sdk/python/assets/model
+

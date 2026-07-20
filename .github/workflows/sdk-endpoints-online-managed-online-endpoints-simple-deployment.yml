@@ -92,3 +92,4 @@ jobs:
       with:
         name: online-endpoints-simple-deployment
         path: sdk/python/endpoints/online/managed
+

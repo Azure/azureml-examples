@@ -92,3 +92,4 @@ jobs:
       with:
         name: share-data-using-registry
         path: sdk/python/assets/assets-in-registry
+

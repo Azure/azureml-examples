@@ -92,3 +92,4 @@ jobs:
       with:
         name: train_mnist_with_tensorflow
         path: sdk/python/jobs/pipelines/2a_train_mnist_with_tensorflow
+

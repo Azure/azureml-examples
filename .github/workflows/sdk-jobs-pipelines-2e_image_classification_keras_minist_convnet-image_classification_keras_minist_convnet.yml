@@ -92,3 +92,4 @@ jobs:
       with:
         name: image_classification_keras_minist_convnet
         path: sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet
+

@@ -56,3 +56,4 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           pwsh -File '${{ github.workspace }}/infra/scripts/call_all_scripts.ps1'
+
