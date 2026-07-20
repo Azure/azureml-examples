@@ -38,7 +38,7 @@ jobs:
     - name: upgrade pip and setuptools
       run: pip install --upgrade pip setuptools wheel
     - name: pip install notebook reqs
-      run: pip install --prefer-binary -r sdk/python/dev-requirements.txt
+      run: pip install --prefer-binary -r sdk/python/dev-requirements-3.13.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -94,6 +94,7 @@ jobs:
       with:
         name: pipeline_with_non_python_components
         path: sdk/python/jobs/pipelines/1d_pipeline_with_non_python_components
+
 
 
 

@@ -1,0 +1,12 @@
+# required for notebook testing in workflow actions with Python 3.13
+# updated to versions compatible with Python 3.13
+ipykernel==7.18.0
+papermill==2.5.0
+pandas==2.2.0
+matplotlib==3.8.4
+torch==2.2.0
+tensorflow==2.16.0
+tensorflow-hub==0.16.0
+transformers==4.40.0
+keras==3.0.0
+jupyter-client==8.6.0
