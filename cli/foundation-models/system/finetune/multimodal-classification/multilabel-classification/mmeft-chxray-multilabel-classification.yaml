@@ -1,0 +1,96 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: AzureML-Cli-Train-Finetune-Multimodal-Multilabel-Samples
+
+inputs:
+  # # Model - specify the foundation model available in the azureml system registry
+  mlflow_model_path:
+    path: azureml://registries/azureml/models/mmeft/versions/1
+    type: mlflow_model
+  # dataset files
+  training_data:
+    path: ./data/training-mltable-folder
+    type: mltable
+  validation_data:
+    path: ./data/validation-mltable-folder
+    type: mltable
+  # deepspeed config file
+  ds_finetune:
+    path: ./deepspeed_configs/zero1.json
+    type: uri_file
+  # compute
+  compute_model_import: sample-cpu-cluster
+  compute_finetune: sample-finetune-cluster-gpu
+
+outputs:
+  # Map the output of the fine tuning job to the output of pipeline job so that we can easily register the fine tuned model. Registering the model is required to deploy the model to an online or batch endpoint
+  trained_model:
+    type: mlflow_model
+
+settings:
+  force_rerun: true
+  default_compute: azureml:sample-finetune-cluster-gpu
+
+jobs:
+  multimodal_model_finetune_job:
+    type: pipeline
+    component: azureml://registries/azureml/components/multimodal_classification_pipeline/labels/latest
+    inputs:
+
+      # Compute
+      compute_model_import: ${{parent.inputs.compute_model_import}}
+      compute_preprocess: ${{parent.inputs.compute_model_import}}
+      compute_finetune: ${{parent.inputs.compute_finetune}}
+      process_count_per_instance: 1
+      instance_count: 1
+
+      mlflow_model_path: ${{parent.inputs.mlflow_model_path}} 
+
+      # data
+      training_data: ${{parent.inputs.training_data}}
+      validation_data: ${{parent.inputs.validation_data}}
+      ## Model selector component args
+      data_modalities: text-image-tabular
+
+      ## Data preprocessing args
+      problem_type: multimodal-classification-multilabel
+      label_column: Finding_Labels
+      image_column: Image_Index
+      # columns to be ignored while training
+      drop_columns: Patient_Id,OriginalImage_Width,OriginalImage_Height,OriginalImagePixelSpacing_x,OriginalImagePixelSpacing_y
+
+      ## Finetune_args
+      deepspeed_config: ${{parent.inputs.ds_finetune}}
+      number_of_epochs: 15
+      max_steps: -1
+      training_batch_size: 8
+      validation_batch_size: 8
+      auto_find_batch_size: false
+      optimizer: adamw_hf
+      learning_rate: 2e-05
+      warmup_steps: 0
+      adam_beta1: 0.9
+      adam_beta2: 0.999
+      adam_epsilon: 1e-8
+      gradient_accumulation_steps: 64
+      learning_rate_scheduler: linear
+      precision: 32
+      random_seed: 42
+      evaluation_strategy: epoch
+      evaluation_steps_interval: 0.0
+      evaluation_steps: 500
+      logging_strategy: epoch
+      logging_steps: 500
+      primary_metric: loss
+      resume_from_checkpoint: false
+      save_total_limit: -1
+      apply_early_stopping: false
+      early_stopping_patience: 1
+      early_stopping_threshold: 0.0
+      apply_deepspeed: false
+      apply_ort: false
+      save_as_mlflow_model: true
+
+    outputs:
+      mlflow_model_folder: ${{parent.outputs.trained_model}}
