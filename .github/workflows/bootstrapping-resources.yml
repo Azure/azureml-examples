@@ -29,7 +29,7 @@ jobs:
     - name: upgrade pip and setuptools
       run: pip install --upgrade pip setuptools wheel
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install --prefer-binary -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -231,4 +231,5 @@ jobs:
         bash "$SCRIPT_DIR"/sdk_helpers.sh copy_dataset
       working-directory: infra/bootstrapping
       continue-on-error: true
+
 

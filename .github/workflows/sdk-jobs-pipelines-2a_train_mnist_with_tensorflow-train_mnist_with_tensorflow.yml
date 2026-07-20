@@ -38,7 +38,7 @@ jobs:
     - name: upgrade pip and setuptools
       run: pip install --upgrade pip setuptools wheel
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install --prefer-binary -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -94,5 +94,6 @@ jobs:
       with:
         name: train_mnist_with_tensorflow
         path: sdk/python/jobs/pipelines/2a_train_mnist_with_tensorflow
+
 
 

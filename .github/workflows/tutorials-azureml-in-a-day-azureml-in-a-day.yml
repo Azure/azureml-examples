@@ -38,7 +38,7 @@ jobs:
     - name: upgrade pip and setuptools
       run: pip install --upgrade pip setuptools wheel
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install --prefer-binary -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
@@ -96,5 +96,6 @@ jobs:
       with:
         name: azureml-in-a-day
         path: tutorials/azureml-in-a-day
+
 
 
