@@ -35,6 +35,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: "3.13"
+    - name: upgrade pip and setuptools
+      run: pip install --upgrade pip setuptools wheel
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login
@@ -92,4 +94,5 @@ jobs:
       with:
         name: job-schedule
         path: sdk/python/schedules
+
 
