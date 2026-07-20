@@ -161,8 +161,8 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
-            with: 
-                python-version: "3.14"
+            with:
+            python-version: "3.13"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
