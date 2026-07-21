@@ -6,7 +6,7 @@
 # tensorflow has no Python 3.14 wheels and is skipped on 3.14+
 ipython-genutils==0.2.0
 ipykernel==5.5.5
-papermill==2.3.3
+papermill==2.7.0
 pandas==2.0.3; python_version < "3.14"
 pandas==2.3.3; python_version >= "3.14"
 matplotlib==3.7.3; python_version < "3.14"
