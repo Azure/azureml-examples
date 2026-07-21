@@ -92,6 +92,7 @@
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/batch/deploy-models/mnist-classifier
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/batch/deploy-pipelines/hello-batch
+/home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/batch/deploy-pipelines/from-registry
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/batch/deploy-pipelines/training-with-components
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/online/custom-container
 /home/runner/work/azureml-examples/azureml-examples/sdk/python/endpoints/online/custom-container/triton
