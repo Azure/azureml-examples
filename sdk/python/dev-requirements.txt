@@ -1,13 +1,23 @@
 # required for notebook testing in workflow actions
-# pinned to avoid surprises
+# keep legacy pins for older Python and use modern packages for Python 3.12+
 ipython-genutils==0.2.0
-ipykernel==5.5.5
-papermill==2.3.3
-pandas==2.0.3
-matplotlib==3.7.3
-torch==2.1.0
-tensorflow==2.12.0
-tensorflow-hub==0.15.0
-transformers==4.34.0
-keras==2.12.0
-jupyter-client==7.4.9
+ipykernel==5.5.5; python_version < "3.12"
+ipykernel; python_version >= "3.12"
+papermill==2.3.3; python_version < "3.12"
+papermill; python_version >= "3.12"
+pandas==2.0.3; python_version < "3.12"
+pandas; python_version >= "3.12"
+matplotlib==3.7.3; python_version < "3.12"
+matplotlib; python_version >= "3.12"
+torch==2.1.0; python_version < "3.12"
+torch; python_version >= "3.12"
+tensorflow==2.12.0; python_version < "3.12"
+tensorflow; python_version >= "3.12"
+tensorflow-hub==0.15.0; python_version < "3.12"
+tensorflow-hub; python_version >= "3.12"
+transformers==4.34.0; python_version < "3.12"
+transformers; python_version >= "3.12"
+keras==2.12.0; python_version < "3.12"
+keras; python_version >= "3.12"
+jupyter-client==7.4.9; python_version < "3.12"
+jupyter-client; python_version >= "3.12"
