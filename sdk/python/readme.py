@@ -255,7 +255,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
+        python-version: "3.13"
     - name: pip install notebook reqs
       run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
