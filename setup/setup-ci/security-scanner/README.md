@@ -156,7 +156,7 @@ If logs are missing in Log Analytics, scans may not be running. Local logs are a
 
 The CRON configuration is located at `/etc/cron.d/amlsecscan` .
 
-Scans can be run manually with higher verbosity to get more details: `sudo /home/azureuser/.amlsecscan/run.sh scan all -ll DEBUG` .
+Scans can be run manually with higher verbosity to get more details: `sudo /opt/amlsecscan/run.sh scan all -ll DEBUG` .
 
 ### Investigate Compute Instance deployment failures
 
@@ -175,9 +175,13 @@ After installation, the following files should be present on the Compute Instanc
 
 File|Description
 --|--
-`/home/azureuser/.amlsecscan/config.json`|Scanner configuration
-`/home/azureuser/.amlsecscan/run.sh`|Scanner CRON entry point
+`/opt/amlsecscan/config.json`|Scanner configuration
+`/opt/amlsecscan/amlsecscan.py`|Scanner executable used by the CRON entry point
+`/opt/amlsecscan/run.sh`|Scanner CRON entry point
+`/var/lib/amlsecscan`|Scanner working directory for generated scan artifacts
 `/etc/cron.d/amlsecscan`|Scanner CRON schedule
+
+The files under `/opt/amlsecscan` are owned by root and located under a root-controlled parent directory so unprivileged users cannot replace the scheduled scanner entry point.
 
 ### Verify that resource-usage limits are in place
 
