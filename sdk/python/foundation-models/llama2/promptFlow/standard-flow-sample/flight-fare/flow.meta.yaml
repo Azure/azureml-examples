@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/flow.schema.json
+name: template_standard_flow
+display_name: flight fare
+type: standard
+path: ./flow.dag.yaml
+description: To find the cheapest flight fare
+properties:
+  promptflow.stage: prod
+  promptflow.section: template
+  promptflow.batch_inputs: samples.json
