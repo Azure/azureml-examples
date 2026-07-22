@@ -7,7 +7,7 @@ papermill==2.4.0
 pandas==2.3.3
 matplotlib==3.8.2
 torch==2.13.0
-tensorflow==2.17.0
+tensorflow==2.19.0
 tensorflow-hub==0.15.0
 transformers==4.35.2
 jupyter-client==8.9.0
