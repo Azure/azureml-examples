@@ -4,47 +4,56 @@ languages:
 - python
 products:
 - azure-machine-learning
-description: Create a batch deployment from a pipeline component stored in an Azure Machine Learning registry using the Python SDK.
+description: Azure Machine Learning sample showing how to create a batch deployment from a pipeline component stored in a registry by using the Python SDK and a Jupyter notebook.
 ---
 
 # Create a batch deployment from a pipeline component stored in a registry
 
-This sample shows how to retrieve a pipeline component from an Azure Machine Learning registry and create a batch deployment from it in a workspace using the Python SDK.
+This Azure Machine Learning sample shows how to use the Python SDK in a Jupyter notebook to retrieve a pipeline component from an Azure Machine Learning registry and create a batch deployment from it in a workspace.
 
 ## Overview
 
-In this example, you will:
-
-- connect to an Azure Machine Learning workspace and registry
-- retrieve a pipeline component from the registry
-- create a batch endpoint with component deployments enabled
-- create a batch deployment using the registry component ID
-- set the deployment as the default deployment for the endpoint
-
-> Important: when you retrieve a pipeline component from a registry and use it in `PipelineComponentBatchDeployment`, pass the component ID (`component.id`) instead of the component object.
+This sample demonstrates an end-to-end Azure Machine Learning workflow for batch endpoints based on a pipeline component that already exists in a registry. The notebook connects to an Azure Machine Learning workspace and registry, retrieves the pipeline component from the registry, creates a batch endpoint with component deployments enabled, creates a batch deployment by using the registry component ID, and sets the deployment as the default deployment for the endpoint.
 
 ## Objective
 
-Use this sample to validate the recommended SDK pattern for deploying a registry-backed pipeline component to a batch endpoint.
+The objective of this sample is to show the recommended Azure Machine Learning Python SDK pattern for deploying a registry-backed pipeline component to a batch endpoint. In particular, the notebook shows that when you use `PipelineComponentBatchDeployment`, you should pass the pipeline component ID (`component.id`) instead of the component object.
 
 ## Estimated runtime
 
-Approximately 10-20 minutes, depending on workspace setup and resource creation time.
+Estimated runtime: 10-20 minutes, depending on Azure Machine Learning workspace setup, authentication, and resource creation time.
 
-## Files
+## Sample notebook
 
-- `sdk-deploy-and-test.ipynb` - notebook that creates the endpoint and deployment
+This sample uses the following Jupyter notebook:
+
+- `sdk-deploy-and-test.ipynb`
 
 ## Prerequisites
 
-- An Azure subscription
-- An Azure Machine Learning workspace
-- An Azure Machine Learning registry
-- A pipeline component already registered in the registry
-- Permissions to access both the workspace and the registry
+Before you run this Azure Machine Learning sample, make sure that you have:
+
+- an Azure subscription
+- an Azure Machine Learning workspace
+- an Azure Machine Learning registry
+- a pipeline component already registered in the registry
+- permission to access both the Azure Machine Learning workspace and the Azure Machine Learning registry
+- credentials that allow the Python SDK notebook to authenticate to Azure
 
 ## Run this sample
 
-Open and run the notebook:
+To run this sample:
 
-- `sdk-deploy-and-test.ipynb`
+1. Open `sdk-deploy-and-test.ipynb`.
+2. Update the notebook placeholders with your Azure subscription, resource group, workspace, registry, pipeline component name, and pipeline component version.
+3. Run the notebook cells in order.
+
+## What you learn
+
+By completing this sample, you learn how to:
+
+- connect to an Azure Machine Learning workspace and registry from the Python SDK
+- retrieve a pipeline component from an Azure Machine Learning registry
+- create a batch endpoint for component deployments
+- create a batch deployment from a registry-backed pipeline component
+- configure the created deployment as the default deployment for the endpoint
