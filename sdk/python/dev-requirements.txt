@@ -9,10 +9,10 @@ matplotlib==3.9.0
 torch==2.13.0
 tensorflow==2.21.0
 tensorflow-hub==0.15.0
-transformers==4.35.2
 jupyter-client==8.9.0
 protobuf>=6.31.1,<8.0.0
 
-# Note: azureml-fsspec is NOT included here because azureml-dataprep-native
-# has no Python 3.13 wheels. Notebooks that need it install it inline with
-# %pip install -U azureml-fsspec during execution.
+# Note: azureml-fsspec and transformers are NOT included here due to dependency conflicts
+# Notebooks that need them install inline:
+# - transformers: %pip install transformers==4.35.2
+# - azureml-fsspec: %pip install -U azureml-fsspec
