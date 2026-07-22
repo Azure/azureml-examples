@@ -11,15 +11,19 @@ description: Azure Machine Learning sample showing how to create a batch deploym
 
 This Azure Machine Learning sample shows how to use the Python SDK in a Jupyter notebook to retrieve a pipeline component from an Azure Machine Learning registry and create a batch deployment from it in a workspace.
 
-## Overview
+## overview
 
 This sample demonstrates an end-to-end Azure Machine Learning workflow for batch endpoints based on a pipeline component that already exists in a registry. The notebook connects to an Azure Machine Learning workspace and registry, retrieves the pipeline component from the registry, creates a batch endpoint with component deployments enabled, creates a batch deployment by using the registry component ID, and sets the deployment as the default deployment for the endpoint.
 
-## Objective
+## objective
 
 The objective of this sample is to show the recommended Azure Machine Learning Python SDK pattern for deploying a registry-backed pipeline component to a batch endpoint. In particular, the notebook shows that when you use `PipelineComponentBatchDeployment`, you should pass the pipeline component ID (`component.id`) instead of the component object.
 
-## Estimated runtime
+## programming languages
+
+- Python
+
+## estimated runtime
 
 Estimated runtime: 10-20 minutes, depending on Azure Machine Learning workspace setup, authentication, and resource creation time.
 
