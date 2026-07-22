@@ -11,3 +11,4 @@ tensorflow==2.21.0
 tensorflow-hub==0.15.0
 transformers==4.35.2
 jupyter-client==8.9.0
+azureml-fsspec==1.1.1
