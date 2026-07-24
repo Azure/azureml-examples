@@ -13,11 +13,11 @@ tensorflow-hub==0.15.0
 jupyter-client==8.9.0
 # CRITICAL: Pin protobuf FIRST to override azure-ai-ml's protobuf<6 requirement
 protobuf>=6.31.1,<8.0.0
-azure-ai-ml
 azureml-fsspec
 # Pre-install strictyaml with Python 3.13 wheel support to prevent build failures
 strictyaml>=0.14.1
 
 # Note: Packages NOT included here due to dependency conflicts - notebooks install inline:
+# - azure-ai-ml: %pip install azure-ai-ml (simplifies dependency resolution)
 # - azureml-mlflow: %pip install azureml-mlflow
 # - transformers: %pip install transformers==4.35.2
