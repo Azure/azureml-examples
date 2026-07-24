@@ -64,7 +64,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ingwithcomponentsendpoint3293 -y
+          az ml unknown-endpoint delete -n ingwithcomponentsendpoint7962 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -72,11 +72,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\batch\deploy-pipelines\training-with-components\endpoint.yml
-          az ml unknown-endpoint create -n ingwithcomponentsendpoint3293 -f endpoints\batch\deploy-pipelines\training-with-components\endpoint.yml
+          az ml unknown-endpoint create -n ingwithcomponentsendpoint7962 -f endpoints\batch\deploy-pipelines\training-with-components\endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n ingwithcomponentsendpoint3293 -y
+          az ml unknown-endpoint delete -n ingwithcomponentsendpoint7962 -y
       working-directory: cli

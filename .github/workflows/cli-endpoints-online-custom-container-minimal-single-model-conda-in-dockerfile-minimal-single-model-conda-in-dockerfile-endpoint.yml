@@ -64,7 +64,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n condaindockerfileendpoint4847 -y
+          az ml unknown-endpoint delete -n condaindockerfileendpoint6404 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
@@ -72,11 +72,11 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           cat endpoints\online\custom-container\minimal\single-model\conda-in-dockerfile\minimal-single-model-conda-in-dockerfile-endpoint.yml
-          az ml unknown-endpoint create -n condaindockerfileendpoint4847 -f endpoints\online\custom-container\minimal\single-model\conda-in-dockerfile\minimal-single-model-conda-in-dockerfile-endpoint.yml
+          az ml unknown-endpoint create -n condaindockerfileendpoint6404 -f endpoints\online\custom-container\minimal\single-model\conda-in-dockerfile\minimal-single-model-conda-in-dockerfile-endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n condaindockerfileendpoint4847 -y
+          az ml unknown-endpoint delete -n condaindockerfileendpoint6404 -y
       working-directory: cli
