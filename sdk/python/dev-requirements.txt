@@ -10,9 +10,12 @@ torch==2.13.0
 tensorflow==2.21.0
 tensorflow-hub==0.15.0
 jupyter-client==8.9.0
+# CRITICAL: Pin protobuf FIRST before azure-ai-ml to override its protobuf<6 requirement
 protobuf>=6.31.1,<8.0.0
+azure-ai-ml
+azureml-mlflow
+azureml-fsspec
 
-# Note: azureml-fsspec and transformers are NOT included here due to dependency conflicts
-# Notebooks that need them install inline:
+# Note: transformers is NOT included here due to dependency conflicts
+# Notebooks that need it install inline:
 # - transformers: %pip install transformers==4.35.2
-# - azureml-fsspec: %pip install -U azureml-fsspec
