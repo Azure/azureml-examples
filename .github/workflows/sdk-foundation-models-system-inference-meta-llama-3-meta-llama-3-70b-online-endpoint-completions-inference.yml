@@ -58,7 +58,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/foundation-models/system/inference/meta-llama-3/meta-llama-3-70b"
+          python check-readme.py "${{ github.workspace }}/sdk/python/foundation-models/system/inference/meta-llama-3/meta-llama-3-70b"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

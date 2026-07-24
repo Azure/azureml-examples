@@ -186,7 +186,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "{github_workspace}" "{github_workspace}/tutorials/{posix_folder}"
+          python check-readme.py "{github_workspace}/tutorials/{posix_folder}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

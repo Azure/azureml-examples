@@ -58,7 +58,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/generative-ai/rag/notebooks/custom_crack_and_chunk_parallel"
+          python check-readme.py "${{ github.workspace }}/sdk/python/generative-ai/rag/notebooks/custom_crack_and_chunk_parallel"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
