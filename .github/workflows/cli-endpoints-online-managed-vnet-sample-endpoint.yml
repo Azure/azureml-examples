@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/online/managed/vnet/sample/**
-      - cli/endpoints/online/**
+      - cli/endpoints/unknown/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-online-managed-vnet-sample-endpoint.yml
       - cli/setup.sh
@@ -64,19 +64,19 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n managedvnetsampleendpoint8383 -y
+          az ml unknown-endpoint delete -n managedvnetsampleendpoint6558 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/online/managed/vnet/sample/endpoint.yml
-          az ml online-endpoint create -n managedvnetsampleendpoint8383 -f endpoints/online/managed/vnet/sample/endpoint.yml
+          cat endpoints\online\managed\vnet\sample\endpoint.yml
+          az ml unknown-endpoint create -n managedvnetsampleendpoint6558 -f endpoints\online\managed\vnet\sample\endpoint.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml online-endpoint delete -n managedvnetsampleendpoint8383 -y
+          az ml unknown-endpoint delete -n managedvnetsampleendpoint6558 -y
       working-directory: cli

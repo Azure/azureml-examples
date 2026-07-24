@@ -34,9 +34,9 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
+        python-version: "3.11"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -58,7 +58,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}/sdk/python/jobs/pipelines/1g_pipeline_with_parallel_nodes"
+          python check-readme.py "${{ github.workspace }}" "${{ github.workspace }}/sdk/python/jobs/pipelines/1g_pipeline_with_parallel_nodes"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
