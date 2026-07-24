@@ -14,6 +14,8 @@ jupyter-client==8.9.0
 protobuf>=6.31.1,<8.0.0
 azure-ai-ml
 azureml-fsspec
+# Pre-install strictyaml with Python 3.13 wheels to avoid build failures in azureml-mlflow
+strictyaml>=0.14.1
 
 # Note: Packages NOT included here due to dependency conflicts - notebooks install inline:
 # - azureml-mlflow: %pip install azureml-mlflow (old MLflow deps have invalid version specs)
