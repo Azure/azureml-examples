@@ -13,7 +13,7 @@ on:
       - main
     paths:
       - cli/endpoints/batch/deploy-models/huggingface-text-summarization/**
-      - cli/endpoints/unknown/**
+      - cli/endpoints/batch/**
       - infra/bootstrapping/**
       - .github/workflows/cli-endpoints-batch-deploy-models-huggingface-text-summarization-endpoint.yml
       - cli/setup.sh
@@ -64,26 +64,26 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n textsummarizationendpoint8742 -y
+          az ml batch-endpoint delete -n textsummarizationendpoint6593 -y
       working-directory: cli
       continue-on-error: true
     - name: create endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints\batch\deploy-models\huggingface-text-summarization\endpoint.yml
-          az ml unknown-endpoint create -n textsummarizationendpoint8742 -f endpoints\batch\deploy-models\huggingface-text-summarization\endpoint.yml
+          cat endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml
+          az ml batch-endpoint create -n textsummarizationendpoint6593 -f endpoints/batch/deploy-models/huggingface-text-summarization/endpoint.yml
       working-directory: cli
     - name: create deployment
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          cat endpoints/batch/deploy-models/huggingface-text-summarization\deployment.yml
-          az ml unknown-deployment create -e textsummarizationendpoint8742 -f endpoints/batch/deploy-models/huggingface-text-summarization\deployment.yml
+          cat endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml
+          az ml batch-deployment create -e textsummarizationendpoint6593 -f endpoints/batch/deploy-models/huggingface-text-summarization/deployment.yml
       working-directory: cli
     - name: cleanup endpoint
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml unknown-endpoint delete -n textsummarizationendpoint8742 -y
+          az ml batch-endpoint delete -n textsummarizationendpoint6593 -y
       working-directory: cli
