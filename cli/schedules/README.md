@@ -30,9 +30,4 @@ This repository contains an example `YAML` file for creating `schedule` using Az
 > az ml schedule update -f cron-job-schedule.yml --set trigger.expression="15 * * * *"
 ```
 
-- Customer can create multiple schedules associate with same job. To list all the schedules associate with the job, execute following command:
-```cli
-> az ml schedule list --job_name job_name
-```
-
 To learn more about Azure Machine Learning CLI 2.0, [follow this link](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli).
