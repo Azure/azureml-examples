@@ -7,6 +7,8 @@ dependencies:
   - pip:
     - pandas
     - tensorflow
+    - setuptools<81
+    - protobuf>=6.31.1,<8.0.0
     - tf-keras
     - tensorflow-hub==0.16.1
     - pillow
