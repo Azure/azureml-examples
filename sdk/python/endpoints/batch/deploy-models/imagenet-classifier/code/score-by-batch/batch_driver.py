@@ -1,4 +1,5 @@
 import os
+
 # Required before importing tensorflow when model was saved with legacy tf.keras behavior.
 os.environ.setdefault("TF_USE_LEGACY_KERAS", "1")
 
