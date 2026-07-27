@@ -8,9 +8,10 @@ pandas==2.3.3
 matplotlib==3.9.0
 torch==2.13.0
 tensorflow==2.21.0
-tensorflow-hub==0.15.0
+tensorflow-hub==0.16.1
+tf-keras==2.21.0
 jupyter-client==8.9.0
-#protobuf>=6.31.1,<8.0.0
+protobuf>=6.31.1,<8.0.0
 
 # Note: azureml-fsspec and transformers are NOT included here due to dependency conflicts
 # Notebooks that need them install inline:
