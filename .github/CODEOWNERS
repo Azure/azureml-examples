@@ -233,6 +233,7 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/endpoints/batch/deploy-models/openai-embeddings/deploy-and-test.ipynb @Azure/AI-Platform-Docs
 /sdk/python/endpoints/batch/deploy-pipelines/batch-scoring-with-preprocessing/sdk-deploy-and-test.ipynb @Azure/AI-Platform-Docs
 /sdk/python/endpoints/batch/deploy-pipelines/hello-batch/sdk-deploy-and-test.ipynb @Azure/AI-Platform-Docs
+/sdk/python/endpoints/batch/deploy-pipelines/from-registry/sdk-deploy-and-test.ipynb @Azure/AI-Platform-Docs
 /sdk/python/endpoints/batch/deploy-pipelines/training-with-components/sdk-deploy-and-test.ipynb @Azure/AI-Platform-Docs
 /sdk/python/endpoints/online/managed/debug-online-endpoints-locally-in-visual-studio-code.ipynb @Azure/AI-Platform-Docs
 /sdk/python/endpoints/online/managed/managed-identities/online-endpoints-managed-identity-sai.ipynb @Azure/AI-Platform-Docs
