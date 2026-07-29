@@ -41,10 +41,19 @@ def main(args):
 
     # train model
     model = train_model(params, X_train, X_test, y_train, y_test)
+    model_output_path = str(Path(args.model_output).resolve())
+    test_data_path = str(Path(args.test_data).resolve())
+
+    # Create directories if they don't exist
+    Path(model_output_path).mkdir(parents=True, exist_ok=True)
+    Path(test_data_path).mkdir(parents=True, exist_ok=True)
+    
     # Output the model and test data
-    mlflow.sklearn.save_model(model, args.model_output)
-    X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
-    y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
+    print(f"Saving model to: {model_output_path}")
+    mlflow.sklearn.save_model(model, model_output_path)
+    print(f"Saving test data to: {test_data_path}")
+    X_test.to_csv(Path(test_data_path) / "X_test.csv", index=False)
+    y_test.to_csv(Path(test_data_path) / "y_test.csv", index=False)
 
 
 def process_data(df, random_state):
