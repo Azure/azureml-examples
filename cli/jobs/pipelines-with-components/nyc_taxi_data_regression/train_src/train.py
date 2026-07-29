@@ -85,7 +85,35 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
+    conda_env={
+        "name": "mlflow-env",
+        "channels": ["conda-forge"],
+        "dependencies": [
+            "python=3.8.13",
+            "pip<=22.0.4",
+            {
+                "pip": [
+                    "mlflow",
+                    "azureml-ai-monitoring",
+                    "azureml-inference-server-http",
+                    "azureml-contrib-services",
+                    "cloudpickle==2.2.0",
+                    "psutil==5.8.0",
+                    "scikit-learn==1.2.2",
+                    "typing-extensions==4.4.0",
+                ]
+            },
+        ],
+    },
+    extra_pip_requirements=[
+        "azureml-ai-monitoring",
+        "azureml-inference-server-http",
+        "azureml-contrib-services",
+    ],
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
