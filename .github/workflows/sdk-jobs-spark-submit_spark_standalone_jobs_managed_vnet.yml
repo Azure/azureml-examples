@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/spark/**
       - .github/workflows/sdk-jobs-spark-submit_spark_standalone_jobs_managed_vnet.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

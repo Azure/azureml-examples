@@ -145,9 +145,7 @@ on:\n"""
     workflow_yaml += f"""    paths:
       - tutorials/{posix_folder}/**
       - .github/workflows/tutorials-{classification}-{name}.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 permissions:
   id-token: write
 concurrency:
@@ -158,15 +156,15 @@ jobs:
     runs-on: {runs_on}
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with: 
-        python-version: "3.8"
+        python-version: "3.12"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         client-id: ${{{{ secrets.OIDC_AZURE_CLIENT_ID }}}}
         tenant-id: ${{{{ secrets.OIDC_AZURE_TENANT_ID }}}}

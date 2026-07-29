@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/assets/environment/**
       - .github/workflows/sdk-assets-environment-environment.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

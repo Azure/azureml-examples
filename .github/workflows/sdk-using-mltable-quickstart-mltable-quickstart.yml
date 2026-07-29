@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/using-mltable/quickstart/**
       - .github/workflows/sdk-using-mltable-quickstart-mltable-quickstart.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

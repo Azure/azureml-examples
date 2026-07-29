@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/responsible-ai/tabular/responsibleaidashboard-programmer-regression-model-debugging/**
       - .github/workflows/sdk-responsible-ai-tabular-responsibleaidashboard-programmer-regression-model-debugging-responsibleaidashboard-programmer-regression-model-debugging.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

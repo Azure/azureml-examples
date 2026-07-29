@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/responsible-ai/tabular/responsibleaidashboard-diabetes-regression-model-debugging/**
       - .github/workflows/sdk-responsible-ai-tabular-responsibleaidashboard-diabetes-regression-model-debugging-responsibleaidashboard-diabetes-regression-model-debugging.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

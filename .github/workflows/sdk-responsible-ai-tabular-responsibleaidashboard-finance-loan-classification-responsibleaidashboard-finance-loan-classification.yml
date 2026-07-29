@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/responsible-ai/tabular/responsibleaidashboard-finance-loan-classification/**
       - .github/workflows/sdk-responsible-ai-tabular-responsibleaidashboard-finance-loan-classification-responsibleaidashboard-finance-loan-classification.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 permissions:
   id-token: write

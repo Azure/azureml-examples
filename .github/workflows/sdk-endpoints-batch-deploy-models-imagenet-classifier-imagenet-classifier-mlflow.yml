@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/batch/deploy-models/imagenet-classifier/**
       - .github/workflows/sdk-endpoints-batch-deploy-models-imagenet-classifier-imagenet-classifier-mlflow.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

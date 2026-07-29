@@ -16,9 +16,7 @@ on:
     paths:
       - tutorials/e2e-ds-experience/**
       - .github/workflows/tutorials-e2e-ds-experience-e2e-ml-workflow.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 permissions:
   id-token: write

@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-task-energy-demand/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-task-energy-demand-automl-forecasting-task-energy-demand-advanced.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

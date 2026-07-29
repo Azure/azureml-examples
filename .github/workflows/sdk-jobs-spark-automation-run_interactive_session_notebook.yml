@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/spark/automation/**
       - .github/workflows/sdk-jobs-spark-automation-run_interactive_session_notebook.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

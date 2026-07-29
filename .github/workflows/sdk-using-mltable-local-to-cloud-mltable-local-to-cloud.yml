@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/using-mltable/local-to-cloud/**
       - .github/workflows/sdk-using-mltable-local-to-cloud-mltable-local-to-cloud.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write
