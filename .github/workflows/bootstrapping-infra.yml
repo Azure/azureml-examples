@@ -33,6 +33,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     env:
       RUN_BOOTSTRAP: ${{ github.event.inputs.bootstrap }}
       debug: ${{ github.event.inputs.debug || false }}
