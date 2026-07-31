@@ -105,10 +105,10 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "cpu-cluster-lg" 0 4 "Standard_DS15_v2"
     
     echo_title "Ensuring GPU compute"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "STANDARD_NC6s_v3"
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC6s_v3"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-cluster" 0 20 "STANDARD_NC4AS_T4_V3"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "automl-gpu-cluster" 0 4 "STANDARD_NC4AS_T4_V3"
     # v100 single GPU cluster for pytorch 2.0 based notebooks
-    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-v100-1GPU-cluster" 0 4 "Standard_NC6s_v3"
+    "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-v100-1GPU-cluster" 0 4 "STANDARD_NC4AS_T4_V3"
     # v100 GPU cluster for deepspeed cli examples
     "$SCRIPT_DIR"/sdk_helpers.sh ensure_aml_compute "gpu-v100-cluster" 0 2 "Standard_ND40rs_v2"
     

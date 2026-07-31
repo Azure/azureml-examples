@@ -7,7 +7,7 @@ name: py_torch_hello_world
 display_name: PyTorch-hello-world
 version: 1
 
-environment: azureml://registries/azureml/environments/acpt-pytorch-2.2-cuda12.1/labels/latest
+environment: azureml://registries/azureml/environments/acpt-pytorch-2.8-cuda12.6/labels/latest
 command: >-
   echo "
   RANK: $RANK \n

@@ -100,6 +100,7 @@ jobs:
             type: uri_folder
 
     command: >-
+        pip install 'protobuf<5' &&
         python run.py 
         --train_images ${{inputs.images_and_annotations}}/images
         --train_masks ${{inputs.images_and_annotations}}/annotations/trimaps

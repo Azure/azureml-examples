@@ -56,7 +56,10 @@ then
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
 
+	EXIST=$(az storage account check-name --name $DEFAULT_STORAGE_ACCOUNT --query nameAvailable)
+	if [ "$EXIST" = "true" ]; then
 	az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
+	fi
 
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
 	az storage container create -n $BLOB_CONTAINER_NAME --account-name $AZURE_STORAGE_ACCOUNT

@@ -1,5 +1,5 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
-instance_type: Standard_NC6s_v3
+instance_type: STANDARD_NC4AS_T4_V3
 instance_count: 1
 liveness_probe:
   initial_delay: 180

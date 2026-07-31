@@ -12,7 +12,7 @@ compute_cluster_model_import="sample-model-import-cluster"
 compute_cluster_finetune="sample-finetune-cluster-gpu"
 # If above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
-compute_finetune_sku="Standard_NC6s_v3"
+compute_finetune_sku="STANDARD_NC4AS_T4_V3"
 
 # This is the foundation model for finetuning
 mmtracking_model_name="bytetrack_yolox_x_crowdhuman_mot17-private-half"
@@ -21,7 +21,7 @@ model_label="latest"
 version=$(date +%s)
 finetuned_mmtracking_model_name="$mmtracking_model_name-mot17-tiny"
 mmtracking_endpoint_name="mmt-mot-mot17-tiny-$version"
-deployment_sku="Standard_NC6s_v3"
+deployment_sku="STANDARD_NC4AS_T4_V3"
 
 # Scoring file
 mmtracking_sample_request_data="./sample_request_data.json"

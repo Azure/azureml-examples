@@ -19,4 +19,5 @@ RUN ln -f /usr/bin/python3 /usr/bin/python
 RUN R -e "install.packages(c('mlflow'), repos = 'https://cloud.r-project.org/')"
 RUN R -e "install.packages(c('carrier'), repos = 'https://cloud.r-project.org/')"
 RUN R -e "install.packages(c('optparse'), repos = 'https://cloud.r-project.org/')"
-RUN R -e "install.packages(c('tcltk2'), repos = 'https://cloud.r-project.org/')"
+# R 4.0.0 compatible version of tcltk2
+RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/tcltk2/tcltk2_1.2-11.tar.gz', repos=NULL, type='source');"

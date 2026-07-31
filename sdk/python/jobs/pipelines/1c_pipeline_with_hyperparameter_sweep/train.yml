@@ -62,6 +62,7 @@ code: ./train-src
 environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
 
 command: >-
+  pip install 'mlflow<2.19' -q &&
   python train.py 
   --data ${{inputs.data}}
   --C ${{inputs.c_value}}

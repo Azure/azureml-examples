@@ -11,7 +11,7 @@ code_configuration:
   scoring_script: batch_driver.py
 environment:
   name: batch-tensorflow-py38
-  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
   conda_file: environment/conda.yaml
 compute: azureml:batch-cluster
 resources:
