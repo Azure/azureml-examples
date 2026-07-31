@@ -39,6 +39,8 @@ jobs:
         python-version: "3.10"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
+    - name: install azure-ai-ml
+      run: pip install azure-ai-ml
     - name: azure login
       uses: azure/login@v1
       with:
