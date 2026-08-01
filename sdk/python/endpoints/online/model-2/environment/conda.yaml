@@ -2,12 +2,12 @@ name: model-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.9
+  - python=3.10
   - numpy=1.23.5
-  - pip=23.0.1
+  - pip
   - scikit-learn=1.2.2
   - scipy=1.10.1
   - pip:
-    - azureml-defaults==1.53.0
-    - inference-schema[numpy-support]==1.5.1
+    - azureml-inference-server-http
+    - inference-schema[numpy-support]
     - joblib==1.2.0
