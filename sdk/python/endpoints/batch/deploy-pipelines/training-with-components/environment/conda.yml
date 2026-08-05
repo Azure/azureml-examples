@@ -4,7 +4,7 @@ dependencies:
 - python=3.8.5
 - pip
 - pip:
-  - mlflow
+  - mlflow<3
   - azureml-mlflow
   - datasets
   - jobtools
