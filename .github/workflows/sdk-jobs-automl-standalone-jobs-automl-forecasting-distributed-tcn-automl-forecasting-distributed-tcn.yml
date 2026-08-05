@@ -19,7 +19,6 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
-      - sdk/python/mlflow-requirements.txt
 
 permissions:
   id-token: write
@@ -35,9 +34,9 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
+        python-version: "3.11"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt
     - name: pip install mlflow reqs
       run: pip install -r sdk/python/mlflow-requirements.txt
     - name: azure login
@@ -70,14 +69,6 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           bash setup.sh
       working-directory: cli
-    - name: Eagerly cache access tokens for required scopes
-      run: |
-          # Workaround for azure-cli's lack of support for ID token refresh
-          # Taken from: https://github.com/Azure/login/issues/372#issuecomment-2056289617
-          # Management
-          az account get-access-token --scope https://management.azure.com/.default --output none
-          # ML
-          az account get-access-token --scope https://ml.azure.com/.default --output none
       continue-on-error: true
     - name: Eagerly cache access tokens for required scopes
       run: |

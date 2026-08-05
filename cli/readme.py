@@ -192,9 +192,9 @@ def main(args):
 def modify_notebooks(notebooks):
     # setup variables
     kernelspec = {
-        "display_name": "Python 3.8 - AzureML",
+        "display_name": "Python 3.11 - AzureML",
         "language": "python",
-        "name": "python38-azureml",
+        "name": "python311-azureml",
     }
 
     # for each notebooks
@@ -567,7 +567,7 @@ jobs:
       run: |
           echo '{GITHUB_CONCURRENCY_GROUP}';
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -850,7 +850,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |
@@ -924,7 +924,7 @@ jobs:
     - name: bootstrap resources
       run: |
           bash bootstrap.sh
-      working-directory: infra
+      working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
       run: |

@@ -26,14 +26,14 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: check out repo
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
       with: 
-        python-version: "3.8"
+        python-version: "3.11"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt
     - name: azure login

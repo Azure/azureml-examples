@@ -162,7 +162,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with: 
-        python-version: "3.8"
+        python-version: "3.11"
     - name: pip install notebook reqs
       run: pip install -r sdk/python/dev-requirements.txt{mlflow_import}{forecast_import}
     - name: azure login
@@ -186,7 +186,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "{github_workspace}" "{github_workspace}/tutorials/{posix_folder}"
+          python check-readme.py "{github_workspace}/tutorials/{posix_folder}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli

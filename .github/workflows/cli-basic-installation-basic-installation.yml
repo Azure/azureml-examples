@@ -7,7 +7,7 @@ name: cli-basic-installation-basic-installation
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "53 3/12 * * *"
   pull_request:
     branches:
       - main
@@ -27,11 +27,6 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
-    - name: Install latest Azure CLI
-      run: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    - name: Check Azure CLI version
-      run: az --version
     - name: azure login
       uses: azure/login@v1
       with:
@@ -68,5 +63,5 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          az ml workspace list --subscription $SUBSCRIPTION_ID --resource-group $RESOURCE_GROUP_NAME
+          az ml basic-installation create -f basic-installation/basic-installation.yml
       working-directory: cli
