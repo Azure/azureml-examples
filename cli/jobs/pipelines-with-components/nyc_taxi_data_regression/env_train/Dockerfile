@@ -12,5 +12,6 @@ RUN pip install 'matplotlib>=3.3,<3.4' \
                 'azureml-defaults' \
                 'azureml-mlflow' \
                 'azureml-telemetry' \
+                'azureml-ai-monitoring~=0.1.0b1' \
                 'scikit-learn==1.2.2'
 

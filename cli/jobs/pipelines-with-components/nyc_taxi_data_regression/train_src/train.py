@@ -10,6 +10,9 @@ import mlflow
 
 mlflow.sklearn.autolog()
 
+# Ensure azureml-ai-monitoring is available for model scoring
+import azureml.ai.monitoring  # noqa: F401
+
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
@@ -85,7 +88,11 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
+    extra_pip_requirements=["azureml-ai-monitoring~=0.1.0b1"],
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
