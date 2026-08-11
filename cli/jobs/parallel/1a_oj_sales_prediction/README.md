@@ -14,7 +14,7 @@
 To run this example, please following the steps:
 - Install the Azure ML CLI: [link](https://learn.microsoft.com/en-us/azure/machine-learning/how-to-configure-cli?tabs=public)
 - Use Azure ML job command to run pipeline.yml.
-    - Create new job: `az ml job create --file pipeline.yml`
-    - Override settings in this job: `az ml job create --file pipeline.yml --set jobs.parallel_train.resources.instance_count=3`
+    - Create new job: `az ml job create --file pipeline.yml -g <resource-group> -w <workspace>`
+    - Override settings in this job: `az ml job create --file pipeline.yml --set jobs.parallel_train.resources.instance_count=3 -g <resource-group> -w <workspace>`
 
 To get the same example with python SDK experience, please refer to: [link](../../../../sdk/python/jobs/parallel/1a_oj_sales_prediction/oj_sales_prediction.ipynb)
