@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/1g_pipeline_with_parallel_nodes/**
       - .github/workflows/sdk-jobs-pipelines-1g_pipeline_with_parallel_nodes-pipeline_with_parallel_nodes.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

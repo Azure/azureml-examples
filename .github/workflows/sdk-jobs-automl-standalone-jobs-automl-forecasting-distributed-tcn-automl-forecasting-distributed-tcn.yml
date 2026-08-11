@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/automl-standalone-jobs/automl-forecasting-distributed-tcn/**
       - .github/workflows/sdk-jobs-automl-standalone-jobs-automl-forecasting-distributed-tcn-automl-forecasting-distributed-tcn.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

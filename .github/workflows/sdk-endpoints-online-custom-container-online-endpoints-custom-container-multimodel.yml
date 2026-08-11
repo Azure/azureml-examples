@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/online/custom-container/**
       - .github/workflows/sdk-endpoints-online-custom-container-online-endpoints-custom-container-multimodel.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

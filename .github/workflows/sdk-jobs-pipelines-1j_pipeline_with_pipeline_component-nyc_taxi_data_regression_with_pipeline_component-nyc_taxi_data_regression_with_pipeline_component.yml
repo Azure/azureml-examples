@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/nyc_taxi_data_regression_with_pipeline_component/**
       - .github/workflows/sdk-jobs-pipelines-1j_pipeline_with_pipeline_component-nyc_taxi_data_regression_with_pipeline_component-nyc_taxi_data_regression_with_pipeline_component.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/endpoints/batch/deploy-models/huggingface-text-summarization/**
       - .github/workflows/sdk-endpoints-batch-deploy-models-huggingface-text-summarization-text-summarization-batch.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 
 permissions:

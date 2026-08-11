@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/2b_train_cifar_10_with_pytorch/**
       - .github/workflows/sdk-jobs-pipelines-2b_train_cifar_10_with_pytorch-train_cifar_10_with_pytorch.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

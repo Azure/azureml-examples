@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/responsible-ai/tabular/responsibleaidashboard-healthcare-covid-classification/**
       - .github/workflows/sdk-responsible-ai-tabular-responsibleaidashboard-healthcare-covid-classification-responsibleaidashboard-healthcare-covid-classification.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
       - sdk/python/mlflow-requirements.txt
 permissions:
   id-token: write

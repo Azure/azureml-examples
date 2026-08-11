@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/pipelines/1e_pipeline_with_registered_components/**
       - .github/workflows/sdk-jobs-pipelines-1e_pipeline_with_registered_components-pipeline_with_registered_components.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/foundation-models/system/import/**
       - .github/workflows/sdk-foundation-models-system-import-import_model_into_registry.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 env:
   MMDETECTION_MODEL_ID: None
   MMDETECTION_TASK_NAME: image-object-detection

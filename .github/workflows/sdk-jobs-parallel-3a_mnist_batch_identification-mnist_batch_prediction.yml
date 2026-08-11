@@ -16,9 +16,7 @@ on:
     paths:
       - sdk/python/jobs/parallel/3a_mnist_batch_identification/**
       - .github/workflows/sdk-jobs-parallel-3a_mnist_batch_identification-mnist_batch_prediction.yml
-      - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
-      - sdk/python/setup.sh
 
 permissions:
   id-token: write

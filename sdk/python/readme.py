@@ -235,9 +235,7 @@ on:\n"""
     workflow_yaml += f"""    paths:
       - sdk/python/{posix_folder}/**
       - .github/workflows/sdk-{classification}-{name}.yml
-      - sdk/python/dev-requirements.txt
-      - infra/bootstrapping/**
-      - sdk/python/setup.sh\n"""
+      - infra/bootstrapping/**\n"""
     if is_featurestore_sample:
         workflow_yaml += f"""      - sdk/python/featurestore_sample/**"""
     workflow_yaml += f"""
