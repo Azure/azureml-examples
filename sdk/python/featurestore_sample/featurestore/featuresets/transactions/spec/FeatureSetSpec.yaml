@@ -19,7 +19,7 @@ index_columns:
 - name: accountID
   type: string
 source:
-  path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/datasources/transactions-source/*.parquet
+  path: wasbs://data@azuremlfsexampledata.blob.core.windows.net/feature-store-prp/datasources/transactions-source/*.parquet
   source_delay:
     days: 0
     hours: 0

@@ -11,7 +11,7 @@ inputs:
     type: uri_folder
   observation_data: # this will be used by the feature_retrieval_step
     mode: ro_mount
-    path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/observation_data/train/*.parquet
+    path: wasbs://data@azuremlfsexampledata.blob.core.windows.net/feature-store-prp/observation_data/train/*.parquet
     type: uri_folder
   timestamp_column: timestamp # this will be used by the feature_retrieval_step
 
