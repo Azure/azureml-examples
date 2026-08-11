@@ -4,6 +4,9 @@ from uuid import uuid4
 from datetime import datetime
 import os
 import pandas as pd
+import sklearn
+import cloudpickle
+import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
@@ -85,7 +88,29 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
+    conda_env={
+        "channels": ["conda-forge"],
+        "dependencies": [
+            "python=3.10",
+            "pip",
+            {
+                "pip": [
+                    "mlflow",
+                    f"scikit-learn=={sklearn.__version__}",
+                    f"cloudpickle=={cloudpickle.__version__}",
+                    f"numpy=={np.__version__}",
+                    "psutil",
+                    "azureml-inference-server-http",
+                    "azureml-ai-monitoring",
+                ]
+            },
+        ],
+        "name": "mlflow-env",
+    },
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
