@@ -37,7 +37,9 @@ def _validated_pagination_url(next_link: object, *, request_url: str) -> str:
         parsed_port = parsed.port
         expected_port = expected.port
     except ValueError as error:
-        raise ValueError("Artifact pagination nextLink has an invalid origin.") from error
+        raise ValueError(
+            "Artifact pagination nextLink has an invalid origin."
+        ) from error
     if (
         parsed.scheme.lower() != expected.scheme.lower()
         or (parsed.hostname or "").lower() != (expected.hostname or "").lower()

@@ -1432,9 +1432,7 @@ def analyze_materialized_aml_command_job(
                 or "Source scheduling metadata is translated separately from the target AISuperComputer SLA tier."
             ),
             remediation=(
-                "Use AML priority low, medium, or high."
-                if priority_error
-                else None
+                "Use AML priority low, medium, or high." if priority_error else None
             ),
             blocking=priority_error is not None,
             source_value=source_priority,

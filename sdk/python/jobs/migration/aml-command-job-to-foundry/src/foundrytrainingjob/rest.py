@@ -240,9 +240,8 @@ def _should_retry_network_error(
 ) -> bool:
     if disable_retry:
         return False
-    return (
-        method.upper() in _SAFE_NETWORK_RETRY_METHODS
-        or _is_pre_send_network_error(error)
+    return method.upper() in _SAFE_NETWORK_RETRY_METHODS or _is_pre_send_network_error(
+        error
     )
 
 

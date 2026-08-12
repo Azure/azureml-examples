@@ -53,7 +53,10 @@ def test_list_job_artifacts_rejects_cross_origin_next_link_before_request(
 
 
 def test_validated_pagination_url_resolves_same_origin_relative_link():
-    assert artifacts._validated_pagination_url(
-        "/api/projects/project/history/artifacts?page=2",
-        request_url="https://project.example/api/projects/project/history/artifacts",
-    ) == "https://project.example/api/projects/project/history/artifacts?page=2"
+    assert (
+        artifacts._validated_pagination_url(
+            "/api/projects/project/history/artifacts?page=2",
+            request_url="https://project.example/api/projects/project/history/artifacts",
+        )
+        == "https://project.example/api/projects/project/history/artifacts?page=2"
+    )

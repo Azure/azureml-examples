@@ -144,17 +144,20 @@ def test_safe_network_retries_are_bounded(monkeypatch):
 
 
 def test_disable_retry_prevents_canary_retry():
-    assert rest._maybe_record_canary_retry(
-        method="PUT",
-        url="https://project.example/jobs/job-name",
-        canary_attempt=0,
-        error_response=rest.FoundryRestResponse(
-            status_code=400,
-            headers={},
-            text='{"error":{"code":"CanarySignature"}}',
-        ),
-        disable_retry=True,
-    ) is False
+    assert (
+        rest._maybe_record_canary_retry(
+            method="PUT",
+            url="https://project.example/jobs/job-name",
+            canary_attempt=0,
+            error_response=rest.FoundryRestResponse(
+                status_code=400,
+                headers={},
+                text='{"error":{"code":"CanarySignature"}}',
+            ),
+            disable_retry=True,
+        )
+        is False
+    )
 
 
 def test_safe_get_can_retry_ambiguous_timeout(monkeypatch):

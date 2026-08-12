@@ -968,9 +968,9 @@ def test_retry_preserves_immutable_request_evidence_per_attempt(tmp_path):
     assert second_path.name == "foundry-job-request-attempt-2.json"
     assert json.loads(first_path.read_text(encoding="utf-8")) == first_body
     assert json.loads(second_path.read_text(encoding="utf-8")) == second_body
-    assert migrator.journal.data["foundryJobAttempts"][0][
-        "requestBodyPath"
-    ] == str(first_path)
+    assert migrator.journal.data["foundryJobAttempts"][0]["requestBodyPath"] == str(
+        first_path
+    )
 
 
 def test_redacted_source_uri_resumes_by_fingerprint(tmp_path):
