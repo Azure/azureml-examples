@@ -51,14 +51,16 @@ then
 	TIMESTAMP=`date +%m%d%H%M`
 	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
-	DEFAULT_STORAGE_ACCOUNT="sparkdefaultvnet"
+	STORAGE_ACCOUNT_PREFIX=$(echo "$RESOURCE_GROUP" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9' | cut -c1-12)
+	RUN_SUFFIX="${GITHUB_RUN_ID:-$(date +%s)}${GITHUB_RUN_ATTEMPT:-0}"
+	DEFAULT_STORAGE_ACCOUNT="${STORAGE_ACCOUNT_PREFIX}ds${RUN_SUFFIX: -10}"
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
 
-	EXIST=$(az storage account check-name --name $DEFAULT_STORAGE_ACCOUNT --query nameAvailable)
-	if [ "$EXIST" = "true" ]; then
-	az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
+	if ! az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS --output none; then
+		echo "Failed to create default storage account $DEFAULT_STORAGE_ACCOUNT" >&2
+		exit 1
 	fi
 
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
