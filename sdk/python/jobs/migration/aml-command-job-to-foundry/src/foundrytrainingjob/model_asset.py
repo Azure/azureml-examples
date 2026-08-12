@@ -274,21 +274,23 @@ def _wait_for_model_resource(
         if response.status_code == 200:
             body = response.json()
             status = _operation_status(body)
-            if (status or "").lower() in _FAILED_OPERATION_STATUSES:
+            normalized_status = (status or "").lower()
+            if normalized_status in _FAILED_OPERATION_STATUSES:
                 raise RuntimeError(
                     f"Model {name}:{version} reached terminal state {status}: "
                     f"{_redact_credentials(body)!r}"
                 )
-            result = _existing_model_result(
-                body,
-                name=name,
-                version=version,
-                project_endpoint=project_endpoint,
-                project_name=project_name,
-                provisioning_status=status,
-            )
-            if result is not None:
-                return result
+            if normalized_status in _SUCCEEDED_OPERATION_STATUSES:
+                result = _existing_model_result(
+                    body,
+                    name=name,
+                    version=version,
+                    project_endpoint=project_endpoint,
+                    project_name=project_name,
+                    provisioning_status=status,
+                )
+                if result is not None:
+                    return result
         elif response.status_code != 404:
             raise RuntimeError(
                 f"GET model {name}:{version} while polling failed: "

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -115,10 +116,10 @@ def test_snapshot_fixture_outputs_normalizes_service_path_layout(tmp_path):
         "trained_model": MODEL,
     }
     assert files == (
-        "metrics_table\\metrics.jsonl",
-        "results\\result.json",
-        "summary\\summary.json",
-        "trained_model\\model.json",
+        str(Path("metrics_table") / "metrics.jsonl"),
+        str(Path("results") / "result.json"),
+        str(Path("summary") / "summary.json"),
+        str(Path("trained_model") / "model.json"),
     )
 
 
@@ -353,10 +354,10 @@ def test_collect_aml_evidence_reads_user_logs_from_artifact_store(
             json.dumps(MODEL), encoding="utf-8"
         )
         return (
-            "results\\result.json",
-            "summary\\summary.json",
-            "metrics_table\\metrics.jsonl",
-            "trained_model\\model.json",
+            str(Path("results") / "result.json"),
+            str(Path("summary") / "summary.json"),
+            str(Path("metrics_table") / "metrics.jsonl"),
+            str(Path("trained_model") / "model.json"),
         )
 
     monkeypatch.setattr(

@@ -68,27 +68,12 @@ environment variables are set:
 - `AML_MIGRATION_DATASET_TRANSFER_MODE` (`upload` or `reference`)
 - `AML_MIGRATION_SOURCE_STORAGE_CONNECTION` (required for `reference`)
 
-## Formal live test
+## Live validation boundary
 
-The same orchestration used by `aml-foundry-migrate exercise` is covered by a
-dedicated live pytest. Configure the source workspace and run only this contract:
-
-```powershell
-$env:AML_MIGRATION_SOURCE_SUBSCRIPTION = "<subscription-id>"
-$env:AML_MIGRATION_SOURCE_RESOURCE_GROUP = "<aml-resource-group>"
-$env:AML_MIGRATION_SOURCE_WORKSPACE = "<aml-workspace>"
-$env:AML_MIGRATION_SOURCE_COMPUTE = "<aml-compute-name>"
-$env:AML_MIGRATION_E2E_WORK_DIR = "D:\migration-evidence\run-001" # optional
-
-python -m pytest `
-  tests\e2e\test_aml_command_job_migration.py `
-  --run-live -vv -s -ra
-```
-
-Without `--run-live`, the test is skipped. With `--run-live` but no configured
-source resource group, workspace, or compute, it also skips instead of creating
-resources in an arbitrary workspace. Target settings use the existing
-`FOUNDRY_TRAININGJOB__*` environment variables and default to Premium tier.
+This sample does not ship a separate live pytest. Use the explicit
+`aml-foundry-migrate exercise` command above for the supported live workflow and
+retain its work directory as evidence. The default `tests/unit` lane mocks cloud
+boundaries and does not create Azure resources.
 
 ## Cost-bounded release qualification
 
@@ -142,14 +127,6 @@ and two Foundry target jobs. Pass `--existing-source-job` plus
 reduce that to three. Upload and reference target assets always receive distinct
 versions, so the reference run cannot overwrite the copied datasets.
 
-The formal live equivalent is:
-
-```powershell
-python -m pytest `
-  tests\e2e\test_aml_command_job_release_e2e.py `
-  --run-live -vv -s -ra
-```
-
 The evidence root contains per-mode `equivalence-report.json`, migration
 manifests, analysis reports, downloaded raw logs/outputs, and one aggregate
 `release-validation-report.json`. The aggregate report hashes every retained
@@ -162,46 +139,12 @@ sweep, AutoML, distributed, alternate delivery-mode, alternate model-format,
 environment-build/private-registry, interactive-service, and advanced MLTable
 or component-contract variants that still need their own live parity evidence.
 
-## Component-by-component live validation
+## Component-level validation
 
-The isolated live matrix creates a different AML command job for each migration
-component. Every case runs the source AML job, migrates it, runs the Foundry job,
-downloads both registered outputs, and requires their JSON content to match. It
-also asserts the component's translated Foundry request fields and writes a
-`component-equivalence-report.json` under that case's temporary work directory.
-
-```powershell
-python -m pytest `
-  tests\e2e\test_aml_command_job_component_migrations.py `
-  --run-live -vv -s -ra
-```
-
-The matrix contains independent migrations for:
-
-- code snapshot, environment image, target compute, identity, and URI-folder output
-- string, integer, number, and boolean literal inputs
-- URI-folder, URI-file, MLTable, and custom-model inputs
-- static and input-templated environment variables
-- URI-folder, URI-file, MLTable, and custom-model outputs
-- shared-memory resources and command timeout
-- descriptions, display/experiment names, tags, and portable properties
-- source queue tier and priority
-- SSH, JupyterLab, TensorBoard, and VS Code service definitions
-- single-process MPI distribution
-- zero-copy URI-folder, URI-file, and MLTable references
-
-The three zero-copy cases skip unless
-`AML_MIGRATION_SOURCE_STORAGE_CONNECTION` names a Foundry connection to the AML
-source storage account. Run one component with `-k`, for example
-`-k uri_file_input`. These tests are marked `live`, `aml_foundry_migration`, and
-`aml_foundry_migration_component`; they never run in the default offline lane.
-Set `AML_MIGRATION_E2E_WORK_DIR` to retain each report and its downloaded source
-and target evidence under `components/<case>/<asset-version>/<run-id>/`.
-
-The test fails unless both jobs reach `Completed`, both expose the canonical
-application record, and the normalized `results`, `summary`, and `trained_model`
-JSON outputs are identical. It writes `equivalence-report.json` under the work
-directory for CI publication or local diagnosis.
+This sample does not ship a component-by-component live matrix. Component
+behavior is covered at unit level under `tests/unit`; use `exercise` or
+`qualify-release` for the supported aggregate live workflows. Variants listed in
+`excludedScope` remain unqualified until retained live parity evidence exists.
 
 ## Log and output equivalence
 
@@ -402,27 +345,18 @@ Every analyzer finding is assigned to one of the catalog families in
 finding whose family is not cataloged. Every report embeds the full catalog and
 adds `family` plus `testCoverage` to each finding.
 
-The exhaustive unit matrix is:
+The catalog ownership check is:
 
 ```powershell
 python -m pytest `
-  tests\unit\test_aml_command_job_capability_matrix.py `
+  tests/unit/test_aml_command_job_analysis.py::test_capability_catalog_file_references_exist `
   -q
 ```
 
-That matrix enforces all of the following:
-
-- every catalog family is emitted by a maximal command-job definition
-- every catalog family names an existing owning unit test
-- every declared live scenario or E2E evidence path exists
-- analyzer and translator type/mode/distribution/service enums remain identical
-- every literal, data, model, output, input mode, output mode, distribution, and
-  service value is analyzed and translated
-- MPI, PyTorch, TensorFlow, and Ray fields are mapped individually
-- environment reference/tag/private-ACR/build-required variants are classified
-- every unsupported type/mode/distribution/service branch blocks migration
-- every analysis policy has a passing contract, while separate negative tests
-  verify policy failure and no-write preflight behavior
+That check fails when any file-like unit or live-evidence reference in the
+catalog does not exist. The rest of `tests/unit` exercises analyzer policy,
+translation, migration, equivalence, permissions, and release-validation
+behavior.
 
 RBAC has a dedicated matrix in
 `tests/unit/test_aml_command_job_permissions.py`. It covers inherited scope,
@@ -575,16 +509,13 @@ signatures/SBOMs, immutable digest mapping, private endpoints, and target-UAI
 
 ## Coverage tiers
 
-The formal live parity fixture proves all core features together, while the
-component matrix reruns them as isolated migrations so one failed primitive has
-a specific test identity. Together they cover a single-node command job with
-code, all four primitive inputs, URI file/folder data, MLTable bytes, a custom
-model, static and templated environment variables, timeout/shared memory, and
-URI file/folder, MLTable, plus custom-model outputs. Upload and zero-copy Dataset V3 input
-paths both have dedicated component cases. The matrix also defines isolated
-cases for metadata, Standard/High scheduling, four interactive service types,
-and single-process MPI. A case counts as live evidence only after it completes
-against configured AML and Foundry resources; collection alone is not evidence.
+The `exercise` and `qualify-release` commands are operator-invoked live
+workflows, not pytest tests. Their rich fixture covers a single-node command job
+with code, primitive and asset inputs, static and templated environment
+variables, timeout/shared memory, and data/model outputs. A retained report
+counts as live evidence only after the workflow completes against configured AML
+and Foundry resources; command availability or offline collection is not
+evidence. No component-by-component live matrix ships with this sample.
 
 The following are translated and unit-tested but still need migration-specific
 live parity tests: multi-node MPI, PyTorch/TensorFlow/Ray distributions,
@@ -638,8 +569,8 @@ Each run writes under `--work-dir`:
 - `migration-manifest.json`: source/target identity, sanitized source job,
   downloaded paths, uploaded asset IDs, export job, target job, warnings, status,
   and integrity fingerprints
-- `foundry-job-request.json`: the translated Foundry request with secret-like
-  values and signed query parameters redacted
+- `foundry-job-request-attempt-N.json`: the immutable translated Foundry request
+  for attempt `N`, with secret-like values and signed query parameters redacted
 - `source-code/`: downloaded AML code snapshot
 - `inputs/`: downloaded registered models
 - `export-code/` and `export-download/`: batched AML dependency export

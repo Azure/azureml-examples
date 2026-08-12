@@ -104,6 +104,26 @@ def test_freeform_non_sensitive_key_equals_passes_through():
     assert sanitize_for_report(text) == text
 
 
+@pytest.mark.parametrize(
+    "credential_name",
+    ["AccountKey", "SharedAccessKey", "SharedAccessSignature", "SasToken"],
+)
+def test_storage_connection_string_credentials_are_redacted(credential_name):
+    secret = "storage-credential-value=="
+    connection_string = (
+        "DefaultEndpointsProtocol=https;"
+        "AccountName=storageaccount;"
+        f"{credential_name}={secret};"
+        "EndpointSuffix=core.windows.net"
+    )
+
+    sanitized = sanitize_for_report(connection_string)
+
+    assert secret not in sanitized
+    assert f"{credential_name}=<redacted>" in sanitized
+    assert "AccountName=storageaccount" in sanitized
+
+
 # --------------------------------------------------------------------------- #
 # Freeform key: value                                                         #
 # --------------------------------------------------------------------------- #
@@ -145,14 +165,15 @@ def test_dict_with_sensitive_and_non_sensitive_keys():
         "count": 7,
     }
 
-    def test_sanitize_for_report_redacts_signed_url_mapping_keys():
-        source_uri = "https://storage.test/data/input?sig=source-secret"
 
-        sanitized = sanitize_for_report({source_uri: "azureai://data/input/versions/1"})
+def test_sanitize_for_report_redacts_signed_url_mapping_keys():
+    source_uri = "https://storage.test/data/input?sig=source-secret"
 
-        serialized = str(sanitized)
-        assert "source-secret" not in serialized
-        assert "%3Credacted%3E" in serialized
+    sanitized = sanitize_for_report({source_uri: "azureai://data/input/versions/1"})
+
+    serialized = str(sanitized)
+    assert "source-secret" not in serialized
+    assert "%3Credacted%3E" in serialized
 
 
 def test_nested_dict_is_sanitized_recursively():

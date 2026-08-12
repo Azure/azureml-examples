@@ -9,7 +9,10 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from .aml_command_job_migration import audit_aml_command_job_compatibility
+from .aml_command_job_migration import (
+    audit_aml_command_job_compatibility,
+    translate_aml_priority,
+)
 from .aml_command_job_migrator import (
     AmlWorkspace,
     FoundryTarget,
@@ -75,7 +78,7 @@ _SUPPORTED_SERVICES = frozenset(
         "custom",
     }
 )
-_CAPABILITY_MATRIX_TEST = "tests/unit/test_aml_command_job_capability_matrix.py"
+_CAPABILITY_MATRIX_TEST = "tests/unit/test_aml_command_job_analysis.py"
 
 
 @dataclass(frozen=True)
@@ -97,107 +100,60 @@ class CapabilityFamilyContract:
 CAPABILITY_FAMILY_CATALOG: dict[str, CapabilityFamilyContract] = {
     "job.type": CapabilityFamilyContract(
         "Standalone command-job discriminator.",
-        live_evidence=("tests/e2e/test_aml_command_job_migration.py",),
     ),
     "job.command": CapabilityFamilyContract(
         "Command text and placeholder adaptations.",
-        live_evidence=("tests/e2e/test_aml_command_job_migration.py",),
     ),
     "asset.code": CapabilityFamilyContract(
         "Code snapshot migration into Dataset V3 codeId.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:code_id",
-        ),
     ),
     "asset.environment": CapabilityFamilyContract(
         "OCI environment image reuse or build requirement.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:environment_custom_acr",
-        ),
     ),
     "job.compute": CapabilityFamilyContract(
         "Foundry compute and instance-type replacement.",
-        live_evidence=("tests/e2e/test_aml_command_job_migration.py",),
     ),
     "job.identity": CapabilityFamilyContract(
         "Target UAI replacement and runtime identity.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:identity_runtime_assertion",
-        ),
     ),
     "connection.source_storage": CapabilityFamilyContract(
         "Foundry connection for zero-copy source data.",
-        live_evidence=("tests/e2e/test_aml_command_job_migration.py",),
     ),
     "input.binding": CapabilityFamilyContract(
         "Literal, data, and model input bindings.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:input_content_round_trip",
-            "scenario:input_model_and_data",
-        ),
     ),
     "input.definition": CapabilityFamilyContract(
         "Optional/default/range/enum input-definition metadata."
     ),
     "input.mode": CapabilityFamilyContract(
         "Input delivery modes and unsupported-mode rejection.",
-        live_evidence=(
-            "scenario:input_mode_download",
-            "scenario:input_public_url",
-        ),
     ),
     "input.metadata": CapabilityFamilyContract(
         "Fixed compute path, datastore, and IP metadata."
     ),
     "output.binding": CapabilityFamilyContract(
         "Data and model output allocation/registration.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:output_content_round_trip",
-            "scenario:output_custom_model",
-        ),
     ),
     "output.mode": CapabilityFamilyContract(
         "Output delivery modes and unsupported-mode rejection.",
-        live_evidence=(
-            "scenario:output_file",
-            "scenario:output_folder",
-        ),
     ),
     "output.early_available": CapabilityFamilyContract(
         "AML early-available output semantics."
     ),
     "job.environment_variables": CapabilityFamilyContract(
         "Static and placeholder-templated environment variables.",
-        live_evidence=("tests/e2e/test_aml_command_job_migration.py",),
     ),
     "job.resources": CapabilityFamilyContract(
         "Instance count, shared memory, and multi-node resources.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:resources_multinode_pytorch",
-        ),
     ),
     "job.resources.aml_only": CapabilityFamilyContract(
         "AML-only Docker arguments and location hints."
     ),
     "job.distribution": CapabilityFamilyContract(
         "MPI, PyTorch, TensorFlow, and Ray distributions.",
-        live_evidence=(
-            "scenario:resources_multinode_pytorch",
-            "scenario:slime_ray_lifecycle",
-        ),
     ),
     "job.limits.timeout": CapabilityFamilyContract(
         "Command timeout translation.",
-        live_evidence=(
-            "tests/e2e/test_aml_command_job_migration.py",
-            "scenario:resources_timeout",
-        ),
     ),
     "service.binding": CapabilityFamilyContract(
         "Generated and interactive job services."
@@ -207,7 +163,6 @@ CAPABILITY_FAMILY_CATALOG: dict[str, CapabilityFamilyContract] = {
     ),
     "job.properties": CapabilityFamilyContract(
         "Portable custom properties and runtime-property filtering.",
-        live_evidence=("scenario:slime_ray_lifecycle",),
     ),
     "job.control_plane_metadata": CapabilityFamilyContract(
         "Parent lineage, notifications, IP, and parameter metadata."
@@ -218,10 +173,6 @@ CAPABILITY_FAMILY_CATALOG: dict[str, CapabilityFamilyContract] = {
     "rbac.permission": CapabilityFamilyContract(
         "Target runtime identity resolution and effective Azure RBAC roles.",
         unit_test="tests/unit/test_aml_command_job_permissions.py",
-        live_evidence=(
-            "tests/e2e/test_project_provisioning_flow.py",
-            "scenario:identity_runtime_assertion",
-        ),
     ),
 }
 
@@ -1455,20 +1406,39 @@ def analyze_materialized_aml_command_job(
                     ),
                     blocking=True,
                 )
+    source_priority = aml_job.get("priority")
+    priority_error: str | None = None
+    try:
+        target_priority = translate_aml_priority(source_priority)
+    except ValueError as error:
+        target_priority = None
+        priority_error = str(error)
     if (
         aml_job.get("queue_settings")
         or aml_job.get("job_tier")
-        or aml_job.get("priority")
+        or source_priority is not None
     ):
         add(
             "job.scheduling",
             "queue_settings",
             "scheduling",
             "Queue tier and priority",
+            support="unsupported" if priority_error else "supported",
             fidelity="adapted",
-            action="translate",
-            verification="unit",
-            message="Source scheduling metadata is translated separately from the target AISuperComputer SLA tier.",
+            action="none" if priority_error else "translate",
+            verification="none" if priority_error else "unit",
+            message=(
+                priority_error
+                or "Source scheduling metadata is translated separately from the target AISuperComputer SLA tier."
+            ),
+            remediation=(
+                "Use AML priority low, medium, or high."
+                if priority_error
+                else None
+            ),
+            blocking=priority_error is not None,
+            source_value=source_priority,
+            target_value=target_priority,
         )
     properties = aml_job.get("properties") or {}
     if isinstance(properties, Mapping) and properties:

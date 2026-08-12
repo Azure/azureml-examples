@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from urllib.parse import quote, urlencode
+from urllib.parse import quote, urlencode, urljoin, urlsplit
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
@@ -27,6 +27,28 @@ def _empty_response() -> FoundryRestResponse:
 def _append_query(url: str, query: dict[str, str | int]) -> str:
     separator = "&" if "?" in url else "?"
     return f"{url}{separator}{urlencode(query)}"
+
+
+def _validated_pagination_url(next_link: object, *, request_url: str) -> str:
+    candidate = urljoin(request_url, str(next_link).strip())
+    parsed = urlsplit(candidate)
+    expected = urlsplit(request_url)
+    try:
+        parsed_port = parsed.port
+        expected_port = expected.port
+    except ValueError as error:
+        raise ValueError("Artifact pagination nextLink has an invalid origin.") from error
+    if (
+        parsed.scheme.lower() != expected.scheme.lower()
+        or (parsed.hostname or "").lower() != (expected.hostname or "").lower()
+        or parsed_port != expected_port
+        or parsed.username is not None
+        or parsed.password is not None
+    ):
+        raise ValueError(
+            "Artifact pagination nextLink must use the original Foundry origin."
+        )
+    return candidate
 
 
 def _parse_response_json(response: FoundryRestResponse) -> dict:
@@ -291,7 +313,10 @@ def list_run_history_artifacts(
             page += 1
             if print_progress:
                 print(f"\n  ... page {page} ...")
-            url = str(next_link)
+            url = _validated_pagination_url(
+                next_link,
+                request_url=project_artifacts_url,
+            )
         elif continuation:
             page += 1
             if print_progress:
@@ -418,7 +443,11 @@ def list_job_artifacts(
         next_link = body.get("nextLink")
         continuation = body.get("continuationToken")
         if next_link:
-            current_url = str(next_link)
+            current_url = _validated_pagination_url(
+                next_link,
+                request_url=project_url,
+            )
+            next_link = current_url
         elif continuation:
             current_url = _append_query(
                 project_url,

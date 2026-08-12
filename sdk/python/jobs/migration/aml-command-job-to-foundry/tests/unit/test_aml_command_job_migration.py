@@ -372,6 +372,42 @@ def test_translate_omits_null_queue_tier_sentinel():
     assert "queueSettings" not in result.request_body["properties"]
 
 
+@pytest.mark.parametrize("source_priority", ["medium", "Medium", "mid"])
+def test_translate_maps_aml_medium_priority_to_foundry_mid(source_priority):
+    source_job = _source_job()
+    source_job["priority"] = source_priority
+
+    result = translate_aml_command_job(
+        source_job,
+        foundry_compute_id="/foundry/compute",
+        foundry_instance_type="Singularity.D4_v3",
+        environment_image_reference="mcr.microsoft.com/example:1",
+        migrated_asset_ids={
+            AML_DATA_ID: "azureai://accounts/a/projects/p/data/train/versions/7",
+            AML_MODEL_ID: "azureai://accounts/a/projects/p/models/seed/versions/3",
+        },
+    )
+
+    assert result.request_body["properties"]["priority"] == "Mid"
+
+
+def test_translate_rejects_unsupported_aml_priority():
+    source_job = _source_job()
+    source_job["priority"] = "urgent"
+
+    with pytest.raises(ValueError, match="Unsupported AML job priority: 'urgent'"):
+        translate_aml_command_job(
+            source_job,
+            foundry_compute_id="/foundry/compute",
+            foundry_instance_type="Singularity.D4_v3",
+            environment_image_reference="mcr.microsoft.com/example:1",
+            migrated_asset_ids={
+                AML_DATA_ID: "azureai://accounts/a/projects/p/data/train/versions/7",
+                AML_MODEL_ID: "azureai://accounts/a/projects/p/models/seed/versions/3",
+            },
+        )
+
+
 def test_translate_uri_file_output_appends_source_file_name():
     source_job = _source_job()
     source_job["inputs"] = {}

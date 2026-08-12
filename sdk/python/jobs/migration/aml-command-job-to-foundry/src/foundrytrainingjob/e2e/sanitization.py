@@ -16,6 +16,8 @@ _SENSITIVE_QUERY_KEYS = {
     "token",
 }
 _SENSITIVE_KEY_SUBSTRINGS = (
+    "account_key",
+    "accountkey",
     "access_token",
     "api_key",
     "apikey",
@@ -28,6 +30,10 @@ _SENSITIVE_KEY_SUBSTRINGS = (
     "password",
     "refresh_token",
     "sas",
+    "shared_access_key",
+    "shared_access_signature",
+    "sharedaccesskey",
+    "sharedaccesssignature",
     "secret",
     "token",
 )

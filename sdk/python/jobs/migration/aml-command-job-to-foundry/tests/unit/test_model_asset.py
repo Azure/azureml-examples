@@ -91,6 +91,46 @@ class _DownloadContainerClient:
 
 
 class ModelAssetUploadTests(unittest.TestCase):
+    def test_wait_for_model_resource_requires_terminal_success(self) -> None:
+        responses = iter(
+            [
+                _response(
+                    200,
+                    {
+                        "id": "azureai://accounts/a/projects/p/models/model/versions/1",
+                        "properties": {"provisioningState": "Running"},
+                    },
+                ),
+                _response(
+                    200,
+                    {
+                        "id": "azureai://accounts/a/projects/p/models/model/versions/1",
+                        "properties": {"provisioningState": "Succeeded"},
+                    },
+                ),
+            ]
+        )
+
+        with (
+            patch.object(
+                model_asset,
+                "_request_foundry",
+                side_effect=responses,
+            ) as request,
+            patch.object(model_asset.time, "sleep"),
+        ):
+            result = model_asset._wait_for_model_resource(
+                "https://project.example/models/model/versions/1",
+                access_token="token",
+                name="model",
+                version="1",
+                project_endpoint="https://project.example",
+                project_name="project",
+            )
+
+        self.assertEqual(request.call_count, 2)
+        self.assertEqual(result.provisioning_status, "Succeeded")
+
     def test_upload_and_register_model_uses_async_create_and_final_get(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             local_path = Path(temp_dir)
@@ -361,9 +401,7 @@ class ModelAssetUploadTests(unittest.TestCase):
 
             self.assertEqual(
                 result.downloaded_files,
-                ("model.json", "subdir\\weights.bin")
-                if __import__("os").name == "nt"
-                else ("model.json", "subdir/weights.bin"),
+                ("model.json", str(Path("subdir") / "weights.bin")),
             )
             self.assertEqual(
                 (Path(temp_dir) / "model.json").read_bytes(), b'{"epochs": 3}'

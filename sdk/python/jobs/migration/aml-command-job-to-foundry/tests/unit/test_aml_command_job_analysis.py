@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from collections import Counter
+from pathlib import Path
 
 import pytest
 
 from foundrytrainingjob.aml_command_job_analysis import (
+    CAPABILITY_FAMILY_CATALOG,
     EnvironmentInspection,
     _value,
     analyze_materialized_aml_command_job,
@@ -70,6 +72,26 @@ def test_value_uses_public_attribute_when_mapping_key_is_absent():
 
     assert _value(entity, "environment") == "azureml:environment:7"
     assert _value(entity, "component") == "internal"
+
+
+def test_capability_catalog_file_references_exist():
+    sample_root = Path(__file__).resolve().parents[2]
+    references = {
+        contract.unit_test
+        for contract in CAPABILITY_FAMILY_CATALOG.values()
+        if contract.unit_test
+    }
+    references.update(
+        evidence
+        for contract in CAPABILITY_FAMILY_CATALOG.values()
+        for evidence in contract.live_evidence
+        if evidence.endswith(".py")
+    )
+    missing = [
+        reference for reference in references if not (sample_root / reference).is_file()
+    ]
+
+    assert not missing
 
 
 def test_migratable_policy_allows_copy_but_reports_loss_and_reference_gaps():
@@ -208,6 +230,43 @@ def test_environment_build_requirement_blocks_concrete_migration():
 
     assert report.policy_passed is False
     assert "asset.environment" in report.summary["blockingCapabilityIds"]
+
+
+def test_medium_priority_preflight_maps_to_foundry_mid():
+    source_job = _source_job()
+    source_job["priority"] = "medium"
+
+    report = analyze_materialized_aml_command_job(
+        source_job,
+        policy="migratable",
+        environment=_environment(),
+        user_assigned_identity_id="/subscriptions/sub/uai/target",
+    )
+
+    finding = next(
+        item for item in report.capabilities if item.capability_id == "job.scheduling"
+    )
+    assert finding.blocking is False
+    assert finding.target_value == "Mid"
+
+
+def test_unsupported_priority_blocks_preflight():
+    source_job = _source_job()
+    source_job["priority"] = "urgent"
+
+    report = analyze_materialized_aml_command_job(
+        source_job,
+        policy="migratable",
+        environment=_environment(),
+        user_assigned_identity_id="/subscriptions/sub/uai/target",
+    )
+
+    assert report.policy_passed is False
+    assert "job.scheduling" in report.summary["blockingCapabilityIds"]
+    finding = next(
+        item for item in report.capabilities if item.capability_id == "job.scheduling"
+    )
+    assert finding.message == "Unsupported AML job priority: 'urgent'"
 
 
 def _permission_inspection(status: str) -> RuntimePermissionInspection:

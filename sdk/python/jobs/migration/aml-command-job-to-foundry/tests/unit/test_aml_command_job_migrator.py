@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from types import SimpleNamespace
 import time
 
@@ -842,13 +843,18 @@ def test_manifest_rejects_request_drift_for_existing_foundry_job(tmp_path):
     )
     foundry_state: dict[str, object] = {}
     original_body = {"properties": {"command": "python a.py"}}
-    migrator._record_foundry_request(foundry_state, original_body)
+    migrator._record_foundry_request(
+        foundry_state,
+        original_body,
+        attempt_number=1,
+    )
     foundry_state["name"] = "submitted-job"
 
-    with pytest.raises(ValueError, match="submitted with a different request body"):
+    with pytest.raises(ValueError, match="attempt 1 has a different request body"):
         migrator._record_foundry_request(
             foundry_state,
             {"properties": {"command": "python b.py"}},
+            attempt_number=1,
         )
 
     assert migrator.journal.data["requestBody"] == original_body
@@ -893,10 +899,12 @@ def test_manifest_redacts_sensitive_values_without_weakening_resume(tmp_path):
         emit=lambda message: None,
     )
     migrator._record_source_job(source_job)
-    migrator._record_foundry_request({}, request_body)
+    migrator._record_foundry_request({}, request_body, attempt_number=1)
 
     manifest_text = (tmp_path / "migration-manifest.json").read_text(encoding="utf-8")
-    request_text = (tmp_path / "foundry-job-request.json").read_text(encoding="utf-8")
+    request_text = (tmp_path / "foundry-job-request-attempt-1.json").read_text(
+        encoding="utf-8"
+    )
     for secret in (
         "source-secret",
         "environment-secret",
@@ -917,6 +925,52 @@ def test_manifest_redacts_sensitive_values_without_weakening_resume(tmp_path):
     resumed._record_source_job(source_job)
     persisted = json.loads(manifest_text)
     assert persisted["sourceJobSha256"] == resumed.journal.data["sourceJobSha256"]
+
+
+def test_retry_preserves_immutable_request_evidence_per_attempt(tmp_path):
+    request = MigrationRequest(
+        source=AmlWorkspace("sub", "rg", "ws", "cpu"),
+        target=FoundryTarget(
+            project_endpoint="https://example.test",
+            project_name="project",
+            storage_connection_name="storage",
+            compute_id="/compute",
+            instance_type="Singularity.D4_v3",
+            api_version="2026-01-15-preview",
+        ),
+        source_job_name="source-job",
+        work_dir=tmp_path,
+    )
+    migrator = AmlCommandJobMigrator(
+        request,
+        credential=object(),
+        ml_client=SimpleNamespace(),
+        emit=lambda message: None,
+    )
+    first_body = {"properties": {"command": "python first.py"}}
+    first_state = migrator.journal.data.setdefault("foundryJob", {})
+    first_path = migrator._record_foundry_request(
+        first_state,
+        first_body,
+        attempt_number=1,
+    )
+    first_state.update({"name": "failed-job", "status": "Failed"})
+
+    attempt_number, second_state = migrator._prepare_foundry_attempt()
+    second_body = {"properties": {"command": "python second.py"}}
+    second_path = migrator._record_foundry_request(
+        second_state,
+        second_body,
+        attempt_number=attempt_number,
+    )
+
+    assert first_path.name == "foundry-job-request-attempt-1.json"
+    assert second_path.name == "foundry-job-request-attempt-2.json"
+    assert json.loads(first_path.read_text(encoding="utf-8")) == first_body
+    assert json.loads(second_path.read_text(encoding="utf-8")) == second_body
+    assert migrator.journal.data["foundryJobAttempts"][0][
+        "requestBodyPath"
+    ] == str(first_path)
 
 
 def test_redacted_source_uri_resumes_by_fingerprint(tmp_path):
@@ -1133,7 +1187,7 @@ def test_download_asset_path_resolves_aml_datastore_uri(tmp_path, monkeypatch):
         captured["target_dir"] = target_dir
         (target_dir / "nested").mkdir(parents=True)
         (target_dir / "nested" / "data.jsonl").write_text("{}\n", encoding="utf-8")
-        return ("nested\\data.jsonl",)
+        return (str(Path("nested") / "data.jsonl"),)
 
     monkeypatch.setattr(
         migrator_module,
@@ -1162,7 +1216,7 @@ def test_download_asset_path_resolves_aml_datastore_uri(tmp_path, monkeypatch):
     assert captured["uri"] == (
         "https://account.blob.core.windows.net/container/migration/table"
     )
-    assert files == ("nested\\data.jsonl",)
+    assert files == (str(Path("nested") / "data.jsonl"),)
     assert (tmp_path / "nested" / "data.jsonl").exists()
 
 
@@ -1461,4 +1515,4 @@ def test_migrator_downloads_uploads_translates_and_submits(tmp_path, monkeypatch
         "/export/exported_asset_1"
     )
     assert (tmp_path / "work" / "migration-manifest.json").exists()
-    assert (tmp_path / "work" / "foundry-job-request.json").exists()
+    assert (tmp_path / "work" / "foundry-job-request-attempt-1.json").exists()

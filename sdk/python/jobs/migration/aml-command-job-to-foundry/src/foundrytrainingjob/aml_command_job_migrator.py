@@ -887,31 +887,44 @@ class AmlCommandJobMigrator:
         self,
         foundry_state: dict[str, Any],
         request_body: Mapping[str, Any],
+        *,
+        attempt_number: int,
     ) -> Path:
+        if attempt_number < 1:
+            raise ValueError("Foundry attempt_number must be positive.")
         request_fingerprint = _sha256_json(request_body)
         recorded_fingerprint = foundry_state.get("requestBodySha256")
         if foundry_state.get("name") and not recorded_fingerprint:
             recorded_body = self.journal.data.get("requestBody")
             if isinstance(recorded_body, Mapping):
                 recorded_fingerprint = _sha256_json(recorded_body)
-        if foundry_state.get("name") and recorded_fingerprint != request_fingerprint:
+        if recorded_fingerprint and recorded_fingerprint != request_fingerprint:
             raise ValueError(
-                f"Recorded Foundry job {foundry_state.get('name')!r} was submitted "
-                "with a different request body. Use a new work_dir."
+                f"Recorded Foundry attempt {attempt_number} has a different "
+                "request body. Use a new work_dir."
             )
 
         foundry_state["requestBodySha256"] = request_fingerprint
         self.journal.data["requestBody"] = deepcopy(dict(request_body))
         self.journal.data["requestBodySha256"] = request_fingerprint
-        payload_path = self.work_dir / "foundry-job-request.json"
-        payload_path.write_text(
-            json.dumps(
-                sanitize_for_report(request_body),
-                indent=2,
-                sort_keys=True,
-            ),
-            encoding="utf-8",
+        payload_path = (
+            self.work_dir / f"foundry-job-request-attempt-{attempt_number}.json"
         )
+        serialized_payload = json.dumps(
+            sanitize_for_report(request_body),
+            indent=2,
+            sort_keys=True,
+        )
+        if payload_path.exists():
+            existing_payload = payload_path.read_text(encoding="utf-8")
+            if existing_payload != serialized_payload:
+                raise ValueError(
+                    f"Foundry attempt {attempt_number} request evidence already "
+                    "exists with different content. Use a new work_dir."
+                )
+        else:
+            payload_path.write_text(serialized_payload, encoding="utf-8")
+        foundry_state["requestBodyPath"] = str(payload_path)
         self.journal.data["requestBodyPath"] = str(payload_path)
         self._save()
         return payload_path
@@ -1716,7 +1729,10 @@ class AmlCommandJobMigrator:
                     "target_job_name or a new work_dir."
                 )
             archived = deepcopy(foundry_state)
-            archived["requestBodyPath"] = self.journal.data.get("requestBodyPath")
+            archived.setdefault(
+                "requestBodyPath",
+                self.journal.data.get("requestBodyPath"),
+            )
             attempts.append(archived)
             foundry_state = {}
             self.journal.data["foundryJob"] = foundry_state
@@ -1803,7 +1819,11 @@ class AmlCommandJobMigrator:
                 warnings.append(warning)
                 self.emit(f"WARNING: {sanitize_for_report(warning)}")
         self.journal.data["warnings"] = warnings
-        self._record_foundry_request(foundry_state, translation.request_body)
+        self._record_foundry_request(
+            foundry_state,
+            translation.request_body,
+            attempt_number=attempt_number,
+        )
 
         target_job_name = foundry_state.get("name")
         if not target_job_name:

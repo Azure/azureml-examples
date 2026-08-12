@@ -4,6 +4,7 @@ import contextvars
 import json
 import logging
 import random
+import socket
 import time
 from dataclasses import dataclass
 from typing import Any, Final, Mapping
@@ -69,16 +70,18 @@ DEFAULT_MAX_RETRIES: Final[int] = 10
 DEFAULT_RETRY_BACKOFF_SECONDS: Final[float] = 1.0
 DEFAULT_MAX_RETRY_BACKOFF_SECONDS: Final[float] = 8.0
 _RETRYABLE_METHODS: Final[frozenset[str]] = frozenset({"GET", "DELETE", "PUT"})
+_SAFE_NETWORK_RETRY_METHODS: Final[frozenset[str]] = frozenset(
+    {"GET", "HEAD", "OPTIONS"}
+)
 _TRANSIENT_STATUS_CODES: Final[frozenset[int]] = frozenset(
     {408, 429, 500, 502, 503, 504}
 )
 
 # Network-level retry (internet outage, DNS failure, connection refused).
-# Separate from HTTP transient retry because network errors prove the request
-# never reached the server — always safe to retry regardless of HTTP method
-# and regardless of ``disable_retry`` (which exists to prevent duplicate
-# server-side side-effects, and network failures cannot produce any).
+# Timeouts and connection resets may happen after a request reached the server,
+# so mutation requests are retried only for failures known to happen pre-send.
 NETWORK_RETRY_MAX_SECONDS: Final[float] = 300.0  # 5 minutes
+NETWORK_RETRY_MAX_ATTEMPTS: Final[int] = 10
 NETWORK_RETRY_INITIAL_BACKOFF: Final[float] = 2.0
 NETWORK_RETRY_MAX_BACKOFF: Final[float] = 30.0
 
@@ -219,9 +222,28 @@ def _should_retry_request(
         # ``_request_foundry`` and are NOT decided by this predicate.
         return False
     normalized_method = method.upper()
-    if normalized_method not in _RETRYABLE_METHODS and not retry_transient:
-        return False
+    if normalized_method not in _RETRYABLE_METHODS:
+        return retry_transient and status_code == 429
     return status_code in _TRANSIENT_STATUS_CODES
+
+
+def _is_pre_send_network_error(error: BaseException) -> bool:
+    reason = error.reason if isinstance(error, URLError) else error
+    return isinstance(reason, (socket.gaierror, ConnectionRefusedError))
+
+
+def _should_retry_network_error(
+    method: str,
+    error: BaseException,
+    *,
+    disable_retry: bool,
+) -> bool:
+    if disable_retry:
+        return False
+    return (
+        method.upper() in _SAFE_NETWORK_RETRY_METHODS
+        or _is_pre_send_network_error(error)
+    )
 
 
 def _retry_delay_seconds(attempt: int) -> float:
@@ -238,18 +260,13 @@ def _maybe_record_canary_retry(
     url: str,
     canary_attempt: int,
     error_response: "FoundryRestResponse",
+    disable_retry: bool,
 ) -> bool:
     """Check the active canary-retry scope; record and return True if we should retry.
 
-    Canary retries intentionally do NOT consult ``disable_retry``:
-      * ``disable_retry=True`` exists for PUT /jobs create to prevent duplicate
-        compute allocation if a generic 504 retry sends a second create request.
-      * A signature-matched 400 proves the server rejected the request BEFORE
-        any allocation / DB write happened (broken pod returned a client-error
-        shaped response). Retrying is always safe.
-      * Keeping canary retry orthogonal means ``submit_job`` (which uses
-        ``disable_retry=True`` on purpose) still gets the benefit of the
-        retry layer.
+    A signature-matched 400 normally proves the server rejected the request
+    before allocation or persistence. ``disable_retry`` remains authoritative,
+    however, so callers can guarantee that a request is sent at most once.
 
     ``canary_attempt`` is a counter separate from the generic-transient
     counter so a burst of 5xx retries cannot starve the canary retry budget.
@@ -257,6 +274,8 @@ def _maybe_record_canary_retry(
     Deferred import avoids a circular dependency between rest.py and
     e2e.retry_policy (which may itself need rest primitives in future).
     """
+    if disable_retry:
+        return False
     try:
         from .e2e.retry_policy import current_retry_scope, match_signature, RetryEvent
     except Exception:  # pragma: no cover - defensive
@@ -348,10 +367,9 @@ def _request_foundry(
     # starve the others:
     #   * generic_attempt — HTTP 408/429/5xx on retryable methods (count-based).
     #   * canary_attempt  — narrow canary-signature retries (count-based).
-    #   * network_attempt — URLError / internet outage (time-budgeted, see
-    #                       NETWORK_RETRY_MAX_SECONDS); retries regardless of
-    #                       method or disable_retry because a URLError proves
-    #                       the request never reached the server.
+    #   * network_attempt — retry-safe URLError / timeout failures, bounded by
+    #                       both NETWORK_RETRY_MAX_ATTEMPTS and
+    #                       NETWORK_RETRY_MAX_SECONDS.
     generic_attempt = 0
     canary_attempt = 0
     network_attempt = 0
@@ -384,13 +402,12 @@ def _request_foundry(
                 continue
             # Narrow canary-signature retry path. Active only inside a
             # ``canary_retry_scope`` and only for signatures on the allow-list.
-            # Decoupled from ``disable_retry`` on purpose: see
-            # ``_maybe_record_canary_retry`` docstring for the rationale.
             if _maybe_record_canary_retry(
                 method=method,
                 url=url,
                 canary_attempt=canary_attempt,
                 error_response=error_response,
+                disable_retry=disable_retry,
             ):
                 time.sleep(_retry_delay_seconds(canary_attempt))
                 canary_attempt += 1
@@ -403,19 +420,20 @@ def _request_foundry(
                 response=error_response,
             ) from error
         except (URLError, TimeoutError) as error:
-            # Network errors (DNS failure, connection refused, internet
-            # outage, read timeout) prove the request never reached the
-            # server, so retrying is always safe — independent of HTTP
-            # method and of ``disable_retry``. Use a time-based budget
-            # (NETWORK_RETRY_MAX_SECONDS) so a long outage gets a fair
-            # chance to recover without unbounded retries.
-            #
-            # Note: ``urlopen()`` raises ``socket.timeout`` (== ``TimeoutError``,
-            # a sibling of ``URLError`` not a subclass) on read timeouts. Catch
-            # both so a sustained-slow MFE PUT is retried with backoff instead
-            # of fatally failing on the first 120s timeout.
+            # Read timeouts and connection resets are ambiguous: the server may
+            # already have applied a mutation. Safe reads can be replayed, while
+            # mutations are replayed only for DNS/refused-connection failures
+            # that prove no request was sent. ``disable_retry`` disables both.
             elapsed = time.monotonic() - start_time
-            if elapsed < NETWORK_RETRY_MAX_SECONDS:
+            if (
+                network_attempt < NETWORK_RETRY_MAX_ATTEMPTS
+                and elapsed < NETWORK_RETRY_MAX_SECONDS
+                and _should_retry_network_error(
+                    method,
+                    error,
+                    disable_retry=disable_retry,
+                )
+            ):
                 backoff = min(
                     NETWORK_RETRY_MAX_BACKOFF,
                     NETWORK_RETRY_INITIAL_BACKOFF * (2**network_attempt),

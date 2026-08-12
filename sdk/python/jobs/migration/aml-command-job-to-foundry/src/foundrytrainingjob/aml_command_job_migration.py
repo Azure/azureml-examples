@@ -734,6 +734,21 @@ def _translate_queue_settings(aml_job: Mapping[str, Any]) -> dict[str, Any] | No
     return {"jobTier": normalized}
 
 
+def translate_aml_priority(priority: Any) -> str | None:
+    if priority is None:
+        return None
+    normalized = str(priority).strip().lower()
+    target_priority = {
+        "low": "Low",
+        "medium": "Mid",
+        "mid": "Mid",
+        "high": "High",
+    }.get(normalized)
+    if target_priority is None:
+        raise ValueError(f"Unsupported AML job priority: {priority!r}")
+    return target_priority
+
+
 def translate_aml_command_job(
     aml_job: Mapping[str, Any],
     *,
@@ -886,12 +901,9 @@ def translate_aml_command_job(
     queue_settings = _translate_queue_settings(aml_job)
     if queue_settings:
         properties["queueSettings"] = queue_settings
-    priority = aml_job.get("priority")
-    if priority:
-        normalized_priority = str(priority).strip().capitalize()
-        if normalized_priority not in {"Low", "Mid", "High"}:
-            raise ValueError(f"Unsupported AML job priority: {priority!r}")
-        properties["priority"] = normalized_priority
+    priority = translate_aml_priority(aml_job.get("priority"))
+    if priority is not None:
+        properties["priority"] = priority
     services = _translate_services(aml_job.get("services"), warnings=warnings)
     if services:
         properties["services"] = services
