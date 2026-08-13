@@ -2,6 +2,7 @@ name: <REGISTRY-NAME>
 description: Basic registry with one primary region
 tags:
   foo: bar
+  NRMS.NSP-extension: ServiceTag-storage
 location: East US
 replication_locations:
   - location: East US
