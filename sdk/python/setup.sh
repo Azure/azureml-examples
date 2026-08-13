@@ -5,7 +5,7 @@
 # </az_ml_sdk_install>
 
 # <mldesigner_install>
-pip install mldesigner
+pip install https://azuremlsdktestpypi.blob.core.windows.net/repo/sdk-cli-v2/mldesigner-0.1.0b19-py3-none-any.whl
 # </mldesigner_install>
 
 # <mltable_install>
