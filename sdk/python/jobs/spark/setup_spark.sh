@@ -57,6 +57,13 @@ then
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
+	if [ -n "${GITHUB_ENV:-}" ]; then
+		{
+			echo "SPARK_MANAGED_VNET_RESOURCE_GROUP=$RESOURCE_GROUP"
+			echo "SPARK_MANAGED_VNET_WORKSPACE_NAME=$AML_WORKSPACE_NAME"
+			echo "SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT=$DEFAULT_STORAGE_ACCOUNT"
+		} >> "$GITHUB_ENV"
+	fi
 
 	if ! az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS --output none; then
 		echo "Failed to create default storage account $DEFAULT_STORAGE_ACCOUNT" >&2
