@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+  - job_name: 'custom_metrics'
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8002']
+
+rule_files:
+ - "/var/azureml-util/prometheus_client/prom_rules.yml"
