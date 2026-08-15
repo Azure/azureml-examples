@@ -34,9 +34,11 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.10"
+        python-version: "3.13"
+    - name: upgrade pip and setuptools
+      run: pip install --upgrade pip setuptools wheel
     - name: pip install notebook reqs
-      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt
+      run: pip install --prefer-binary --no-cache-dir -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -92,3 +94,5 @@ jobs:
       with:
         name: versioning
         path: sdk/python/assets/data
+
+

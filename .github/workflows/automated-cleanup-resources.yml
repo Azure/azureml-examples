@@ -24,7 +24,11 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with: 
-        python-version: "3.8"
+        python-version: "3.13"
+    - name: upgrade pip and setuptools
+      run: pip install --upgrade pip setuptools wheel
+    - name: upgrade pip and setuptools
+      run: pip install --upgrade pip setuptools wheel
     - name: azure login
       uses: azure/login@v1
       with:
@@ -56,3 +60,4 @@ jobs:
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
           pwsh -File '${{ github.workspace }}/infra/scripts/call_all_scripts.ps1'
+
