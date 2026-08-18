@@ -1,12 +1,12 @@
-FROM python:3.8.13
+FROM python:3.9
 
 # Install pip dependencies
-RUN pip install 'matplotlib>=3.3,<3.4' \
+RUN pip install 'matplotlib>=3.4,<3.5' \
                 'psutil>=5.8,<5.9' \
                 'tqdm>=4.59,<4.60' \
-                'pandas>=1.1,<1.2' \
-                'scipy>=1.5,<1.6' \
-                'numpy>=1.10,<1.20' \
+                'pandas>=1.2,<1.4' \
+                'scipy>=1.6,<1.8' \
+                'numpy>=1.19,<1.23' \
                 'ipykernel~=6.0' \
                 'azureml-core' \
                 'azureml-defaults' \
