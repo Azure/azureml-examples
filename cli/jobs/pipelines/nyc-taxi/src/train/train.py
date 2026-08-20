@@ -8,6 +8,9 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import pickle
 
+import mlflow
+mlflow.autolog()
+
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
 parser.add_argument("--test_data", type=str, help="Path to test data")
