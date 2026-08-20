@@ -36,7 +36,7 @@ jobs:
       with:
         python-version: "${{ vars.AZUREML_NOTEBOOKS_PYTHON_VERSION || '3.11' }}"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install -r sdk/python/endpoints/batch/deploy-pipelines/from-registry/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
