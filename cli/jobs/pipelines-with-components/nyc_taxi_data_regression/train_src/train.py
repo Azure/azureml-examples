@@ -85,7 +85,11 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+mlflow.sklearn.save_model(
+    model,
+    args.model_output,
+    extra_pip_requirements=["azureml-ai-monitoring"],
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
