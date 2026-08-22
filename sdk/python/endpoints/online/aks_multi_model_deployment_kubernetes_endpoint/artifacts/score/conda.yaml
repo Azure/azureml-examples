@@ -1,0 +1,24 @@
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10.12
+  - pip<=22.3.1
+  - pip:
+      - mlflow
+      - cloudpickle
+      - numpy        
+      - psutil
+      - joblib
+      - scikit-learn
+      - pandas       
+      - scipy
+      - azureml-inference-server-http
+      - adlfs
+      - fsspec
+      - azureml-mlflow
+      - matplotlib
+      - tqdm
+      - jupyter
+      - ipykernel
+      - papermill
+name: multi-model
