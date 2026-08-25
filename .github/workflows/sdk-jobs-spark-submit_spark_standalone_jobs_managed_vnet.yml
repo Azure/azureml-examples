@@ -36,7 +36,7 @@ jobs:
       with:
         python-version: "3.10"
     - name: pip install notebook reqs
-      run: pip install -r sdk/python/dev-requirements.txt
+      run: pip install --no-cache-dir -r sdk/python/dev-requirements.txt
     - name: azure login
       uses: azure/login@v1
       with:
@@ -97,3 +97,16 @@ jobs:
       with:
         name: submit_spark_standalone_jobs_managed_vnet
         path: sdk/python/jobs/spark
+    - name: Remove managed VNet sample resources
+      if: ${{ always() }}
+      run: |
+          if [[ -z "${SPARK_MANAGED_VNET_RESOURCE_GROUP:-}" || -z "${SPARK_MANAGED_VNET_WORKSPACE_NAME:-}" || -z "${SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT:-}" ]]; then
+            echo "No managed VNet sample resources were recorded for cleanup."
+            exit 0
+          fi
+          if az ml workspace show --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_WORKSPACE_NAME" --output none 2>/dev/null; then
+            az ml workspace delete --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_WORKSPACE_NAME" --yes --all-resources --permanently-delete
+          fi
+          if az storage account show --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT" --output none 2>/dev/null; then
+            az storage account delete --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT" --yes
+          fi

@@ -279,7 +279,7 @@ jobs:
       continue-on-error: true
     - name: validate readme
       run: |
-          python check-readme.py "{github_workspace}" "{github_workspace}/sdk/python/{posix_folder}"
+          python check-readme.py "{github_workspace}/sdk/python/{posix_folder}"
       working-directory: infra/bootstrapping
       continue-on-error: false
     - name: setup-cli
@@ -356,6 +356,9 @@ jobs:
       with:
         name: {name}
         path: sdk/python/{posix_folder}\n"""
+
+    if name == "submit_spark_standalone_jobs_managed_vnet":
+        workflow_yaml += get_spark_managed_vnet_cleanup_workflow()
 
     if nb_config.get(section=name, option=COMPUTE_NAMES, fallback=None):
         workflow_yaml += f"""
@@ -494,6 +497,24 @@ def get_spark_config_workflow(folder_name, file_name):
       continue-on-error: true\n"""
 
     return workflow
+
+
+def get_spark_managed_vnet_cleanup_workflow():
+    return (
+        "    - name: Remove managed VNet sample resources\n"
+        "      if: ${{ always() }}\n"
+        "      run: |\n"
+        '          if [[ -z "${SPARK_MANAGED_VNET_RESOURCE_GROUP:-}" || -z "${SPARK_MANAGED_VNET_WORKSPACE_NAME:-}" || -z "${SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT:-}" ]]; then\n'
+        '            echo "No managed VNet sample resources were recorded for cleanup."\n'
+        "            exit 0\n"
+        "          fi\n"
+        '          if az ml workspace show --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_WORKSPACE_NAME" --output none 2>/dev/null; then\n'
+        '            az ml workspace delete --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_WORKSPACE_NAME" --yes --all-resources --permanently-delete\n'
+        "          fi\n"
+        '          if az storage account show --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT" --output none 2>/dev/null; then\n'
+        '            az storage account delete --resource-group "$SPARK_MANAGED_VNET_RESOURCE_GROUP" --name "$SPARK_MANAGED_VNET_DEFAULT_STORAGE_ACCOUNT" --yes\n'
+        "          fi\n"
+    )
 
 
 def get_featurestore_config_workflow(folder_name, file_name):
