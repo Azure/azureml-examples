@@ -273,7 +273,6 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/jobs/single-step/tensorflow/train-hyperparameter-tune-deploy-with-keras/train-hyperparameter-tune-deploy-with-keras.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/single-step/tensorflow/train-hyperparameter-tune-deploy-with-tensorflow/train-hyperparameter-tune-deploy-with-tensorflow.ipynb @Azure/AI-Platform-Docs
 /sdk/python/resources/compute/compute.ipynb @Azure/AI-Platform-Docs
-/sdk/python/resources/connections/connections.ipynb @Azure/AI-Platform-Docs
 /sdk/python/resources/workspace/workspace.ipynb @Azure/AI-Platform-Docs
 /sdk/python/schedules/job-schedule.ipynb @Azure/AI-Platform-Docs
 /sdk/python/using-mlflow/deploy/environment/conda.yaml @Azure/AI-Platform-Docs
