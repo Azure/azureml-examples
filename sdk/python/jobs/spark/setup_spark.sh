@@ -174,10 +174,33 @@ else
 	#<create_attached_resources>
 	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $SYNAPSE_LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
 	az storage fs create -n $GEN2_FILE_SYSTEM --account-name $GEN2_STORAGE_NAME
-	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password "$RANDOM_STRING" --location $SYNAPSE_LOCATION
+	# The standalone and pipeline Spark gates run concurrently and derive the same Synapse
+	# workspace name, so a parallel run may already be provisioning it. Tolerate an existing
+	# workspace ("WorkspaceNameUnavailable") and wait until it reaches the Succeeded state
+	# before creating subresources, otherwise the Spark pool and firewall-rule calls fail
+	# with "WorkspaceInInvalidStateForSubresourceCreateOrUpdate".
+	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password "$RANDOM_STRING" --location $SYNAPSE_LOCATION || echo "Synapse workspace create returned non-zero; it may already be provisioning from a concurrent run. Waiting for it to be ready."
+	for i in $(seq 1 40); do
+		SYNAPSE_STATE=$(az synapse workspace show --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --query provisioningState -o tsv 2>/dev/null)
+		echo "Synapse workspace '$SYNAPSE_WORKSPACE_NAME' provisioning state: '$SYNAPSE_STATE'"
+		if [ "$SYNAPSE_STATE" == "Succeeded" ]; then break; fi
+		if [ "$SYNAPSE_STATE" == "Failed" ]; then echo "Synapse workspace provisioning failed"; break; fi
+		sleep 30
+	done
 	az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_NAME/blobServices/default/containers/$GEN2_FILE_SYSTEM
-	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.5 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
-	az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+	# Open the firewall before any data-plane calls (e.g. the synapse role assignment below)
+	# so the runner IP is authorized; tolerate a concurrent run that already added the rule.
+	az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255 || echo "Synapse firewall-rule create returned non-zero; it may already exist."
+	# Create the Spark pool, tolerating a concurrent run that already created it, then wait
+	# until it is ready before the notebook submits jobs to it.
+	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.5 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true || echo "Synapse Spark pool create returned non-zero; it may already exist. Waiting for it to be ready."
+	for i in $(seq 1 40); do
+		POOL_STATE=$(az synapse spark pool show --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --query provisioningState -o tsv 2>/dev/null)
+		echo "Synapse Spark pool '$SPARK_POOL_NAME' provisioning state: '$POOL_STATE'"
+		if [ "$POOL_STATE" == "Succeeded" ]; then break; fi
+		if [ "$POOL_STATE" == "Failed" ]; then echo "Synapse Spark pool provisioning failed"; break; fi
+		sleep 30
+	done
 	#</create_attached_resources>
 
 	sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;
