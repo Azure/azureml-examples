@@ -2,12 +2,11 @@
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 LOCATION="eastus"
 # The attached Synapse workspace requires an underlying Azure SQL server. Some
-# subscription/region combinations reject new SQL servers (eastus returns
-# "SqlServerRegionDoesNotAllowProvisioning"), which cascades into the Synapse workspace,
-# the Spark pool, and the AML compute attach all failing ("Unknown compute target").
-# Provision the Synapse workspace and its ADLS Gen2 storage in a region that allows SQL
-# server creation for this subscription. Override if this region is also restricted.
-SYNAPSE_LOCATION="westus2"
+# subscription/region combinations reject new SQL servers with
+# "SqlServerRegionDoesNotAllowProvisioning" (observed in eastus and westus2 for the CI
+# subscription). Provision the Synapse workspace and its ADLS Gen2 storage in a region that
+# allows SQL server creation for this subscription. Change this if the region is restricted.
+SYNAPSE_LOCATION="centralus"
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-05-01"
@@ -16,7 +15,7 @@ AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
 ATTACHED_SPARK_POOL_NAME="myattachedspark"
 ATTACHED_SPARK_POOL_NAME_UAI="myattacheduai"
 ATTACH_SPARK_PY="resources/compute/attach_managed_spark_pools.py"
-GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2ws2
+GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2cus
 GEN2_FILE_SYSTEM=${RESOURCE_GROUP}file
 SYNAPSE_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-syws
 SQL_ADMIN_LOGIN_USER="automation"
