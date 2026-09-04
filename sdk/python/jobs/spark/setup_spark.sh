@@ -51,14 +51,25 @@ then
 	TIMESTAMP=`date +%m%d%H%M`
 	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
-	DEFAULT_STORAGE_ACCOUNT="sparkdefaultvnet"
+	# Stable, globally-unique-per-subscription default storage account name.
+	# Deterministic across runs (system-defined private endpoints stay valid) yet globally
+	# unique (tied to the subscription GUID, so it cannot be squatted by another tenant and is
+	# always re-creatable in this subscription). Must stay <=24 chars, lowercase alphanumeric.
+	# Avoid a hardcoded global literal (e.g. "sparkdefaultvnet"): once taken anywhere in Azure
+	# it can never be created in a fresh run's resource group, and the notebook would then
+	# reference a non-existent account (workspace deployment fails "Storage account ... not found").
+	SUB_SUFFIX=$(echo "$SUBSCRIPTION_ID" | tr -d '-' | cut -c1-8)
+	DEFAULT_STORAGE_ACCOUNT="sparkdefvnet${SUB_SUFFIX}"
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
 
-	EXIST=$(az storage account check-name --name $DEFAULT_STORAGE_ACCOUNT --query nameAvailable)
-	if [ "$EXIST" = "true" ]; then
-	az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
+	# Create in THIS resource group (idempotent). Do not gate on global name availability --
+	# a name held elsewhere must never suppress creating our own account. Fail loudly on error
+	# instead of silently continuing into a confusing downstream workspace-create failure.
+	if ! az storage account show -g "$RESOURCE_GROUP" -n "$DEFAULT_STORAGE_ACCOUNT" >/dev/null 2>&1; then
+	az storage account create -n "$DEFAULT_STORAGE_ACCOUNT" -g "$RESOURCE_GROUP" -l "$LOCATION" --sku Standard_LRS \
+		|| { echo "ERROR: failed to create default storage account $DEFAULT_STORAGE_ACCOUNT in $RESOURCE_GROUP"; exit 1; }
 	fi
 
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
