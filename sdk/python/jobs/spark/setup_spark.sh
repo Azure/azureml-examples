@@ -1,6 +1,13 @@
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 LOCATION="eastus"
+# The attached Synapse workspace requires an underlying Azure SQL server. Some
+# subscription/region combinations reject new SQL servers (eastus returns
+# "SqlServerRegionDoesNotAllowProvisioning"), which cascades into the Synapse workspace,
+# the Spark pool, and the AML compute attach all failing ("Unknown compute target").
+# Provision the Synapse workspace and its ADLS Gen2 storage in a region that allows SQL
+# server creation for this subscription. Override if this region is also restricted.
+SYNAPSE_LOCATION="westus2"
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-05-01"
@@ -9,7 +16,7 @@ AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
 ATTACHED_SPARK_POOL_NAME="myattachedspark"
 ATTACHED_SPARK_POOL_NAME_UAI="myattacheduai"
 ATTACH_SPARK_PY="resources/compute/attach_managed_spark_pools.py"
-GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2
+GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2ws2
 GEN2_FILE_SYSTEM=${RESOURCE_GROUP}file
 SYNAPSE_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-syws
 SQL_ADMIN_LOGIN_USER="automation"
@@ -166,11 +173,11 @@ then
 #</setup_interactive_session_resources>
 else
 	#<create_attached_resources>
-	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
+	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $SYNAPSE_LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
 	az storage fs create -n $GEN2_FILE_SYSTEM --account-name $GEN2_STORAGE_NAME
-	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password $RANDOM_STRING --location $LOCATION
+	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password "$RANDOM_STRING" --location $SYNAPSE_LOCATION
 	az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_NAME/blobServices/default/containers/$GEN2_FILE_SYSTEM
-	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.3 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
+	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.5 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
 	az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 	#</create_attached_resources>
 
