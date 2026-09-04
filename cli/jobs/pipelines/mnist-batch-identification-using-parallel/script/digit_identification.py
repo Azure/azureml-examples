@@ -4,8 +4,10 @@
 import os
 import numpy as np
 import argparse
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from PIL import Image
+
+tf.disable_v2_behavior()
 
 
 def init():

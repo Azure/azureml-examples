@@ -7,4 +7,6 @@ dependencies:
   - mlflow
   - scikit-learn==1.6.1
   - psutil==5.9.4
+  - azureml-ai-monitoring
+  - azureml-inference-server-http
 name: mlflow-env

@@ -16,7 +16,7 @@ inputs:
   corpus:
     path: data
     mode: download
-environment: azureml:AzureML-acpt-pytorch-2.2-cuda12.1@latest
+environment: azureml:AzureML-acpt-pytorch-2.8-cuda12.6@latest
 compute: azureml:gpu-cluster
 display_name: pytorch-word-language-model-example
 experiment_name: pytorch-word-language-model-example

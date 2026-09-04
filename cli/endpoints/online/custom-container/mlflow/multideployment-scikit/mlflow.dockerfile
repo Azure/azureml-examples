@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azureml/mlflow-ubuntu18.04-py37-cpu-inference:latest
+FROM mcr.microsoft.com/azureml/curated/mlflow-py312-inference:latest
 
 USER dockeruser
 

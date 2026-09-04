@@ -17,7 +17,7 @@ create_monitor:
 
   compute: # specify a spark compute for monitoring job
     instance_type: standard_e4s_v3
-    runtime_version: "3.3"
+    runtime_version: "3.4"
 
   monitoring_target: 
     ml_task: classification # model task type: [classification, regression, question_answering]

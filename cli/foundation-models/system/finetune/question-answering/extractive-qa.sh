@@ -10,7 +10,7 @@ registry_name="azureml"
 
 compute_cluster="gpu-cluster-big"
 # if above compute cluster does not exist, create it with the following vm size
-compute_sku="Standard_NC24rs_v3"
+compute_sku="STANDARD_NC4AS_T4_V3"
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
 # Setting this to more than the number of GPUs will result in an error.

@@ -17,4 +17,4 @@ distribution:
   process_count_per_instance: 1
 resources:
   instance_count: 2
-environment: azureml://registries/azureml/environments/acpt-pytorch-2.2-cuda12.1/labels/latest
+environment: azureml://registries/azureml/environments/acpt-pytorch-2.8-cuda12.6/labels/latest
