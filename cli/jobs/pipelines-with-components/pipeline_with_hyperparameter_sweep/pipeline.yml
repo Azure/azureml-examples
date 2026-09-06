@@ -55,5 +55,3 @@ jobs:
     outputs:
       predict_result:
     component: ./predict.yml
-
-    
