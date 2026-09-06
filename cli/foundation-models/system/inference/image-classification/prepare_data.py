@@ -18,12 +18,13 @@ def download_and_unzip(dataset_parent_dir: str, is_multilabel_dataset: int) -> N
     """
     # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
+    branch = "hkotesova/fridge-data"
 
     # download data
     if is_multilabel_dataset == 0:
-        download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/fridgeObjects.zip"
+        download_url = f"https://raw.githubusercontent.com/Azure/azureml-examples/{branch}/sample-data/image-classification/fridgeObjects.zip"
     else:
-        download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/multilabelFridgeObjects.zip"
+        download_url = f"https://raw.githubusercontent.com/Azure/azureml-examples/{branch}/sample-data/image-classification/multilabelFridgeObjects.zip"
     print(f"Downloading data from {download_url}")
 
     # Extract current dataset name from dataset url
