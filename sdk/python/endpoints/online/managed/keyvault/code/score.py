@@ -2,6 +2,8 @@ from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
 import os
 import json
+import time
+import logging
 
 multiplier: int = None
 
@@ -35,7 +37,19 @@ def load_secrets():
                 secret_client = SecretClient(vault_url=vault_url, credential=credential)
                 secret_clients[vault_url] = secret_client
 
-            secret_value = secret_client.get_secret(secret_name).value
+            # Retry to allow time for managed identity / access policy propagation
+            for attempt in range(3):
+                try:
+                    secret_value = secret_client.get_secret(secret_name).value
+                    break
+                except Exception as e:
+                    logging.warning(
+                        f"Attempt {attempt + 1}/3 to get secret '{secret_name}' failed: {e}"
+                    )
+                    if attempt < 2:
+                        time.sleep(10)
+                    else:
+                        raise
             os.environ[k] = secret_value
 
 
