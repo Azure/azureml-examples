@@ -42,10 +42,11 @@ az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --container-name $ST
 az ml online-endpoint create --name $ENDPOINT_NAME -f endpoints/online/managed/managed-identities/1-sai-create-endpoint.yml
 # </create_endpoint>
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status="${endpoint_status##*.}"
 
 echo $endpoint_status
 
-if [[ $endpoint_status == "Succeeded" ]]
+if [[ "${endpoint_status^^}" == "SUCCEEDED" ]]
 then
   echo "Endpoint created successfully"
 else 
@@ -77,8 +78,9 @@ az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name blue
 # </check_deploy_Status>
 
 deploy_status=`az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name blue --query "provisioning_state" -o tsv`
+deploy_status="${deploy_status##*.}"
 echo $deploy_status
-if [[ $deploy_status == "Succeeded" ]]
+if [[ "${deploy_status^^}" == "SUCCEEDED" ]]
 then
   echo "Deployment completed successfully"
 else

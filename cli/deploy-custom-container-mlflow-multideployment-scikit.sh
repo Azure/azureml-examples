@@ -59,10 +59,11 @@ az ml online-endpoint create -f $BASE_PATH/endpoint.yaml
 # </create_endpoint>
 
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status="${endpoint_status##*.}"
 
 echo $endpoint_status
 
-if [[ $endpoint_status == "Succeeded" ]]
+if [[ "${endpoint_status^^}" == "SUCCEEDED" ]]
 then
   echo "Endpoint created successfully"
 else 
@@ -83,8 +84,9 @@ az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name lightgbm-iris
 check_deployment_status () {
     deploy_name=$1
     deploy_status=`az ml online-deployment show --endpoint-name $ENDPOINT_NAME --name $deploy_name --query "provisioning_state" -o tsv`
+    deploy_status="${deploy_status##*.}"
     echo $deploy_status
-    if [[ $deploy_status == "Succeeded" ]]
+    if [[ "${deploy_status^^}" == "SUCCEEDED" ]]
     then
     echo "Deployment $deploy_name completed successfully"
     else
