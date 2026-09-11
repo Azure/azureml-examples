@@ -1,0 +1,12 @@
+# <component>
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: step_1_2505230050002746
+display_name: component0
+version: 1
+type: command
+
+code: ./
+environment: azureml://registries/azureml/environments/sklearn-1.0/versions/40
+
+command: >-
+  python step_1_component.py
