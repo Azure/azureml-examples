@@ -130,7 +130,7 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     for aks_compute in "${configure_aks_cluster[@]}"; do
       (
         echo_info "Creating AKS cluster: '$aks_compute'"
-        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_D3_V2"
+        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${aks_compute}" 1 3 "STANDARD_NC6S_V3"
       ) &
     done
     wait # until all AKS are created
@@ -150,7 +150,7 @@ if [[ ! -z "${RUN_BOOTSTRAP:-}" ]]; then
     for arc_compute in "${configure_arc_cluster[@]}"; do
       (
         echo_info "Creating amlarc cluster: '$arc_compute'"
-        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_D3_V2"
+        "$SCRIPT_DIR"/sdk_helpers.sh ensure_aks_compute "${arc_compute}" 1 3 "STANDARD_NC6S_V3"
         "$SCRIPT_DIR"/sdk_helpers.sh install_k8s_extension "${arc_compute}" "connectedClusters" "Microsoft.Kubernetes/connectedClusters"
         "$SCRIPT_DIR"/sdk_helpers.sh setup_compute "${arc_compute}-arc" "${ARC_COMPUTE_NAME}" "connectedClusters" "azureml"
         "$SCRIPT_DIR"/sdk_helpers.sh setup_instance_type_aml_arc "${arc_compute}"
