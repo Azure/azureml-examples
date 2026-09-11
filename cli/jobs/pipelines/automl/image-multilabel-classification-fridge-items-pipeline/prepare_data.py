@@ -101,6 +101,18 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
     save_ml_table_file(validation_mltable_path, validation_mltable_file_contents)
 
 
+def unzip(dataset_parent_dir: str) -> str:
+    """Unzip image dataset from local path."""
+    local_data_path = "/data-samples/image-classification/multilabelFridgeObjects.zip"
+    with ZipFile(local_data_path, "r") as zip:
+        print("extracting files...")
+        zip.extractall(path=dataset_parent_dir)
+        print("done")
+    dataset_name = os.path.basename(local_data_path).split(".")[0]
+    dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
+    return dataset_dir
+
+
 def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # Create directory, if it does not exist
@@ -108,26 +120,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # download data
     print("Downloading data.")
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/multilabelFridgeObjects.zip"
-
-    # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
-    # Get dataset path for later use
-    dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
-
-    # Get the name of zip file
-    data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
-
-    # Download data from public url
-    urllib.request.urlretrieve(download_url, filename=data_file)
-
-    # extract files
-    with ZipFile(data_file, "r") as zip:
-        print("extracting files...")
-        zip.extractall(path=dataset_parent_dir)
-        print("done")
-    # delete zip file
-    os.remove(data_file)
+    dataset_dir = unzip(dataset_parent_dir)
 
     # Upload data and create a data asset URI folder
     print("Uploading data to blob storage")
