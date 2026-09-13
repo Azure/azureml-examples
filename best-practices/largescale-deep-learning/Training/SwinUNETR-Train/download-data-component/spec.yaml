@@ -1,0 +1,21 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: ct_segm_upload_data_component
+version: 0.0.1
+display_name: CT Segmentation Upload Data
+type: command
+is_deterministic: true
+
+outputs:
+  data_dir:
+    type: uri_folder
+    description: the output training data
+
+code: .
+
+command: >-
+  python run.py --data_dir ${{outputs.data_dir}}
+
+environment: 
+  conda_file: ./conda.yaml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
