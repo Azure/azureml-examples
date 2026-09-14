@@ -4,3 +4,5 @@ pandas
 numpy
 mlflow
 azureml-mlflow
+azureml-core
+argcomplete<3; python_version < "3.10"
