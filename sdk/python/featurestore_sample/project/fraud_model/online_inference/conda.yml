@@ -1,8 +1,8 @@
 dependencies:
-  - python=3.8
+  - python=3.10
   - pip:
     - protobuf==3.19.6
-    - azureml-featurestore[online]==1.1.0
+    - azureml-featurestore[online]==1.2.1
     - aiohttp==3.8.4
     - azureml-inference-server-http
     - scikit-learn
