@@ -1,0 +1,48 @@
+groups:
+ - name: count_custom_rules
+   rules:
+    - record: nv_inference_request_success_irate
+      expr: irate(nv_inference_request_success[10s])
+
+    - record: nv_inference_request_failure_irate
+      expr: irate(nv_inference_request_failure[10s])
+
+    - record: nv_inference_count_irate
+      expr: irate(nv_inference_count[10s])
+
+    - record: nv_inference_exec_count_irate
+      expr: irate(nv_inference_exec_count[10s])
+
+ - name: latency_custom_rules
+   rules:
+    - record: nv_inference_request_duration_us_irate
+      expr: irate(nv_inference_request_duration_us[10s])
+
+    - record: nv_inference_queue_duration_us_irate
+      expr: irate(nv_inference_queue_duration_us[10s])
+
+    - record: nv_inference_compute_input_duration_us_irate
+      expr: irate(nv_inference_compute_input_duration_us[10s])
+
+    - record: nv_inference_compute_infer_duration_us_irate
+      expr: irate(nv_inference_compute_infer_duration_us[10s])
+    
+    - record: nv_inference_compute_output_duration_us_irate
+      expr: irate(nv_inference_compute_output_duration_us[10s])
+  
+ - name: summary_custom_rules
+   rules:
+    - record: nv_inference_request_summary_us_irate
+      expr: irate(nv_inference_request_summary_us[10s])
+
+    - record: nv_inference_queue_summary_us_irate
+      expr: irate(nv_inference_queue_summary_us[10s])
+
+    - record: nv_inference_compute_input_summary_us_irate
+      expr: irate(nv_inference_compute_input_summary_us[10s])
+
+    - record: nv_inference_compute_infer_summary_us_irate
+      expr: irate(nv_inference_compute_infer_summary_us[10s])
+    
+    - record: nv_inference_compute_output_summary_us_irate
+      expr: irate(nv_inference_compute_output_summary_us[10s])
