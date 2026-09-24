@@ -23,7 +23,7 @@ Curated environments are provided by Azure Machine Learning and are available in
 User-managed environments, you're responsible for setting up your environment and installing every package that your training script needs on the compute target. Also be sure to include any dependencies needed for model deployment.
 
 ## Building the environment for training
-We recommend starting from a curated environment and adding on top of it the remaining libraries / dependencies that are specific for your model training. For Pytorch workloads, we recommend starting from our Azure Container for Pytorch and following the steps outlined [here](./ACPT.md).
+We recommend starting from a curated environment and adding on top of it the remaining libraries / dependencies that are specific for your model training. For PyTorch workloads, we recommend starting from our Azure Container for PyTorch and following the steps outlined [here](./ACPT.md).
 
 ## Validation
 Before running an actual training using the environment that you just created, it's always recommended to validate it. We've built a sample job to run some standard health checks on a GPU cluster to test performance and correctness of distributed multinode GPU trainings. This helps with troubleshooting performance issues related to the environment & container that you plan on using for long training jobs. 
