@@ -1,0 +1,8 @@
+fastapi>=0.78.0,<0.79.0
+uvicorn
+gunicorn
+pydantic
+transformers>4.20
+torch 
+pillow
+python-multipart
