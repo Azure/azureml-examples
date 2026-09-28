@@ -231,7 +231,23 @@ jobs:
           wget https://azuremlexamples.blob.core.windows.net/datasets/credit_card/default_of_credit_card_clients.csv
           cd .."""
 
-    if not ("automl" in folder):
+    if name == "azureml-in-a-day":
+        workflow_yaml += f"""
+          max_retries=3
+          retry_delay=60
+          for attempt in $(seq 1 $max_retries); do
+            echo "Attempt $attempt of $max_retries..."
+            papermill -k python {name}.ipynb {name}.output.ipynb && break
+            if [ $attempt -lt $max_retries ]; then
+              echo "Attempt $attempt failed. Retrying in ${{retry_delay}}s..."
+              sleep $retry_delay
+            else
+              echo "All $max_retries attempts failed."
+              exit 1
+            fi
+          done
+      working-directory: tutorials/{posix_folder}"""
+    elif not ("automl" in folder):
         workflow_yaml += f"""
           papermill -k python {name}.ipynb {name}.output.ipynb
       working-directory: tutorials/{posix_folder}"""
