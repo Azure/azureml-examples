@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: demo
+instance_type: Standard_DS3_v2
+instance_count: 1
+liveness_probe:
+  initial_delay: 180
+  period: 180
+  failure_threshold: 49
+  timeout: 299
+request_settings:
+  request_timeout_ms: 90000
