@@ -145,7 +145,12 @@ def main(args):
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
+        model_to_save = (
+            model.module
+            if isinstance(model, nn.parallel.DistributedDataParallel)
+            else model
+        )
+        mlflow.pytorch.save_model(model_to_save, f"{args.model_dir}/model")
 
 
 def parse_args():
