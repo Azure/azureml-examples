@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
 
-mlflow.sklearn.autolog()
+mlflow.sklearn.autolog(log_models=False)
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
@@ -80,7 +80,9 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(model, args.model_output)
+mlflow.sklearn.save_model(
+    model, args.model_output, serialization_format="cloudpickle"
+)
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
