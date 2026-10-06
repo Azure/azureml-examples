@@ -67,24 +67,12 @@ def evaluate(test_loader, model, device):
 
 
 def main(args):
-    # get PyTorch environment variables
-    world_size = int(os.environ["WORLD_SIZE"])
-    rank = int(os.environ["RANK"])
-    local_rank = int(os.environ["LOCAL_RANK"])
-
-    distributed = world_size > 1
+    rank = int(os.environ.get("RANK", "0"))
+    if rank != 0:
+        return
 
     # set device
-    if distributed and torch.cuda.is_available():
-        device = torch.device("cuda", local_rank)
-    else:
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    # initialize distributed process group using default env:// method
-    if distributed:
-        torch.distributed.init_process_group(
-            backend="nccl" if torch.cuda.is_available() else "gloo"
-        )
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # define test dataset DataLoaders
     transform = transforms.Compose(
@@ -103,8 +91,7 @@ def main(args):
     model = model.to(device)
 
     # evaluate on full test dataset
-    if not distributed or rank == 0:
-        evaluate(test_loader, model, device)
+    evaluate(test_loader, model, device)
 
 
 def parse_args():
