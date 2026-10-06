@@ -150,7 +150,12 @@ def main(args):
             if isinstance(model, nn.parallel.DistributedDataParallel)
             else model
         )
-        mlflow.pytorch.save_model(model_to_save, f"{args.model_dir}/model")
+        mlflow.pytorch.save_model(
+            model_to_save,
+            f"{args.model_dir}/model",
+            serialization_format="pt2",
+            input_example=torch.zeros((1, 3, 32, 32), device=device),
+        )
 
 
 def parse_args():
