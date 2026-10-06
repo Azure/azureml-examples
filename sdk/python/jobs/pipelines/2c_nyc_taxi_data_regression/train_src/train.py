@@ -80,9 +80,7 @@ print(trainX.columns)
 model = LinearRegression().fit(trainX, trainy)
 print(model.score(trainX, trainy))
 
-mlflow.sklearn.save_model(
-    model, args.model_output, serialization_format="cloudpickle"
-)
+mlflow.sklearn.save_model(model, args.model_output, serialization_format="cloudpickle")
 
 # test_data = pd.DataFrame(testX, columns = )
 testX["cost"] = testy
