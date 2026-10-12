@@ -1,0 +1,11 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: blue
+endpoint_name: my-endpoint
+model:
+  path: ../../model-1/model/
+code_configuration:
+  code: ../../model-1/onlinescoring/
+  scoring_script: score.py
+environment: azureml://registries/azureml/environments/sklearn-1.1/versions/17
+instance_type: Standard_DS3_v2
+instance_count: 1
