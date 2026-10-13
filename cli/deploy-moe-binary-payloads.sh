@@ -8,10 +8,6 @@ ACR_NAME=$(az ml workspace show --query container_registry -o tsv | cut -d'/' -f
 
 BASE_PATH="endpoints/online/managed/binary-payloads"
 
-# <download_sample_data> 
-wget https://aka.ms/peacock-pic -O endpoints/online/managed/binary-payloads/input.jpg
-# </download_sample_data>
-
 # <create_endpoint> 
 az ml online-endpoint create -n $ENDPOINT_NAME  
 # </create_endpoint> 
