@@ -1,7 +1,12 @@
 import os
+
+# Required before importing tensorflow when model was saved with legacy tf.keras behavior.
+os.environ.setdefault("TF_USE_LEGACY_KERAS", "1")
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import tensorflow_hub as hub
 from tensorflow.keras.models import load_model
 
 
@@ -13,8 +18,8 @@ def init():
     # AZUREML_MODEL_DIR is an environment variable created during deployment
     model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "model")
 
-    # load the model
-    model = load_model(model_path)
+    # Load with TF Hub custom object registration for KerasLayer deserialization.
+    model = load_model(model_path, custom_objects={"KerasLayer": hub.KerasLayer})
     input_width = 244
     input_height = 244
 

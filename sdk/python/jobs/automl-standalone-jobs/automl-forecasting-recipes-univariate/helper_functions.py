@@ -3,7 +3,11 @@ Helper functions to determine AutoML experiment settings for forecasting.
 """
 import pandas as pd
 import statsmodels.tsa.stattools as stattools
-from arch import unitroot
+
+try:
+    from arch import unitroot
+except Exception:  # noqa: BLE001 - environment-specific binary import issues
+    unitroot = None
 
 
 def adf_test(series, **kw):
@@ -150,9 +154,16 @@ def unit_root_test_wrapper(series, lags=None):
     # Run individual tests
     adf = adf_test(series, **adf_settings)  # ADF test
     kpss = kpss_test(series, **kpss_settings)  # KPSS test
-    pp = unitroot.PhillipsPerron(series, **arch_test_settings)  # Phillips-Perron test
-    adfgls = unitroot.DFGLS(series, **arch_test_settings)  # ADF using GLS test
-    za = unitroot.ZivotAndrews(series, **arch_test_settings)  # Zivot-Andrews test
+    if unitroot is not None:
+        pp = unitroot.PhillipsPerron(
+            series, **arch_test_settings
+        )  # Phillips-Perron test
+        adfgls = unitroot.DFGLS(series, **arch_test_settings)  # ADF using GLS test
+        za = unitroot.ZivotAndrews(series, **arch_test_settings)  # Zivot-Andrews test
+    else:
+        pp = None
+        adfgls = None
+        za = None
 
     # generate output table
     adf_dict = format_test_output(test_name="ADF", test_res=adf, H0_unit_root=True)
