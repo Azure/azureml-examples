@@ -19,6 +19,7 @@ on:
       - sdk/python/dev-requirements.txt
       - infra/bootstrapping/**
       - sdk/python/setup.sh
+      - cli/jobs/pipelines-with-components/nyc_taxi_data_regression/**
 
 permissions:
   id-token: write
