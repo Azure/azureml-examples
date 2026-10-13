@@ -98,6 +98,8 @@ def main(args):
 
     # load model
     model = mlflow.pytorch.load_model(args.model_dir)
+    if isinstance(model, torch.export.ExportedProgram):
+        model = model.module()
     model = model.to(device)
 
     # evaluate on full test dataset
