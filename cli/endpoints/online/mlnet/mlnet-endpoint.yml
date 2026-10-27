@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+name: mlnet-endpoint
+type: online
+auth_mode: aml_token
+swagger_uri: /swagger/v1/swagger.json
+traffic:
+  mlnet: 100
+
+deployments:
+  #blue deployment
+  - name: mlnet
+    environment:
+      name: mlnet-environment
+      version: 1
+      docker:
+        image: docker.io/luisquintanilla/managed-deployment-container-mlnet:latest
+      inference_config:
+          liveness_route:
+              path: /
+              port: 80
+          readiness_route:
+              path: /
+              port: 80
+          scoring_route:
+              path: /predict
+              port: 80
+    instance_type: Standard_F2s_v2
+    scale_settings:
+      scale_type: Manual
+      instance_count: 1
+      min_instances: 1
+      max_instances: 2
