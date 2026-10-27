@@ -2,6 +2,7 @@
 import os
 import mlflow
 import argparse
+import joblib
 
 import pandas as pd
 from pathlib import Path
@@ -12,7 +13,7 @@ from sklearn.model_selection import train_test_split
 # define functions
 def main(args):
     # enable auto logging
-    mlflow.autolog()
+    mlflow.autolog(log_models=False)
 
     # setup parameters
     params = {
@@ -42,7 +43,8 @@ def main(args):
     # train model
     model = train_model(params, X_train, X_test, y_train, y_test)
     # Output the model and test data
-    mlflow.sklearn.save_model(model, args.model_output)
+    os.makedirs(args.model_output, exist_ok=True)
+    joblib.dump(model, os.path.join(args.model_output, "model.pkl"))
     X_test.to_csv(Path(args.test_data) / "X_test.csv", index=False)
     y_test.to_csv(Path(args.test_data) / "y_test.csv", index=False)
 
