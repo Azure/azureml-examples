@@ -1,0 +1,48 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+type: automl
+
+experiment_name: cli_regression_task_distributed_lightgbm
+# name: dpv2-cli-regression-train-job-01
+description: A regression job using hardware performance dataset
+
+compute: azureml:automl-distributed-cluster
+
+task: regression
+log_verbosity: debug
+primary_metric: r2_score
+
+target_column_name: "ERP"
+
+training_data:
+  path: "./data/training-mltable-folder"
+  type: mltable
+
+limits:
+  timeout_minutes: 600
+  max_trials: 5
+  max_concurrent_trials: 4
+  trial_timeout_minutes: 120
+  enable_early_termination: true
+  max_nodes: 6
+
+# This is example of custom featurization
+# If you don't have this section, AutoML will default to automatic featurization
+featurization:
+  mode: custom
+  blocked_transformers: [LabelEncoder]
+  column_name_and_types:
+    CHMIN: Categorical
+  transformer_params:
+    Imputer:
+      - fields: ["CACH"]
+        parameters:
+          strategy: most_frequent
+      - fields: ["PRP"]
+        parameters:
+          strategy: most_frequent
+
+training:
+  enable_model_explainability: true
+  allowed_training_algorithms:
+    - light_gbm
+  training_mode: distributed

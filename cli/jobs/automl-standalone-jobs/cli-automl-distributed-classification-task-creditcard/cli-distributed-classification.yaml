@@ -1,0 +1,36 @@
+$schema: https://azuremlsdk2.blob.core.windows.net/preview/0.0.1/autoMLJob.schema.json
+type: automl
+
+experiment_name: cli_classification_task_distributed_lightgbm
+# name: dpv2-cli-regression-train-job-01
+description: A classification job using credit card dataset
+
+compute: azureml:automl-distributed-cluster
+
+task: classification
+log_verbosity: debug
+primary_metric: accuracy
+
+target_column_name: "Class"
+
+training_data:
+  path: https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/creditcard-training-mltable
+  type: mltable
+
+validation_data:
+  path: https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/creditcard-validation-mltable
+  type: mltable
+
+limits:
+  timeout_minutes: 120
+  max_trials: 5
+  max_concurrent_trials: 4
+  trial_timeout_minutes: 60
+  enable_early_termination: true
+  max_nodes: 6
+
+training:
+  enable_model_explainability: true
+  allowed_training_algorithms:
+    - light_gbm
+  training_mode: distributed
