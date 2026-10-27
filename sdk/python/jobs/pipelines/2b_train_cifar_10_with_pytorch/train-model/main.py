@@ -8,6 +8,7 @@
 import os
 import mlflow
 import argparse
+import numpy as np
 
 import torch
 import torchvision
@@ -15,6 +16,8 @@ import torchvision.transforms as transforms
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from mlflow.models import ModelSignature
+from mlflow.types import Schema, TensorSpec
 
 # TODO - add mlflow logging
 
@@ -143,7 +146,22 @@ def main(args):
 
     if not distributed or rank == 0:
         # log model
-        mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
+        model_to_save = (
+            model.module
+            if isinstance(model, nn.parallel.DistributedDataParallel)
+            else model
+        )
+        signature = ModelSignature(
+            inputs=Schema([TensorSpec(np.dtype(np.float32), (-1, 3, 32, 32))]),
+            outputs=Schema([TensorSpec(np.dtype(np.float32), (-1, 10))]),
+        )
+        mlflow.pytorch.save_model(
+            model_to_save,
+            f"{args.model_dir}/model",
+            serialization_format="pt2",
+            input_example=torch.zeros((1, 3, 32, 32), device=device),
+            signature=signature,
+        )
 
 
 def parse_args():
