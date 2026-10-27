@@ -3,6 +3,7 @@ import json
 import os
 import urllib
 from zipfile import ZipFile
+from pathlib import Path
 
 from azure.identity import InteractiveBrowserCredential
 from azure.ai.ml import MLClient
@@ -104,30 +105,28 @@ def create_jsonl_and_mltable_files(uri_folder_data_path, dataset_dir):
 def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # Create directory, if it does not exist
+    # Create directory, if it does not exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
-    print("Downloading data.")
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/multilabelFridgeObjects.zip"
+    # Local data
+    repo_root = Path(__file__).resolve().parents[4]
+    local_data_path = (
+        repo_root
+        / "sample-data"
+        / "image-classification"
+        / "multilabelFridgeObjects.zip"
+    )
 
     # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
+    dataset_name = os.path.basename(local_data_path).split(".")[0]
     # Get dataset path for later use
     dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
 
-    # Get the name of zip file
-    data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
-
-    # Download data from public url
-    urllib.request.urlretrieve(download_url, filename=data_file)
-
     # extract files
-    with ZipFile(data_file, "r") as zip:
+    with ZipFile(local_data_path, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
-    os.remove(data_file)
 
     # Upload data and create a data asset URI folder
     print("Uploading data to blob storage")
