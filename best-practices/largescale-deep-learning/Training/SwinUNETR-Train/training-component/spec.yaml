@@ -1,0 +1,45 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: ct_segm_train_component
+version: 0.0.1
+display_name: CT Segmentation Training Component
+type: command
+is_deterministic: false
+
+distribution:
+  type: pytorch
+
+inputs:
+  data_dir:
+    type: uri_folder
+    description: the folder containing data
+outputs:
+  checkpoint_dir:
+    type: uri_folder
+    description: the folder containing checkpoints
+
+code: .
+
+command: >-
+  export PATH=/usr/local/cuda/bin:$PATH &&
+  python main.py
+  --data_dir=${{inputs.data_dir}}
+  --feature_size=48
+  --roi_x=256 --roi_y=256 --roi_z=256
+  --randcrop_samples=1
+  --randcrop_x=128 --randcrop_y=128 --randcrop_z=128
+  --optim_lr=1e-3
+  --batch_size=1
+  --sw_batch_size=1
+  --save_checkpoint
+  --logdir=${{outputs.checkpoint_dir}}
+  --max_epochs=1000
+  --val_every=5
+  --use_checkpoint
+  --distributed
+  --noamp
+
+resources:
+  shm_size: 32g
+environment: 
+  conda_file: ./conda.yaml
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.6-cudnn8-ubuntu20.04
