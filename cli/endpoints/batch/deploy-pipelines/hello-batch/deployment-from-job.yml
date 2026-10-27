@@ -1,5 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/pipelineComponentBatchDeployment.schema.json
 name: hello-batch-from-job
+description: A hello world deployment with a single step. This deployment is created from a pipeline job.
 endpoint_name: hello-pipeline-batch
 type: pipeline
 job_definition: azureml:job_name_placeholder
