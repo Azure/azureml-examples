@@ -1,0 +1,22 @@
+{
+    "get_url": "https://www.example.com",
+    "chat_history": [
+      {
+        "inputs": {
+          "question": "Can you provide some information about the contents of the URL?"
+        },
+        "outputs": {
+          "answer": "Sure, I'll retrieve and analyze the contents of the URL to provide you with accurate information."
+        }
+      },
+      {
+        "inputs": {
+          "question": "What type of data is available on the URL?"
+        },
+        "outputs": {
+          "answer": "I will extract and analyze the data from the URL to determine its type and contents."
+        }
+      }
+    ]
+  }
+  
