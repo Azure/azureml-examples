@@ -2,7 +2,12 @@ $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: mlw-cmkexample-prod
 location: eastus
 display_name: Customer managed key encryption-example
-description: This configurations shows how to create a workspace that uses customer-managed keys for encryption.
+description: |
+  # Customer managed key-encrypted workspace
+  This configurations shows how to create a workspace that uses customer-managed keys for encryption.
+  ## Description
+  Markdown is supported in the studio for workspace descriptions! You can edit the description there or via CLI.
+  Use descriptions to capture your machine learning experimentation goals, hypothesis, KPIs and subject matter expertise.
 customer_managed_key: 
   key_vault: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.KeyVault/vaults/<KEY_VAULT>
   key_uri: https://<KEY_VAULT>.vault.azure.net/keys/<KEY_NAME>/<KEY_VERSION>
