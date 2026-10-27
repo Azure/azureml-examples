@@ -1,6 +1,6 @@
 # Specific requirements of the forecasting notebooks.
 # This file is deprecated and will be removed when
 # metrics package will be able to evaluate forecasting models.
-azureml-metrics>=0.0.6.post1
+azureml-metrics[rai]>=0.0.6.post1
 arch<=5.3.1
 statsmodels>=0.11.0,<0.13.5
