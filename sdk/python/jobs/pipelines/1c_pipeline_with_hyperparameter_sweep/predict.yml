@@ -13,7 +13,7 @@ outputs:
   predict_result:
     type: uri_folder
 code: ./predict-src
-environment: azureml://registries/azureml/environments/sklearn-1.5/labels/latest
+environment: azureml://registries/azureml/environments/sklearn-1.5/versions/42
 command: >-
   pip install 'mlflow<2.19' -q &&
   python predict.py 
