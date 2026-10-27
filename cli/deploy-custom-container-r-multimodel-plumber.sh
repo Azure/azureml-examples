@@ -63,8 +63,9 @@ az ml online-endpoint create --name $ENDPOINT_NAME -f $BASE_PATH/r-endpoint.yml
 
 # <check_endpoint_status>
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status="${endpoint_status##*.}"
 echo $endpoint_status
-if [[ $endpoint_status == "Succeeded" ]]
+if [[ "${endpoint_status^^}" == "SUCCEEDED" ]]
 then
   echo "Endpoint created successfully"
 else
@@ -79,8 +80,9 @@ az ml online-deployment create --name r-deployment --endpoint $ENDPOINT_NAME -f 
 
 # Check if deployment was successful
 deploy_status=`az ml online-deployment show --name r-deployment --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status="${deploy_status##*.}"
 echo $deploy_status
-if [[ $deploy_status == "Succeeded" ]]
+if [[ "${deploy_status^^}" == "SUCCEEDED" ]]
 then
   echo "Deployment completed successfully"
 else
