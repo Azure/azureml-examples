@@ -154,37 +154,26 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     :param ml_client: Azure ML client
     :param dataset_parent_dir: Path to the dataset folder
     """
-    # Download data from public url
-
-    # create data folder if it doesnt exist.
+    # Create data folder if it doesn't exist
     os.makedirs(dataset_parent_dir, exist_ok=True)
 
-    # download data
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-object-detection/odFridgeObjects.zip"
+    # Use local data path
+    print("Using local data.")
+    local_data_path = "/sample-data/image-object-detection/odFridgeObjects.zip"
 
-    # Extract current dataset name from dataset url
-    dataset_name = os.path.basename(download_url).split(".")[0]
-    # Get dataset path for later use
-    dataset_dir = os.path.join(dataset_parent_dir, dataset_name)
-
-    # Get the data zip file path
-    data_file = os.path.join(dataset_parent_dir, f"{dataset_name}.zip")
-
-    # Download the dataset
-    urllib.request.urlretrieve(download_url, filename=data_file)
-
-    # extract files
-    with ZipFile(data_file, "r") as zip:
+    # Extract files directly from the local path
+    with ZipFile(local_data_path, "r") as zip:
         print("extracting files...")
         zip.extractall(path=dataset_parent_dir)
         print("done")
-    # delete zip file
-    os.remove(data_file)
+
+    # Use the extracted directory
+    extracted_dir = os.path.join(dataset_parent_dir, os.path.basename(local_data_path).split(".")[0])
 
     # Upload data and create a data asset URI folder
     print("Uploading data to blob storage")
     my_data = Data(
-        path=dataset_dir,
+        path=extracted_dir,
         type=AssetTypes.URI_FOLDER,
         description="Fridge-items images Object detection",
         name="fridge-items-images-od-ft",
@@ -198,7 +187,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
     print(uri_folder_data_asset.path)
 
     create_jsonl_and_mltable_files(
-        uri_folder_data_path=uri_folder_data_asset.path, dataset_dir=dataset_dir
+        uri_folder_data_path=uri_folder_data_asset.path, dataset_dir=extracted_dir
     )
 
 
