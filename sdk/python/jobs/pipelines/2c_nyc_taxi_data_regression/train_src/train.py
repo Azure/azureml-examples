@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import mlflow
 
-mlflow.sklearn.autolog()
+mlflow.sklearn.autolog(log_models=False)
 
 parser = argparse.ArgumentParser("train")
 parser.add_argument("--training_data", type=str, help="Path to training data")
