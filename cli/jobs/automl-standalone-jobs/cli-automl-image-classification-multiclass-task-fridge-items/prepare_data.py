@@ -1,7 +1,7 @@
 import argparse
 import json
 import os
-import urllib
+import urllib.request
 from zipfile import ZipFile
 
 from azure.identity import InteractiveBrowserCredential
@@ -105,7 +105,7 @@ def upload_data_and_create_jsonl_mltable_files(ml_client, dataset_parent_dir):
 
     # download data
     print("Downloading data.")
-    download_url = "https://automlsamplenotebookdata-adcuc7f7bqhhh8a4.b02.azurefd.net/image-classification/fridgeObjects.zip"
+    download_url = "https://automlsamplenotebookdata.blob.core.windows.net/image-classification/fridgeObjects.zip"
 
     # Extract current dataset name from dataset url
     dataset_name = os.path.basename(download_url).split(".")[0]
