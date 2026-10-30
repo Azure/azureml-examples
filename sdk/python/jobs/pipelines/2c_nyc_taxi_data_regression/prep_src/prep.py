@@ -124,7 +124,7 @@ def cleanseData(data, columns, useful_columns):
 green_data_clean = cleanseData(green_data, green_columns, useful_columns)
 yellow_data_clean = cleanseData(yellow_data, yellow_columns, useful_columns)
 
-# Append yellow data to green data
+# Combine yellow data with green data
 combined_df = pd.concat([green_data_clean, yellow_data_clean], ignore_index=True)
 combined_df.reset_index(inplace=True, drop=True)
 
