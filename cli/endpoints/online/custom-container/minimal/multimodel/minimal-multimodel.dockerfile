@@ -1,3 +1,3 @@
-FROM mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cpu-inference:latest
+FROM mcr.microsoft.com/azureml/minimal-py312-inference:latest
 
 RUN pip install pandas numpy scikit-learn joblib

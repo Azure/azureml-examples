@@ -28,7 +28,7 @@ jobs:
       observation_data_format: parquet
     resources:
       instance_type: standard_e4s_v3
-      runtime_version: "3.3"
+      runtime_version: "3.4"
     outputs:
       output_data:
     conf:

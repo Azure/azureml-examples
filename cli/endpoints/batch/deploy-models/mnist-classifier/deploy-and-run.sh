@@ -2,6 +2,8 @@ set -e
 
 # <set_variables>
 export ENDPOINT_NAME="<YOUR_ENDPOINT_NAME>"
+# sample input URI variable
+SAMPLE_INPUT_URI="https://automlsamplenotebookdata.blob.core.windows.net/batch/data/mnist/sample"
 # </set_variables>
 
 # <name_endpoint>
@@ -46,7 +48,7 @@ az ml batch-deployment show --name $DEPLOYMENT_NAME --endpoint-name $ENDPOINT_NA
 
 echo "Invoking batch endpoint with public URI (MNIST)"
 # <start_batch_scoring_job>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $SAMPLE_INPUT_URI --input-type uri_folder --query name -o tsv)
 # </start_batch_scoring_job>
 
 echo "Showing job detail"
@@ -80,7 +82,7 @@ echo "Invoke batch endpoint with specific output file name"
 OUTPUT_FILE_NAME=predictions_`echo $RANDOM`.csv
 OUTPUT_PATH="azureml://datastores/workspaceblobstore/paths/$ENDPOINT_NAME"
 
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --output-path $OUTPUT_PATH --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $SAMPLE_INPUT_URI --output-path $OUTPUT_PATH --set output_file_name=$OUTPUT_FILE_NAME --query name -o tsv)
 # </start_batch_scoring_job_set_output>
 
 echo "Invoke batch endpoint with specific overwrites"
@@ -133,7 +135,7 @@ az ml batch-deployment create --file deployment-keras/deployment.yml --endpoint-
 echo "Invoke batch endpoint with public data"
 # <test_deployment_non_default>
 DEPLOYMENT_NAME="mnist-keras-dpl"
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name $DEPLOYMENT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --deployment-name $DEPLOYMENT_NAME --input $SAMPLE_INPUT_URI --input-type uri_folder --query name -o tsv)
 # </test_deployment_non_default>
 
 echo "Show job detail"
@@ -174,7 +176,7 @@ az ml batch-endpoint show --name $ENDPOINT_NAME --query "{Name:name, Defaults:de
 
 echo "Invoke batch endpoint with the new default deployment with public URI"
 # <test_default_deployment>
-JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input https://azuremlexampledata.blob.core.windows.net/data/mnist/sample --input-type uri_folder --query name -o tsv)
+JOB_NAME=$(az ml batch-endpoint invoke --name $ENDPOINT_NAME --input $SAMPLE_INPUT_URI --input-type uri_folder --query name -o tsv)
 # </test_default_deployment>
 
 echo "Stream job logs to console"

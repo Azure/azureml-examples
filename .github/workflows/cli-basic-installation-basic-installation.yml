@@ -27,6 +27,11 @@ jobs:
     steps:
     - name: check out repo
       uses: actions/checkout@v2
+    - name: Install latest Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - name: Check Azure CLI version
+      run: az --version
     - name: azure login
       uses: azure/login@v1
       with:

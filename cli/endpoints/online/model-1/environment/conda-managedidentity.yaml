@@ -2,13 +2,13 @@ name: model-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.7
-  - numpy=1.21.2
-  - pip=21.2.4
-  - scikit-learn=0.24.2
-  - scipy=1.7.1
+  - python=3.12
+  - numpy=2.3.1
+  - pip=25.1.1
+  - scikit-learn=1.7.0
+  - scipy=1.16.0
   - pip:
-      - azureml-defaults==1.38.0
-      - joblib==1.2.0
-      - azure-storage-blob==12.11
-      - azure-identity==1.7
+      - azureml-inference-server-http
+      - joblib==1.5.1
+      - azure-storage-blob==12.25.1
+      - azure-identity==1.23.0

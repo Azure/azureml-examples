@@ -82,7 +82,7 @@ code_configuration:
   code: <CODE_DIR>
   scoring_script: score.py
 environment:
-  image: mcr.microsoft.com/azureml/minimal-ubuntu22.04-py39-cpu-inference
+  image: mcr.microsoft.com/azureml/minimal-py312-inference
   conda_file: env.yml
 instance_type: Standard_DS3_v2
 instance_count: 1
