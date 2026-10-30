@@ -15,6 +15,10 @@ You do this by simply running the prepare_data.py available in this folder, with
 
 Please note that the default location used for saving the data is `./data`
 
+The script downloads fridgeObjects.zip directly from the public Azure Blob Storage endpoint:
+https://automlsamplenotebookdata.blob.core.windows.net/image-classification/fridgeObjects.zip
+No storage credentials are required for this download. Azure credentials are used afterwards to upload the images to your workspace.
+
 
 
 2. To launch an automatic hyperparameter sweep (aka AutoMode), run the AutoML CLI command pointing to the cli-automl-image-classification-multiclass-task-fridge-items-automode.yml file in this folder plus the Azure ML IDs needed:
