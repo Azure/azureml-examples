@@ -18,11 +18,11 @@ jobs:
     inputs:
       images_archive:
         type: uri_file
-        path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
+        path: https://thor.robots.ox.ac.uk/datasets/pets/images.tar.gz
         mode: download
       annotations_archive:
         type: uri_file
-        path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
+        path: https://thor.robots.ox.ac.uk/datasets/pets/annotations.tar.gz
         mode: download
 
     outputs:
