@@ -7,12 +7,12 @@ name: cli-jobs-pipelines-tensorflow-image-segmentation-pipeline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "4 6/12 * * *"
+    - cron: "54 5/12 * * *"
   pull_request:
     branches:
       - main
     paths:
-      - cli/jobs/pipelines/tensorflow-image-segmentation/**
+      - cli//**
       - infra/bootstrapping/**
       - .github/workflows/cli-jobs-pipelines-tensorflow-image-segmentation-pipeline.yml
       - cli/run-pipeline-jobs.sh
@@ -56,14 +56,20 @@ jobs:
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
           az account get-access-token --scope https://ml.azure.com/.default --output none
+    - name: Download Oxford Pets dataset
+      run: |
+          mkdir -p data
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 2 --output data/images.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 2 --output data/annotations.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
+      working-directory: cli/
     - name: run job
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
-          bash -x ../../../run-job.sh pipeline.yml
-      working-directory: cli/jobs/pipelines/tensorflow-image-segmentation
+          bash -x ./run-job.sh jobs/pipelines/tensorflow-image-segmentation/pipeline.yml
+      working-directory: cli/
     - name: validate readme
       run: |
-          python check-readme.py "${{ github.workspace }}/cli/jobs/pipelines/tensorflow-image-segmentation"
+          python check-readme.py "${{ github.workspace }}/cli/"
       working-directory: infra/bootstrapping
       continue-on-error: false

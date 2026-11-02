@@ -492,6 +492,13 @@ jobs:
           az account get-access-token --scope https://management.azure.com/.default --output none
           # ML
           az account get-access-token --scope https://ml.azure.com/.default --output none\n"""
+    if "tensorflow-image-segmentation" in job:
+        workflow_yaml += f"""    - name: Download Oxford Pets dataset
+      run: |
+          mkdir -p data
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 2 --output data/images.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 2 --output data/annotations.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
+      working-directory: cli/{posix_project_dir}\n"""
     if is_spark_sample:
         workflow_yaml += get_spark_setup_workflow(job, posix_project_dir, filename)
     workflow_yaml += f"""    - name: run job
