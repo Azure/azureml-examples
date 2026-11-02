@@ -4,6 +4,8 @@ This folder provides a reference implementation for a tensorflow distributed tra
 
 The job uses the raw dataset and unpacks it as actual JPG/PNG files, instead of using [the `tfds` dataset](https://www.tensorflow.org/datasets/catalog/oxford_iiit_pet). The reason is that we want to provide you a job that you can easily transpose to your use case by changing the inputs files only.
 
+The `prepare_data` job uses `download` mode for both public HTTPS archive inputs, so the archives are downloaded to the compute node before `tar` extracts them rather than accessed through a read-only mount. The compute node needs outbound HTTPS access to `www.robots.ox.ac.uk` and enough local disk space for both archives and the extracted dataset.
+
 We have tagged the code with the following expressions to walk you through the key implementation details.
 
 Using your editor, search for those strings to get an idea of how to implement:

@@ -19,9 +19,11 @@ jobs:
       images_archive:
         type: uri_file
         path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
+        mode: download
       annotations_archive:
         type: uri_file
         path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
+        mode: download
 
     outputs:
       images_and_annotations:
