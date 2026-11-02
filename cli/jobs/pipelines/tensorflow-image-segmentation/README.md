@@ -4,11 +4,23 @@ This folder provides a reference implementation for a tensorflow distributed tra
 
 The job uses the raw dataset and unpacks it as actual JPG/PNG files, instead of using [the `tfds` dataset](https://www.tensorflow.org/datasets/catalog/oxford_iiit_pet). The reason is that we want to provide you a job that you can easily transpose to your use case by changing the inputs files only.
 
-The `prepare_data` job downloads the Oxford Pets archives directly because they
-are public HTTP URLs and cannot be mounted reliably as Azure ML data inputs.
-The compute used by this job must have outbound access to `www.robots.ox.ac.uk`.
-If outbound access is restricted, download the archives separately, upload them
-to an Azure ML datastore, and update the job to use datastore-backed inputs.
+Before submitting the pipeline, download the Oxford Pets archives from a machine
+that can access the Oxford server, then upload them to your Azure ML workspace as
+data assets:
+
+```bash
+curl -L https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz -o images.tar.gz
+curl -L https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz -o annotations.tar.gz
+az ml data create --name oxford-pets-images --version 1 --type uri_file --path ./images.tar.gz
+az ml data create --name oxford-pets-annotations --version 1 --type uri_file --path ./annotations.tar.gz
+```
+
+Run these commands with Azure ML CLI configured for the target workspace (or
+provide its resource group and workspace options). The `prepare_data` job reads
+the uploaded assets in download mode and extracts them, so the compute cluster
+does not need outbound access to `www.robots.ox.ac.uk`. If these data assets
+already exist, update the input asset names or versions in `pipeline.yml` to
+match your workspace.
 
 We have tagged the code with the following expressions to walk you through the key implementation details.
 

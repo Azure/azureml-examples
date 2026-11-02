@@ -14,12 +14,18 @@ jobs:
     command: |
       set -e
       mkdir -p ${{outputs.images_and_annotations}}
-      wget --tries=3 --timeout=30 -O images.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
-      tar xvfm images.tar.gz --no-same-owner -C ${{outputs.images_and_annotations}}
-      rm images.tar.gz
-      wget --tries=3 --timeout=30 -O annotations.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
-      tar xvfm annotations.tar.gz --no-same-owner -C ${{outputs.images_and_annotations}}
-      rm annotations.tar.gz
+      tar xvfm ${{inputs.images_archive}} --no-same-owner -C ${{outputs.images_and_annotations}}
+      tar xvfm ${{inputs.annotations_archive}} --no-same-owner -C ${{outputs.images_and_annotations}}
+
+    inputs:
+      images_archive:
+        type: uri_file
+        path: azureml:oxford-pets-images:1
+        mode: download
+      annotations_archive:
+        type: uri_file
+        path: azureml:oxford-pets-annotations:1
+        mode: download
 
     outputs:
       images_and_annotations:
