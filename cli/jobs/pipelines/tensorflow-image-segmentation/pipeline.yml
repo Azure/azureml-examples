@@ -12,17 +12,12 @@ jobs:
   prepare_data:
     type: command
     command: |
-      tar xvfm ${{inputs.images_archive}} --no-same-owner -C ${{outputs.images_and_annotations}} &&
-      tar xvfm ${{inputs.annotations_archive}} --no-same-owner -C ${{outputs.images_and_annotations}}
+      tar xvfm "${{inputs.dataset_archive}}" --no-same-owner --strip-components=1 -C "${{outputs.images_and_annotations}}"
 
     inputs:
-      images_archive:
+      dataset_archive:
         type: uri_file
-        path: https://thor.robots.ox.ac.uk/datasets/pets/images.tar.gz
-        mode: download
-      annotations_archive:
-        type: uri_file
-        path: https://thor.robots.ox.ac.uk/datasets/pets/annotations.tar.gz
+        path: https://s3.amazonaws.com/fast-ai-imageclas/oxford-iiit-pet.tgz
         mode: download
 
     outputs:
