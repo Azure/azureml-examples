@@ -13,5 +13,6 @@ inputs:
   iris: 
     type: uri_file
 environment:
+  # Registry runs publish this build context as a run-specific component version.
   build:
     path: docker-context
