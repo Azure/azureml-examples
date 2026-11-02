@@ -4,7 +4,16 @@ This folder provides a reference implementation for a tensorflow distributed tra
 
 The job uses the raw dataset and unpacks it as actual JPG/PNG files, instead of using [the `tfds` dataset](https://www.tensorflow.org/datasets/catalog/oxford_iiit_pet). The reason is that we want to provide you a job that you can easily transpose to your use case by changing the inputs files only.
 
-The `prepare_data` job uses `download` mode for both public HTTPS archive inputs, so the archives are downloaded to the compute node before `tar` extracts them rather than accessed through a read-only mount. The compute node needs outbound HTTPS access to `www.robots.ox.ac.uk` and enough local disk space for both archives and the extracted dataset.
+Before submitting the pipeline, download the two archives into a `data` folder in this directory. The CLI uploads these local `uri_file` inputs to the workspace datastore when the job is submitted:
+
+```powershell
+New-Item -ItemType Directory -Force data
+curl.exe -L --fail --retry 5 --retry-delay 2 -o data\images.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
+curl.exe -L --fail --retry 5 --retry-delay 2 -o data\annotations.tar.gz https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
+az ml job create --file pipeline.yml
+```
+
+If the Oxford download times out on your network, download the archives from a network that can reach the site and place them at those same paths before submitting. The pipeline no longer fetches the archives from the compute job.
 
 We have tagged the code with the following expressions to walk you through the key implementation details.
 

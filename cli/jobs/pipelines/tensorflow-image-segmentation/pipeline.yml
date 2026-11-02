@@ -3,6 +3,14 @@ type: pipeline
 
 experiment_name: "tensorflow_unet_pets"
 
+inputs:
+  images_archive:
+    type: uri_file
+    path: ./data/images.tar.gz
+  annotations_archive:
+    type: uri_file
+    path: ./data/annotations.tar.gz
+
 # <jobs>
 settings:
   default_datastore: azureml:workspaceblobstore
@@ -16,14 +24,8 @@ jobs:
       tar xvfm ${{inputs.annotations_archive}} --no-same-owner -C ${{outputs.images_and_annotations}}
 
     inputs:
-      images_archive:
-        type: uri_file
-        path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz
-        mode: download
-      annotations_archive:
-        type: uri_file
-        path: https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz
-        mode: download
+      images_archive: ${{parent.inputs.images_archive}}
+      annotations_archive: ${{parent.inputs.annotations_archive}}
 
     outputs:
       images_and_annotations:
