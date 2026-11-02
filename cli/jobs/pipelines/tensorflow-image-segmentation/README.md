@@ -4,6 +4,12 @@ This folder provides a reference implementation for a tensorflow distributed tra
 
 The job uses the raw dataset and unpacks it as actual JPG/PNG files, instead of using [the `tfds` dataset](https://www.tensorflow.org/datasets/catalog/oxford_iiit_pet). The reason is that we want to provide you a job that you can easily transpose to your use case by changing the inputs files only.
 
+The `prepare_data` job downloads the Oxford Pets archives directly because they
+are public HTTP URLs and cannot be mounted reliably as Azure ML data inputs.
+The compute used by this job must have outbound access to `www.robots.ox.ac.uk`.
+If outbound access is restricted, download the archives separately, upload them
+to an Azure ML datastore, and update the job to use datastore-backed inputs.
+
 We have tagged the code with the following expressions to walk you through the key implementation details.
 
 Using your editor, search for those strings to get an idea of how to implement:
