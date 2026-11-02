@@ -4,23 +4,28 @@ This folder provides a reference implementation for a tensorflow distributed tra
 
 The job uses the raw dataset and unpacks it as actual JPG/PNG files, instead of using [the `tfds` dataset](https://www.tensorflow.org/datasets/catalog/oxford_iiit_pet). The reason is that we want to provide you a job that you can easily transpose to your use case by changing the inputs files only.
 
-Before submitting the pipeline, download the Oxford Pets archives from a machine
-that can access the Oxford server, then upload them to your Azure ML workspace as
-data assets:
+Before submitting the pipeline, run the preparation script from this directory
+on a machine that can access the Oxford server:
 
 ```bash
-curl -L https://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz -o images.tar.gz
-curl -L https://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz -o annotations.tar.gz
-az ml data create --name oxford-pets-images --version 1 --type uri_file --path ./images.tar.gz
-az ml data create --name oxford-pets-annotations --version 1 --type uri_file --path ./annotations.tar.gz
+bash prepare-data.sh
+az ml job create --file pipeline.yml
 ```
 
-Run these commands with Azure ML CLI configured for the target workspace (or
-provide its resource group and workspace options). The `prepare_data` job reads
-the uploaded assets in download mode and extracts them, so the compute cluster
-does not need outbound access to `www.robots.ox.ac.uk`. If these data assets
-already exist, update the input asset names or versions in `pipeline.yml` to
-match your workspace.
+Configure Azure ML CLI defaults for the target resource group and workspace
+before running these commands. The script downloads and validates both archives,
+then uploads them as `oxford-pets-images:1` and `oxford-pets-annotations:1` data
+assets. The GitHub Actions workflow runs this script before submitting the job;
+it stops if downloading, validation, or registration fails.
+
+The `prepare_data` job reads the uploaded assets in download mode and extracts
+them, so the compute cluster does not need outbound access to
+`www.robots.ox.ac.uk`. The preparation machine still needs access to that site.
+If you see `Could not resolve uris of type data`, check that both assets exist
+in the workspace where you submit the pipeline. Registering a public Oxford URL
+as an asset does not upload its contents; use locally downloaded files as the
+script does. For existing data under different names or versions, update the
+input paths in `pipeline.yml` to match.
 
 We have tagged the code with the following expressions to walk you through the key implementation details.
 

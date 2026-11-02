@@ -506,6 +506,8 @@ jobs:
     elif "autotuning" in job:
         workflow_yaml += f"""          bash -x generate-yml.sh\n"""
         # workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir)}/run-job.sh generate-yml.yml\n"""
+    elif posix_project_dir == "jobs/pipelines/tensorflow-image-segmentation":
+        workflow_yaml += "          bash prepare-data.sh || exit $?\n"
     workflow_yaml += f"""          bash -x {os.path.relpath(".", project_dir).replace(os.sep, "/")}/run-job.sh {filename}.yml
       working-directory: cli/{posix_project_dir}
     - name: validate readme

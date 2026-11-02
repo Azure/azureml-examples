@@ -60,6 +60,7 @@ jobs:
       run: |
           source "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh";
           source "${{ github.workspace }}/infra/bootstrapping/init_environment.sh";
+          bash prepare-data.sh || exit $?
           bash -x ../../../run-job.sh pipeline.yml
       working-directory: cli/jobs/pipelines/tensorflow-image-segmentation
     - name: validate readme
