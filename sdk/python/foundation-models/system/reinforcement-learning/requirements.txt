@@ -1,0 +1,8 @@
+# use python3.12 or above
+azure-ai-ml==1.30.0
+azure-identity==1.25.1
+azureml-mlflow==1.60.0.post1
+huggingface-hub==1.1.5
+matplotlib==3.10.7
+mlflow==2.22.2
+ipykernel
