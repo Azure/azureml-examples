@@ -1,6 +1,12 @@
 # <create_variables>
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 LOCATION="eastus"
+# The attached Synapse workspace requires an underlying Azure SQL server. Some
+# subscription/region combinations reject new SQL servers with
+# "SqlServerRegionDoesNotAllowProvisioning" (observed in eastus and westus2 for the CI
+# subscription). Provision the Synapse workspace and its ADLS Gen2 storage in a region that
+# allows SQL server creation for this subscription. Change this if the region is restricted.
+SYNAPSE_LOCATION="centralus"
 RESOURCE_GROUP=$(az group show --query name -o tsv)
 AML_WORKSPACE_NAME=$(az configure -l --query "[?name=='workspace'].value" -o tsv)
 API_VERSION="2022-05-01"
@@ -9,7 +15,7 @@ AML_USER_MANAGED_ID=${RESOURCE_GROUP}-uai
 ATTACHED_SPARK_POOL_NAME="myattachedspark"
 ATTACHED_SPARK_POOL_NAME_UAI="myattacheduai"
 ATTACH_SPARK_PY="resources/compute/attach_managed_spark_pools.py"
-GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2
+GEN2_STORAGE_NAME=${RESOURCE_GROUP}gen2cus
 GEN2_FILE_SYSTEM=${RESOURCE_GROUP}file
 SYNAPSE_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-syws
 SQL_ADMIN_LOGIN_USER="automation"
@@ -51,14 +57,25 @@ then
 	TIMESTAMP=`date +%m%d%H%M`
 	AML_WORKSPACE_NAME=${AML_WORKSPACE_NAME}-vnet-$TIMESTAMP
 	AZURE_STORAGE_ACCOUNT=${RESOURCE_GROUP}blobvnet
-	DEFAULT_STORAGE_ACCOUNT="sparkdefaultvnet"
+	# Stable, globally-unique-per-subscription default storage account name.
+	# Deterministic across runs (system-defined private endpoints stay valid) yet globally
+	# unique (tied to the subscription GUID, so it cannot be squatted by another tenant and is
+	# always re-creatable in this subscription). Must stay <=24 chars, lowercase alphanumeric.
+	# Avoid a hardcoded global literal (e.g. "sparkdefaultvnet"): once taken anywhere in Azure
+	# it can never be created in a fresh run's resource group, and the notebook would then
+	# reference a non-existent account (workspace deployment fails "Storage account ... not found").
+	SUB_SUFFIX=$(echo "$SUBSCRIPTION_ID" | tr -d '-' | cut -c1-8)
+	DEFAULT_STORAGE_ACCOUNT="sparkdefvnet${SUB_SUFFIX}"
 	BLOB_CONTAINER_NAME="blobstoragevnetcontainer"
 	GEN2_STORAGE_ACCOUNT_NAME=${RESOURCE_GROUP}gen2vnet
 	ADLS_CONTAINER_NAME="gen2containervnet"
 
-	EXIST=$(az storage account check-name --name $DEFAULT_STORAGE_ACCOUNT --query nameAvailable)
-	if [ "$EXIST" = "true" ]; then
-	az storage account create -n $DEFAULT_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
+	# Create in THIS resource group (idempotent). Do not gate on global name availability --
+	# a name held elsewhere must never suppress creating our own account. Fail loudly on error
+	# instead of silently continuing into a confusing downstream workspace-create failure.
+	if ! az storage account show -g "$RESOURCE_GROUP" -n "$DEFAULT_STORAGE_ACCOUNT" >/dev/null 2>&1; then
+	az storage account create -n "$DEFAULT_STORAGE_ACCOUNT" -g "$RESOURCE_GROUP" -l "$LOCATION" --sku Standard_LRS \
+		|| { echo "ERROR: failed to create default storage account $DEFAULT_STORAGE_ACCOUNT in $RESOURCE_GROUP"; exit 1; }
 	fi
 
 	az storage account create -n $AZURE_STORAGE_ACCOUNT -g $RESOURCE_GROUP -l $LOCATION --sku Standard_LRS
@@ -155,12 +172,35 @@ then
 #</setup_interactive_session_resources>
 else
 	#<create_attached_resources>
-	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
+	az storage account create --name $GEN2_STORAGE_NAME --resource-group $RESOURCE_GROUP --location $SYNAPSE_LOCATION --sku Standard_LRS --kind StorageV2 --enable-hierarchical-namespace true
 	az storage fs create -n $GEN2_FILE_SYSTEM --account-name $GEN2_STORAGE_NAME
-	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password $RANDOM_STRING --location $LOCATION
+	# The standalone and pipeline Spark gates run concurrently and derive the same Synapse
+	# workspace name, so a parallel run may already be provisioning it. Tolerate an existing
+	# workspace ("WorkspaceNameUnavailable") and wait until it reaches the Succeeded state
+	# before creating subresources, otherwise the Spark pool and firewall-rule calls fail
+	# with "WorkspaceInInvalidStateForSubresourceCreateOrUpdate".
+	az synapse workspace create --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --storage-account $GEN2_STORAGE_NAME --file-system $GEN2_FILE_SYSTEM --sql-admin-login-user $SQL_ADMIN_LOGIN_USER --sql-admin-login-password "$RANDOM_STRING" --location $SYNAPSE_LOCATION || echo "Synapse workspace create returned non-zero; it may already be provisioning from a concurrent run. Waiting for it to be ready."
+	for i in $(seq 1 40); do
+		SYNAPSE_STATE=$(az synapse workspace show --name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --query provisioningState -o tsv 2>/dev/null)
+		echo "Synapse workspace '$SYNAPSE_WORKSPACE_NAME' provisioning state: '$SYNAPSE_STATE'"
+		if [ "$SYNAPSE_STATE" == "Succeeded" ]; then break; fi
+		if [ "$SYNAPSE_STATE" == "Failed" ]; then echo "Synapse workspace provisioning failed"; break; fi
+		sleep 30
+	done
 	az role assignment create --role "Storage Blob Data Owner" --assignee $AML_USER_MANAGED_ID_OID --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.Storage/storageAccounts/$GEN2_STORAGE_NAME/blobServices/default/containers/$GEN2_FILE_SYSTEM
-	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.3 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true
-	az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+	# Open the firewall before any data-plane calls (e.g. the synapse role assignment below)
+	# so the runner IP is authorized; tolerate a concurrent run that already added the rule.
+	az synapse workspace firewall-rule create --name allowAll --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255 || echo "Synapse firewall-rule create returned non-zero; it may already exist."
+	# Create the Spark pool, tolerating a concurrent run that already created it, then wait
+	# until it is ready before the notebook submits jobs to it.
+	az synapse spark pool create --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --spark-version 3.5 --node-count 3 --node-size Medium --min-node-count 3 --max-node-count 10 --enable-auto-scale true || echo "Synapse Spark pool create returned non-zero; it may already exist. Waiting for it to be ready."
+	for i in $(seq 1 40); do
+		POOL_STATE=$(az synapse spark pool show --name $SPARK_POOL_NAME --workspace-name $SYNAPSE_WORKSPACE_NAME --resource-group $RESOURCE_GROUP --query provisioningState -o tsv 2>/dev/null)
+		echo "Synapse Spark pool '$SPARK_POOL_NAME' provisioning state: '$POOL_STATE'"
+		if [ "$POOL_STATE" == "Succeeded" ]; then break; fi
+		if [ "$POOL_STATE" == "Failed" ]; then echo "Synapse Spark pool provisioning failed"; break; fi
+		sleep 30
+	done
 	#</create_attached_resources>
 
 	sed -i "s/<SUBSCRIPTION_ID>/$SUBSCRIPTION_ID/g;

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aml-foundry-migrate"
+version = "0.1.0"
+description = "Analyze and migrate Azure Machine Learning command jobs to Microsoft Foundry."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "azure-ai-projects==2.2.0a20260528004",
+    "azure-ai-ml>=1.34.0,<2.0.0",
+    "azure-identity>=1.23.0,<2.0.0",
+    "azure-storage-blob>=12.0.0,<13.0.0",
+    "PyYAML>=6.0,<7.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0.0,<10.0.0"]
+
+[project.scripts]
+aml-foundry-migrate = "foundrytrainingjob.aml_command_job_migration_cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra"
+pythonpath = ["src"]
+markers = [
+    "aml_foundry_migration: marks live AML-to-Foundry migration tests",
+    "aml_foundry_migration_component: marks component-by-component live migration tests",
+    "aml_foundry_migration_release: marks the cost-bounded release qualification test",
+]

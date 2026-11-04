@@ -1,0 +1,7 @@
+--extra-index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple
+azure-ai-projects==2.2.0a20260528004
+azure-ai-ml>=1.34.0,<2.0.0
+azure-identity>=1.23.0,<2.0.0
+azure-storage-blob>=12.0.0,<13.0.0
+PyYAML>=6.0,<7.0
+pytest>=8.0.0,<10.0.0

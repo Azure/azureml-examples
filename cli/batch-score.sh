@@ -22,7 +22,8 @@ az ml batch-endpoint create --name $ENDPOINT_NAME
 
 echo "Creating batch deployment nonmlflowdp for endpoint $ENDPOINT_NAME"
 # <create_batch_deployment_set_default>
-az ml batch-deployment create --file endpoints/batch/deploy-models/mnist-classifier/deployment-torch/deployment.yml --endpoint-name $ENDPOINT_NAME --set-default
+az ml batch-deployment create --file endpoints/batch/deploy-models/mnist-classifier/deployment-torch/deployment.yml --endpoint-name $ENDPOINT_NAME
+az ml batch-endpoint update --name $ENDPOINT_NAME --set defaults.deployment_name=$DEPLOYMENT_NAME
 # </create_batch_deployment_set_default>
 
 echo "Showing details of the batch endpoint"

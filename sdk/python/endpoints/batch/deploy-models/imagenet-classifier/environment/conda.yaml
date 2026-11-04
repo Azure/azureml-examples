@@ -2,11 +2,15 @@ name: tensorflow-env
 channels:
   - conda-forge
 dependencies:
-  - python=3.8.5
+  - python=3.13
   - pip
   - pip:
     - pandas
     - tensorflow
+    - setuptools<81
+    - protobuf>=6.31.1,<8.0.0
+    - tf-keras
+    - tensorflow-hub==0.16.1
     - pillow
     - azureml-core
     - azureml-dataset-runtime[fuse]

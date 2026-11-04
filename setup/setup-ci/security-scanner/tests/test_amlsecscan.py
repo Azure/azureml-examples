@@ -1,8 +1,10 @@
+import json
 import os
+import subprocess
 import sys
 import pytest
 import requests
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 # Mock environment variables
 os.environ["MSI_ENDPOINT"] = "http://127.0.0.1:46808/MSI/auth"
@@ -188,6 +190,187 @@ def test_sanitize_log_analytics_resource_id():
         amlsecscan._sanitize_log_analytics_resource_id(
             "/subscriptions/d94a7037-ed50-426f-8a48-03035940fc7a/resourceGroups/WUS2/providers/Microsoft.OperationalInsights/workspaces"
         )
+
+
+def test_default_install_path_is_root_controlled():
+    assert amlsecscan._config_folder_path == "/opt/amlsecscan"
+    assert amlsecscan._installed_scanner_path == "/opt/amlsecscan/amlsecscan.py"
+    assert not amlsecscan._config_folder_path.startswith("/home/azureuser/")
+
+
+def test_install_writes_root_owned_entrypoint(tmp_path, monkeypatch):
+    config_dir = tmp_path / "config"
+    state_dir = tmp_path / "state"
+    cron_path = tmp_path / "cron.d" / "amlsecscan"
+    cron_path.parent.mkdir()
+
+    global_config_path = config_dir / "config.json"
+    installed_scanner_path = config_dir / "amlsecscan.py"
+    run_script_path = config_dir / "run.sh"
+    config_dir.mkdir()
+    state_dir.mkdir()
+    state_marker = state_dir / "existing-marker"
+    global_config_path.write_text("existing config")
+    installed_scanner_path.write_text("existing scanner")
+    run_script_path.write_text("existing entrypoint")
+    state_marker.write_text("keep")
+
+    monkeypatch.setattr(amlsecscan, "_config_folder_path", config_dir.as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_global_config_path", global_config_path.as_posix()
+    )
+    monkeypatch.setattr(
+        amlsecscan, "_installed_scanner_path", installed_scanner_path.as_posix()
+    )
+    monkeypatch.setattr(amlsecscan, "_state_folder_path", state_dir.as_posix())
+    monkeypatch.setattr(amlsecscan, "_cron_path", cron_path.as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_local_config_path", (tmp_path / "missing.json").as_posix()
+    )
+    monkeypatch.setattr(amlsecscan.os, "geteuid", lambda: 0, raising=False)
+    commands = []
+    monkeypatch.setattr(
+        amlsecscan, "_run", lambda command, check=True: commands.append(command)
+    )
+    monkeypatch.setattr(
+        amlsecscan,
+        "_is_trusted_root_directory",
+        lambda path, allowed_entries=None: True,
+    )
+
+    log_analytics_resource_id = "/subscriptions/mock-s/resourceGroups/mock-rg/providers/Microsoft.OperationalInsights/workspaces/mock-w"
+
+    with patch.object(amlsecscan.shutil, "chown") as mock_chown:
+        amlsecscan._install(log_analytics_resource_id)
+
+    assert json.loads(global_config_path.read_text()) == {
+        "logAnalyticsResourceId": log_analytics_resource_id
+    }
+    assert installed_scanner_path.exists()
+    assert state_dir.is_dir()
+    assert state_marker.read_text() == "keep"
+    assert commands[0] == "apt-get update"
+
+    run_script = run_script_path.read_text()
+    assert f'python3 {installed_scanner_path.as_posix()} "$@"' in run_script
+    assert os.path.abspath(amlsecscan.__file__) not in run_script
+    assert "cgroup.controllers" in run_script
+    assert "cpu.max" in run_script
+    assert "cpu.cfs_quota_us" in run_script
+    assert "configure_cgroup || true" in run_script
+
+    cron = cron_path.read_text()
+    assert f"root {run_script_path.as_posix()} heartbeat" in cron
+
+    mock_chown.assert_has_calls(
+        [
+            call(config_dir.as_posix(), "root", "root"),
+            call(state_dir.as_posix(), "root", "root"),
+        ],
+        any_order=True,
+    )
+    assert len(mock_chown.call_args_list) == 6
+    for chown_call in mock_chown.call_args_list:
+        assert chown_call.args[1:] == ("root", "root")
+    assert not list(config_dir.glob(".amlsecscan-*"))
+    assert not list(cron_path.parent.glob(".amlsecscan-*"))
+
+
+def test_untrusted_install_directory_is_recreated(tmp_path):
+    config_dir = tmp_path / "config"
+    config_dir.mkdir()
+    unexpected_module = config_dir / "requests.py"
+    unexpected_module.write_text("malicious")
+
+    with patch.object(
+        amlsecscan, "_is_trusted_root_directory", return_value=False
+    ), patch.object(amlsecscan.shutil, "chown"):
+        amlsecscan._ensure_root_owned_directory(
+            config_dir.as_posix(),
+            0o0755,
+            {"config.json", "amlsecscan.py", "run.sh"},
+        )
+
+    assert config_dir.is_dir()
+    assert not unexpected_module.exists()
+
+
+def test_atomic_file_failure_restores_previous_files(tmp_path):
+    first_path = tmp_path / "first"
+    second_path = tmp_path / "second"
+    first_path.write_text("old first")
+    second_path.write_text("old second")
+    real_replace = os.replace
+
+    def fail_second_replace(source, destination):
+        if destination == second_path.as_posix():
+            raise OSError("mock replacement failure")
+        real_replace(source, destination)
+
+    with patch.object(amlsecscan.shutil, "chown"), patch.object(
+        amlsecscan.os, "replace", side_effect=fail_second_replace
+    ):
+        with pytest.raises(OSError, match="mock replacement failure"):
+            amlsecscan._write_files_atomically(
+                [
+                    (first_path.as_posix(), "new first", 0o0644),
+                    (second_path.as_posix(), "new second", 0o0644),
+                ]
+            )
+
+    assert first_path.read_text() == "old first"
+    assert second_path.read_text() == "old second"
+    assert not list(tmp_path.glob(".amlsecscan-*"))
+
+
+def test_install_failure_preserves_existing_entrypoint(tmp_path, monkeypatch):
+    config_dir = tmp_path / "config"
+    state_dir = tmp_path / "state"
+    cron_path = tmp_path / "cron.d" / "amlsecscan"
+    config_dir.mkdir()
+    state_dir.mkdir()
+    cron_path.parent.mkdir()
+
+    global_config_path = config_dir / "config.json"
+    installed_scanner_path = config_dir / "amlsecscan.py"
+    run_script_path = config_dir / "run.sh"
+    global_config_path.write_text("existing config")
+    installed_scanner_path.write_text("existing scanner")
+    run_script_path.write_text("existing entrypoint")
+    state_marker = state_dir / "existing-state"
+    state_marker.write_text("existing state")
+    cron_path.write_text("existing cron")
+
+    monkeypatch.setattr(amlsecscan, "_config_folder_path", config_dir.as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_global_config_path", global_config_path.as_posix()
+    )
+    monkeypatch.setattr(
+        amlsecscan, "_installed_scanner_path", installed_scanner_path.as_posix()
+    )
+    monkeypatch.setattr(amlsecscan, "_state_folder_path", state_dir.as_posix())
+    monkeypatch.setattr(amlsecscan, "_cron_path", cron_path.as_posix())
+    monkeypatch.setattr(
+        amlsecscan, "_local_config_path", (tmp_path / "missing.json").as_posix()
+    )
+    monkeypatch.setattr(amlsecscan.os, "geteuid", lambda: 0, raising=False)
+
+    def fail_package_install(command, check=True):
+        raise subprocess.CalledProcessError(100, command)
+
+    monkeypatch.setattr(amlsecscan, "_run", fail_package_install)
+
+    log_analytics_resource_id = "/subscriptions/mock-s/resourceGroups/mock-rg/providers/Microsoft.OperationalInsights/workspaces/mock-w"
+
+    with patch.object(amlsecscan.shutil, "chown"):
+        with pytest.raises(subprocess.CalledProcessError):
+            amlsecscan._install(log_analytics_resource_id)
+
+    assert global_config_path.read_text() == "existing config"
+    assert installed_scanner_path.read_text() == "existing scanner"
+    assert run_script_path.read_text() == "existing entrypoint"
+    assert state_marker.read_text() == "existing state"
+    assert cron_path.read_text() == "existing cron"
 
 
 def test_parse_trivy_results_1():
