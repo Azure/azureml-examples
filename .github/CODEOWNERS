@@ -136,6 +136,10 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /cli/endpoints/online/triton/single-model/create-managed-deployment.yaml @Azure/AI-Platform-Docs
 /cli/endpoints/online/triton/single-model/create-managed-endpoint.yaml @Azure/AI-Platform-Docs
 /cli/jobs/automl-standalone-jobs/cli-automl-classification-task-bankmarketing/cli-automl-classification-task-bankmarketing-serverless.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multiclass-task-fridge-items/cli-automl-img-cls-mc-task-fridge-items.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-image-classification-multilabel-task-fridge-items/cli-automl-img-cls-ml-task-fridge-items.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-image-instance-segmentation-task-fridge-items/cli-automl-img-ins-seg-task-fridge-items.yml @Azure/AI-Platform-Docs
+/cli/jobs/automl-standalone-jobs/cli-automl-image-object-detection-task-fridge-items/cli-automl-img-od-task-fridge-items.yml @Azure/AI-Platform-Docs
 /cli/jobs/automl-standalone-jobs/cli-automl-text-classification-multilabel-paper-cat/cli-automl-text-classification-multilabel-paper-cat.yml @Azure/AI-Platform-Docs
 /cli/jobs/automl-standalone-jobs/cli-automl-text-classification-newsgroup/cli-automl-text-classification-newsgroup.yml @Azure/AI-Platform-Docs
 /cli/jobs/automl-standalone-jobs/cli-automl-text-ner-conll-distributed-sweeping/cli-automl-text-ner-conll2003-distributed-sweeping.yml @Azure/AI-Platform-Docs
@@ -173,6 +177,10 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /cli/jobs/pipelines/automl/cli-automl-text-classification-multilabel-paper-categorization-pipeline/pipeline.yml @Azure/AI-Platform-Docs
 /cli/jobs/pipelines/automl/cli-automl-text-classification-newsgroup-pipeline/pipeline.yml @Azure/AI-Platform-Docs
 /cli/jobs/pipelines/automl/cli-automl-text-ner-conll-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/image-instance-segmentation-task-fridge-items-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/image-multiclass-classification-fridge-items-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/image-multilabel-classification-fridge-items-pipeline/pipeline.yml @Azure/AI-Platform-Docs
+/cli/jobs/pipelines/automl/image-object-detection-task-fridge-items-pipeline/pipeline.yml @Azure/AI-Platform-Docs
 /cli/jobs/pipelines/cifar-10/job.yml @Azure/AI-Platform-Docs
 /cli/jobs/pipelines/iris-batch-prediction-using-parallel/pipeline.yml @Azure/AI-Platform-Docs
 /cli/jobs/single-step/lightgbm/iris/job.yml @Azure/AI-Platform-Docs
@@ -183,7 +191,6 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /cli/jobs/single-step/tensorflow/mnist-distributed/job.yml @Azure/AI-Platform-Docs
 /cli/jobs/spark/attached-spark-pipeline-user-identity.yml @Azure/AI-Platform-Docs
 /cli/jobs/spark/attached-spark-standalone-managed-identity.yml @Azure/AI-Platform-Docs
-/cli/jobs/spark/serverless-spark-standalone-user-identity.yaml @Azure/AI-Platform-Docs
 /cli/jobs/spark/spark-job-component.yml @Azure/AI-Platform-Docs
 /cli/misc.sh @Azure/AI-Platform-Docs
 /cli/monitoring/advanced-model-monitoring.yaml @Azure/AI-Platform-Docs
@@ -260,6 +267,7 @@ sdk/python/foundation-models/cohere/command_tools-langchain.ipynb @stewart-co @k
 /sdk/python/jobs/pipelines/1g_pipeline_with_parallel_nodes/pipeline_with_parallel_nodes.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/1j_pipeline_with_pipeline_component/pipeline_with_train_eval_pipeline_component/pipeline_with_train_eval_pipeline_component.ipynb @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/image_classification_keras_minist_convnet.ipynb @Azure/AI-Platform-Docs
+/sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/prep/conda.yaml @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/prep/prep_component.py @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/score/score.py @Azure/AI-Platform-Docs
 /sdk/python/jobs/pipelines/2e_image_classification_keras_minist_convnet/score/score.yaml @Azure/AI-Platform-Docs
