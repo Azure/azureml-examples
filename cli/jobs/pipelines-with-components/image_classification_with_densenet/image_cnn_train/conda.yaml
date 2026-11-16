@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.8.12
-  - pip=21.2.2
+  - pip
   - pip:
       - mldesigner==0.1.0b4
       - watchdog==0.10.3

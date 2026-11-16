@@ -66,6 +66,7 @@ allowed_list = [
     "Class BaseIntellectualPropertySchema: This is an experimental class",
     "Class PipelineComponentBatchDeployment: This is an experimental class",
     "Class LinkTabularOutputDatasetConfig: This is an experimental class",
+    "Class DeploymentTemplateOperations: This is an experimental class",
     "Field 'max_nodes': This is an experimental field",
     "Uploading ",
     "Forecasting parameter ",
@@ -82,6 +83,9 @@ allowed_list = [
         "which generate code specific to the RPC implementation. service.py will be removed in Jan 2025"
     ),
     "from google.protobuf import service as _service",
+    "UserWarning: This class is intended as a base class and it's direct usage is deprecated",
+    "warnings.warn",
+    "UserWarning: pkg_resources is deprecated as an API.",
 ]
 
 with open(full_name, "r") as notebook_file:

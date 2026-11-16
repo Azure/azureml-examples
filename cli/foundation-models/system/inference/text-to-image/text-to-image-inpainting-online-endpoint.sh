@@ -16,7 +16,7 @@ version=$(date +%s)
 endpoint_name="inpainting-$version"
 deployment_name="inpainting-deploy"
 
-deployment_sku="Standard_NC6s_v3"
+deployment_sku="STANDARD_NC4AS_T4_V3"
 
 # sample_request_data
 sample_request_data="inpainting_data/sample_request_data.json"

@@ -141,9 +141,17 @@ def main(args):
 
     print("Rank %d: Finished Training" % (rank))
 
-    if not distributed or rank == 0:
-        # log model
-        mlflow.pytorch.save_model(model, f"{args.model_dir}/model")
+    try:
+        if not distributed or rank == 0:
+            model_to_save = model.module if distributed else model
+            mlflow.pytorch.save_model(
+                model_to_save.cpu(),
+                f"{args.model_dir}/model",
+                serialization_format="pickle",
+            )
+    finally:
+        if distributed:
+            torch.distributed.destroy_process_group()
 
 
 def parse_args():

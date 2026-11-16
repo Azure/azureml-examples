@@ -22,8 +22,7 @@
         Invoke-Expression ((New-Object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
     }
     choco feature enable --name allowGlobalConfirmation # stop the -y flag being needed for all "choco install"s
-    choco feature disable --name checksumFiles # lots of packages have no checksums, e.g. WinSDK, so allow them
     choco install -y vcredist140
 	Write-Host "#### Installing Rstudio #########"
 	C:\ProgramData\chocolatey\choco install r.studio -y
-	Write-Host "#### Completed Rstudio installtion with choco #########"
+	Write-Host "#### Completed Rstudio installation with choco #########"

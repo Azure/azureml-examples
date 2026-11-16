@@ -10,7 +10,7 @@ workspace_name="<WORKSPACE_NAME>"
 cluster_name="sample-finetune-cluster-gpu"
 
 # If above compute cluster does not exist, create it with the following vm size
-cluster_sku="Standard_NC6s_v3"
+cluster_sku="STANDARD_NC4AS_T4_V3"
 
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
@@ -29,7 +29,7 @@ version=$(date +%s)
 finetuned_huggingface_model_name="runwayml-stable-diffusion-2-1-dog-text-to-image"
 huggingface_endpoint_name="text-to-image-dog-$version"
 deployment_name="text2img-dog-mlflow-deploy"
-deployment_sku="Standard_NC6s_v3"
+deployment_sku="STANDARD_NC4AS_T4_V3"
 request_file="request.json"
 response_file="generated_image.json"
 

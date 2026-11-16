@@ -1,0 +1,4 @@
+# Required to run this notebook in workflow actions.
+ipykernel==6.29.5
+papermill==2.6.0
+jupyter-client==8.6.3

@@ -15,8 +15,8 @@ compute_cluster_finetune="sample-finetune-cluster-gpu"
 compute_model_evaluation="sample-finetune-cluster-gpu"
 # If above compute cluster does not exist, create it with the following vm size
 compute_model_import_sku="Standard_D12"
-compute_finetune_sku="Standard_NC6s_v3"
-compute_model_evaluation_sku="Standard_NC6s_v3"
+compute_finetune_sku="STANDARD_NC4AS_T4_V3"
+compute_model_evaluation_sku="STANDARD_NC4AS_T4_V3"
 
 # This is the number of GPUs in a single node of the selected 'vm_size' compute. 
 # Setting this to less than the number of GPUs will result in underutilized GPUs, taking longer to train.
