@@ -2,7 +2,12 @@ $schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
 name: mlw-basic-prod
 location: eastus
 display_name: Basic workspace-example
-description: This example shows a YML configuration for a basic workspace. In case you use this configuration to deploy a new workspace, since no existing dependent resources are specified, these will be automatically created.
+description: |
+  # Basic workspace
+  This example shows a YML configuration for a basic workspace.
+  ## Description
+  Markdown is supported in the studio for workspace descriptions! You can edit the description there or via CLI.
+  Use descriptions to capture your machine learning experimentation goals, hypothesis, KPIs and subject matter expertise.
 hbi_workspace: false
 tags:
   purpose: demonstration
