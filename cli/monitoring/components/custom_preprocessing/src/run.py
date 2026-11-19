@@ -75,22 +75,22 @@ def preprocess(
     # Data column is a list of objects, convert it into string because spark.read_json cannot read object
     table = table.convert_column_types({"data": mltable.DataType.to_string()})
 
-    # Use NamedTemporaryFile to create a secure temp file
-    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-        save_path = temp_file.name
-        table.save(save_path)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        table.save(temp_dir)
+        print(f"Temporary MLTable saved at: {temp_dir}")
 
-    # Save preprocessed_data MLTable to temp location
-    des_path = preprocessed_input_data + "temp"
-    fs = AzureMachineLearningFileSystem(des_path)
-    print("MLTable path:", des_path)
-    # TODO: Evaluate if we need to overwrite
-    fs.upload(
-        lpath=save_path,
-        rpath="",
-        **{"overwrite": "MERGE_WITH_OVERWRITE"},
-        recursive=True,
-    )
+        # Construct remote destination path
+        des_path = preprocessed_input_data + "temp"
+        fs = AzureMachineLearningFileSystem(des_path)
+
+        print(f"Uploading MLTable to: {des_path}")
+        fs.upload(
+            lpath=temp_dir,  # this is the local directory with the MLTable metadata
+            rpath="",
+            **{"overwrite": "MERGE_WITH_OVERWRITE"},
+            recursive=True,
+        )
+        print("Upload complete.")
 
     # Read mltable from preprocessed_data
     df = read_mltable_in_spark(mltable_path=des_path)
