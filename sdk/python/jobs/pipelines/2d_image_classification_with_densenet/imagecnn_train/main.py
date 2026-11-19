@@ -46,14 +46,7 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-try:
-    from apex.parallel import DistributedDataParallel as DDP
-    from apex.fp16_utils import *
-    from apex import amp
-except ImportError:
-    raise ImportError(
-        "Please install apex from https://www.github.com/nvidia/apex to run this example."
-    )
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 import image_classification.resnet as models
 
@@ -322,7 +315,7 @@ def main(gpu_index, args):
     args.gpu = 0
 
     args.local_rank = gpu_index
-    args.distributed = args.world_size > 1
+    args.distributed = False
     if args.distributed:
         args.gpu = args.local_rank % torch.cuda.device_count()
         print("using gpu ", args.gpu)
@@ -489,16 +482,8 @@ def main(gpu_index, args):
     elif args.lr_schedule == "linear":
         lr_policy = lr_linear_policy(args.lr, args.warmup, args.epochs, logger=None)
 
-    if args.amp:
-        model_and_loss, optimizer = amp.initialize(
-            model_and_loss,
-            optimizer,
-            opt_level="O2",
-            loss_scale="dynamic" if args.dynamic_loss_scale else args.static_loss_scale,
-        )
-
     if args.distributed:
-        model_and_loss.distributed()
+        model_and_loss.model = DDP(model_and_loss.model)
 
     model_and_loss.load_model_state(model_state)
 
@@ -560,7 +545,7 @@ if __name__ == "__main__":
     args.dist_url = "tcp://" + os.environ["AZ_BATCHAI_MPI_MASTER_NODE"] + ":23456"
 
     ngpus_per_node = torch.cuda.device_count()
-    args.distributed = args.world_size > 1
+    args.distributed = False
 
     # Since we have ngpus_per_node processes per node, the total world_size
     # needs to be adjusted accordingly
@@ -570,7 +555,7 @@ if __name__ == "__main__":
 
     # Use torch.multiprocessing.spawn to launch distributed processes: the
     # main_worker process function
-    mp.spawn(main, nprocs=ngpus_per_node, args=(args,))
+    main(0, args)
 
     # notify DLTS to collect the std output asap.
     log_collect_hook = "/var/log/compute/00_stdout.txt.exit"
