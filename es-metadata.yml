@@ -1,0 +1,12 @@
+schemaVersion: 1.0.0
+providers:
+- provider: InventoryAsCode
+  version: 1.0.0
+  metadata:
+    isProduction: false
+    accountableOwners:
+      service: 1217e9fa-c8ca-46b7-b26f-31585541d044
+    routing:
+      defaultAreaPath:
+        org: msdata
+        path: Vienna\Experiences
