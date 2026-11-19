@@ -32,8 +32,8 @@ SAMPLES_WORKSPACE_LIST=$(az ml workspace list --query "[*].[name]" -o tsv | grep
 echo "SAMPLES_WORKSPACE_LIST: $SAMPLES_WORKSPACE_LIST"
 
 # Wait for 2 hours so that we don't delete entities that are still in use.
-echo waiting
-sleep 2h
+# echo waiting
+# sleep 2h
 
 # Delete online endpoints
 for i in $ONLINE_ENDPOINT_LIST; do 
