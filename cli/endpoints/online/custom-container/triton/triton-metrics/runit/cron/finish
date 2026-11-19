@@ -1,0 +1,9 @@
+#!/bin/bash
+
+exit_code="$1" # The exit code from cron
+signal="$2"    # The signal which caused cron to exit (or 0)
+
+echo "`date -uIns` - cron/finish $@"
+echo "`date -uIns` - Killing image."
+
+killall -SIGHUP runsvdir

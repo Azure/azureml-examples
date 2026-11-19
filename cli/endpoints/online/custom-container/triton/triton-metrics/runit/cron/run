@@ -1,0 +1,44 @@
+#!/bin/bash
+
+SCRIPT_PATH=$(dirname $(realpath -s "$0"))
+
+format_print () {
+    echo "$(date -uIns) | gunicorn/run | $1"
+}
+
+echo "`date -uIns` - cron/run $@"
+
+if [[ -f "/IMAGE_INFORMATION" ]]; then
+    format_print ""
+    format_print "AzureML image information: $(cat /IMAGE_INFORMATION)"
+    format_print ""
+fi
+
+# Check if app insights is enabled
+if [[ -z "$AML_APP_INSIGHTS_ENABLED" ]]; then
+    format_print "Applicaiton Insights logging is disabled."
+else
+    # Explicitly check if ENV_AML_APP_INSIGHTS_ENABLED is true
+    if [[ "$AML_APP_INSIGHTS_ENABLED" = "true" || "$AML_APP_INSIGHTS_ENABLED" = "True" ]]; then
+        # Check if app insights instrumentation key is provided
+        if [[ -z $AML_APP_INSIGHTS_KEY ]]; then
+            format_print "Applicaiton Insights logging is enabled but the key is empty. Exiting with error ..."
+            exit 99
+        fi
+        
+        format_print "Starting to scrape triton metrics!"
+
+        exec /var/azureml-util/prometheus_client/client/prometheus --config.file=/var/azureml-util/metrics_utilities/prometheus.yml &
+
+        crontab /var/azureml-util/metrics_utilities/crontab
+
+        printenv | grep -v "no_proxy" >> /etc/environment
+        exec cron -f &
+    else
+        format_print "AML_APP_INSIGHTS_ENABLED is set to ${AML_APP_INSIGHTS_ENABLED}"
+        # Explicitly disable ENV_AML_APP_INSIGHTS_ENABLED as it is not set to true
+        export AML_APP_INSIGHTS_ENABLED="false"
+    fi
+fi
+
+exec /opt/tritonserver/bin/tritonserver --model-repository=${AZUREML_MODEL_DIR} --log-verbose=1
