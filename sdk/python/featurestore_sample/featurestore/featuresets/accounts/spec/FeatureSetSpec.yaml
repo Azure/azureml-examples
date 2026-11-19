@@ -11,7 +11,7 @@ index_columns:
 - name: accountID
   type: string
 source:
-  path: wasbs://data@azuremlexampledata.blob.core.windows.net/feature-store-prp/datasources/accounts-precalculated/*.parquet
+  path: wasbs://data@azuremlfsexampledata.blob.core.windows.net/feature-store-prp/datasources/accounts-precalculated/*.parquet
   timestamp_column:
     name: timestamp
   type: parquet
