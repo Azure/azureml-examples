@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+name: pipe_comp_2505230050002746
+type: pipeline
+display_name: pipe_comp_2505230050002746
+description: Sample for 2505230050002746
+
+jobs:
+  component0:
+    component: ./step_1_component.yml
