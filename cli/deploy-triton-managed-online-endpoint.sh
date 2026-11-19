@@ -27,8 +27,9 @@ az ml online-endpoint show -n $ENDPOINT_NAME
 
 # check if create was successful
 endpoint_status=`az ml online-endpoint show --name $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+endpoint_status="${endpoint_status##*.}"
 echo $endpoint_status
-if [[ $endpoint_status == "Succeeded" ]]
+if [[ "${endpoint_status^^}" == "SUCCEEDED" ]]
 then
   echo "Endpoint created successfully"
 else
@@ -37,8 +38,9 @@ else
 fi
 
 deploy_status=`az ml online-deployment show --name blue --endpoint $ENDPOINT_NAME --query "provisioning_state" -o tsv`
+deploy_status="${deploy_status##*.}"
 echo $deploy_status
-if [[ $deploy_status == "Succeeded" ]]
+if [[ "${deploy_status^^}" == "SUCCEEDED" ]]
 then
   echo "Deployment completed successfully"
 else
@@ -62,4 +64,3 @@ python $BASE_PATH/triton_densenet_scoring.py --base_url=$scoring_uri --token=$au
 # <delete_endpoint>
 az ml online-endpoint delete -n $ENDPOINT_NAME --yes
 # </delete_endpoint>
-
