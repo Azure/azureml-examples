@@ -17,7 +17,7 @@ jobs:
     - name: setup python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.9"
+        python-version: "3.11"
     - name: pip install
       run: pip install -r dev-requirements.txt
     - name: run docs checker script
