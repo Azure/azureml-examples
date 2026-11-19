@@ -1,0 +1,18 @@
+$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
+name: mlw-uai-prod
+location: eastus
+display_name: UAI workspace-example
+description: Demo for creating UAI workspace with multiple user assigned identities, and a primary user assigned identity.
+identity:
+  type: user_assigned
+  tenant_id: <TENANT_ID>
+  user_assigned_identities:
+    '/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<UAI NAME 1>':
+      principal_id: <PRINCIPAL_ID1>
+      client_id: <CLIENT_ID1>
+    '/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<UAI NAME 2>':
+      principal_id: <PRINCIPAL_ID2>
+      client_id: <CLIENT_ID2>
+primary_user_assigned_identity: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<UAI NAME 1>
+tags:
+  purpose: demonstration
