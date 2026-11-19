@@ -19,6 +19,7 @@ description: An official step-by-step guide of best-practices with techniques an
   - [Create Training environment](#create-training-environment)
   - [Efficient data loading for large training workloads](#efficient-data-loading-for-large-training-workloads)
   - [Optimized Training for Large Models](#optimized-training-for-large-models)
+  - [Operationalizing Large Models](#operationalization)
 
 ## Welcome
 
@@ -73,3 +74,7 @@ An Environment is useful to track and reproduce the projects' software dependenc
 ## Optimized Training for Large Models
 
 In this [section](./Training/README.md) we're going to focus on optimizing the training phase of several of the most popular large  deep learning model architectures. The goal is to get an efficient training loop, that can is highly scalable as we increase the training dataset size or add more compute nodes for getting results faster. 
+
+
+## Operationalization
+In this [section](./Operationalize/README.md) we're going to see what it takes to deploy a large model in Azure Machine Learning. Along the way we're focusing on optimizations to achieve higher throughput, lower latency while also reducing the cost to serve these models.
