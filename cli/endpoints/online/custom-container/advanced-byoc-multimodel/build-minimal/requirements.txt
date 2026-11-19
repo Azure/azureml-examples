@@ -1,0 +1,6 @@
+azureml-contrib-services
+pydantic
+transformers>4.20
+torch 
+pillow
+python-multipart
