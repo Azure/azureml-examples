@@ -86,7 +86,19 @@ jobs:
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" generate_workspace_config "../../.azureml/config.json";
           bash "${{ github.workspace }}/infra/bootstrapping/sdk_helpers.sh" replace_template_values "azureml-in-a-day.ipynb";
           [ -f "../../.azureml/config" ] && cat "../../.azureml/config";
-          papermill -k python azureml-in-a-day.ipynb azureml-in-a-day.output.ipynb
+          max_retries=3
+          retry_delay=60
+          for attempt in $(seq 1 $max_retries); do
+            echo "Attempt $attempt of $max_retries..."
+            papermill -k python azureml-in-a-day.ipynb azureml-in-a-day.output.ipynb && break
+            if [ $attempt -lt $max_retries ]; then
+              echo "Attempt $attempt failed. Retrying in ${retry_delay}s..."
+              sleep $retry_delay
+            else
+              echo "All $max_retries attempts failed."
+              exit 1
+            fi
+          done
       working-directory: tutorials/azureml-in-a-day
     - name: upload notebook's working folder as an artifact
       if: ${{ always() }}
