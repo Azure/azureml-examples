@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: 
+  local_path: src
+command: >-
+  python model_test.py 
+  --model-uri ${{inputs.model_uri}}
+  --target-column-name ${{inputs.target_column_name}}
+  --task ${{inputs.task}}
+inputs:
+  test_data: 
+    file: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
+  train_data: 
+    file: wasbs://datasets@azuremlexamples.blob.core.windows.net/iris.csv
+  model_uri: "{{model_uri}}"
+  target_column_name: "species"
+  task: "classification"
+environment: azureml:AzureML-AutoML-DNN:85
+compute: azureml:cpu-cluster
+display_name: model-test-example
+experiment_name: model-test-example
+description: Train a scikit-learn SVM on the Iris dataset and then run a test job to calculate metrics for the model.
