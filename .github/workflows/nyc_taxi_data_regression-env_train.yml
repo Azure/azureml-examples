@@ -22,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check out repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2.8.0
     - name: azure login
-      uses: azure/login@v1
+      uses: azure/login@cb79c773a3cfa27f31f25eb3f677781210c9ce3d # v1.6.1
       with:
         client-id: ${{ secrets.OIDC_AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.OIDC_AZURE_TENANT_ID }}
